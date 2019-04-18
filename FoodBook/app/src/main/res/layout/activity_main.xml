@@ -17,4 +17,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_icon_add" />
+
 </android.support.constraint.ConstraintLayout>
