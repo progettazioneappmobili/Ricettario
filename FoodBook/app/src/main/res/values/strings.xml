@@ -3,4 +3,6 @@
     <string name="search_toolbar">Cerca Ricetta</string>
     <string name="found_recipes">Ricette Trovate</string>
     <string name="toolbar_insert1">Informazioni</string>
+    <string name="antipasti">Antipasti</string>
+    <string name="primi">Primi</string>
 </resources>
