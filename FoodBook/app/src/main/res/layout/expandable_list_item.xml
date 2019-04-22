@@ -4,43 +4,31 @@
     android:layout_height="fill_parent"
     android:stretchColumns="*">
 
-    <TableRow
-        android:layout_width="match_parent">
+    <TableRow android:layout_width="match_parent">
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Item"
-            android:textColor="#f00"
-            android:textSize="14sp"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textSize="15sp"
+            android:background="@drawable/lasagne"
+            android:layout_weight="1"/>
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Item2"
-            android:textColor="#f00"
-            android:textSize="14sp"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textSize="15sp"
+            android:background="@drawable/lasagne"
+            android:layout_weight="1"/>
+
     </TableRow>
 
 
 </TableLayout>
-<!-- <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="?android:listPreferredItemPaddingLeft"
-    android:paddingLeft="45dp"
-    android:paddingStart="45dp">
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Item"
-        android:textColor="#f00"
-        android:textSize="14sp"/>
-
-</LinearLayout> -->
