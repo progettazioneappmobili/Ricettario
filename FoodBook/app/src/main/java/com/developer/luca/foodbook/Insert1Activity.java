@@ -1,8 +1,12 @@
 package com.developer.luca.foodbook;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -16,9 +20,12 @@ import java.util.List;
 public class Insert1Activity extends AppCompatActivity {
 
     private Toolbar toolbar;
+    private FloatingActionButton fab;
+    private FloatingActionButton camera_fab;
 
     private ArrayList<ToggleButton> dishToggleButtonGroup;
     private ArrayList<ToggleButton> timeToggleButtonGroup;
+    private EditText minutes_editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +38,27 @@ public class Insert1Activity extends AppCompatActivity {
         toolbar.setTitle(R.string.toolbar_insert1);
 
 
+        // Cliccando sul bottone passo alla schermata di inserimento ingredienti
+        fab = findViewById(R.id.next_floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent insert2_intent = new Intent(v.getContext(), Insert2Activity.class);
+                startActivity(insert2_intent);
+            }
+        });
+
+        // Cliccando sul bottone passo alla schermata di inserimento ingredienti
+        camera_fab = findViewById(R.id.camera_floatingActionButton);
+        camera_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Intent per fotocamera e galleria
+                // aggiungere permessi fotocamera e memoria
+            }
+        });
+
+
         dishToggleButtonGroup = new ArrayList<ToggleButton>();
         dishToggleButtonGroup.add((ToggleButton) findViewById(R.id.toggleButton1));
         dishToggleButtonGroup.add((ToggleButton) findViewById(R.id.toggleButton2));
@@ -41,7 +69,6 @@ public class Insert1Activity extends AppCompatActivity {
         timeToggleButtonGroup.add((ToggleButton) findViewById(R.id.fast_toggleButton));
         timeToggleButtonGroup.add((ToggleButton) findViewById(R.id.medium_toggleButton));
         timeToggleButtonGroup.add((ToggleButton) findViewById(R.id.long_toggleButton));
-        timeToggleButtonGroup.add((ToggleButton) findViewById(R.id.minutes_toggleButton));
 
         for(ToggleButton toggleButton : dishToggleButtonGroup){
             toggleButton.setOnClickListener(new View.OnClickListener() {
@@ -64,8 +91,7 @@ public class Insert1Activity extends AppCompatActivity {
                         tB.setChecked(tB.equals(v));
                     }
 
-                    EditText minutes_editText = findViewById(R.id.minutes_editText);
-                    minutes_editText.setEnabled(v.getId() == R.id.minutes_toggleButton);
+                    minutes_editText = findViewById(R.id.minutes_editText);
 
                     switch (v.getId()){
                         case R.id.fast_toggleButton:
@@ -82,6 +108,7 @@ public class Insert1Activity extends AppCompatActivity {
 
                 }
             });
+
         }
     }
 

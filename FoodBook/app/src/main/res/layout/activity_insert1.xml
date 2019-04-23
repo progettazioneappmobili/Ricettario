@@ -175,37 +175,19 @@
         app:layout_constraintStart_toEndOf="@+id/medium_toggleButton"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-    <ToggleButton
-        android:id="@+id/minutes_toggleButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="ToggleButton"
-        android:textOff="Minuti"
-        android:textOn="Minuti"
-        app:layout_constraintEnd_toStartOf="@+id/minutes_editText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fast_toggleButton" />
-
     <EditText
         android:id="@+id/minutes_editText"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:ems="10"
-        android:enabled="false"
-        android:hint="Minuti"
+        android:ems="5"
+        android:enabled="true"
         android:inputType="number"
         android:maxLength="5"
         android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="@+id/medium_toggleButton"
-        app:layout_constraintStart_toEndOf="@+id/minutes_toggleButton"
+        app:layout_constraintStart_toEndOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@+id/medium_toggleButton" />
 
     <android.support.design.widget.FloatingActionButton
@@ -219,5 +201,31 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_icon_arrow" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/camera_floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_icon_camera" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Minuti"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/minutes_editText"
+        app:layout_constraintEnd_toStartOf="@+id/minutes_editText"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
