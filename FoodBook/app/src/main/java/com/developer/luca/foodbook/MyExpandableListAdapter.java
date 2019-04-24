@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,8 +28,11 @@ import java.util.List;
  * Created by LEVI on 22/09/2018.
  */
 public class MyExpandableListAdapter extends BaseExpandableListAdapter {
+
     private HashMap<String, List<String>> mStringListHashMap;
     private String[] mListHeaderGroup;
+    private Character separator = '§';
+
 
 
     public MyExpandableListAdapter(HashMap<String, List<String>> stringListHashMap) {
@@ -89,32 +93,15 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null)
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_list_item, parent, false);
 
-        // TODO necessario refactoring
-        String piatto1 = "";
-        String piatto2 = "";
-        Boolean separatorFound = false;
-        Character separator = '§';
-
         String piatti = String.valueOf(getChild(groupPosition, childPosition));
-        while(piatti.length() > 0){
-            if(piatti.charAt(0) == separator){
-                separatorFound = true;
-                piatti = piatti.substring(1);
-            }
-            if(separatorFound){
-                piatto2 += piatti.charAt(0);
-                piatti = piatti.substring(1);
-            }else{
-                piatto1 += piatti.charAt(0);
-                piatti = piatti.substring(1);
-            }
-        }
+
+        ArrayList<String> piatti2 = splitStrings(piatti);
 
         TextView textView = convertView.findViewById(R.id.textView);
-        textView.setText(piatto1);
+        textView.setText(piatti2.get(0));
 
         TextView textView2 = convertView.findViewById(R.id.textView2);
-        textView2.setText(piatto2);
+        textView2.setText(piatti2.get(1));
 
         return convertView;
     }
@@ -122,5 +109,33 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
+    }
+
+    private ArrayList<String> splitStrings(String toSplit){
+        // Variabili che conterranno i nomi dei due piatti
+        StringBuilder piatto1 = new StringBuilder();
+        StringBuilder piatto2 = new StringBuilder();
+
+        Boolean separatorFound = false;
+
+        while(toSplit.length() > 0){
+            if(toSplit.charAt(0) == separator){
+                separatorFound = true;
+                toSplit = toSplit.substring(1);
+            }
+            if(separatorFound){
+                piatto2.append(toSplit.charAt(0));
+                toSplit = toSplit.substring(1);
+            }else{
+                piatto1.append(toSplit.charAt(0));
+                toSplit = toSplit.substring(1);
+            }
+        }
+
+        ArrayList<String> result = new ArrayList<String>();
+        result.add(piatto1.toString());
+        result.add(piatto2.toString());
+
+        return result;
     }
 }
