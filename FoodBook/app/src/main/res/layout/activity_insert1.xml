@@ -228,4 +228,16 @@
         app:layout_constraintEnd_toStartOf="@+id/minutes_editText"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/camera_floatingActionButton"
+        app:srcCompat="@drawable/lasagne" />
+
 </android.support.constraint.ConstraintLayout>
