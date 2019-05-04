@@ -1,15 +1,21 @@
 package com.developer.luca.foodbook;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,7 +28,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -32,7 +37,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 
 public class Insert1Activity extends AppCompatActivity {
@@ -51,7 +55,7 @@ public class Insert1Activity extends AppCompatActivity {
 
     private ImageView imageView;
 
-    private int GALLERY = 1, CAMERA = 2;
+    private static final int REQUEST_IMAGE_GALLERY = 1, REQUEST_IMAGE_CAMERA = 2;
     private static final String IMAGE_DIRECTORY = "/FoodBook/images";
 
     @Override
@@ -84,17 +88,8 @@ public class Insert1Activity extends AppCompatActivity {
             }
         });
 
-
-        dishToggleButtonGroup = new ArrayList<ToggleButton>();
-        dishToggleButtonGroup.add((ToggleButton) findViewById(R.id.toggleButton1));
-        dishToggleButtonGroup.add((ToggleButton) findViewById(R.id.toggleButton2));
-        dishToggleButtonGroup.add((ToggleButton) findViewById(R.id.toggleButton3));
-        dishToggleButtonGroup.add((ToggleButton) findViewById(R.id.toggleButton4));
-
-        timeToggleButtonGroup = new ArrayList<ToggleButton>();
-        timeToggleButtonGroup.add((ToggleButton) findViewById(R.id.fast_toggleButton));
-        timeToggleButtonGroup.add((ToggleButton) findViewById(R.id.medium_toggleButton));
-        timeToggleButtonGroup.add((ToggleButton) findViewById(R.id.long_toggleButton));
+        setDishToggleButtonGroup();
+        setTimeToggleButtonGroup();
 
         minutes_editText = findViewById(R.id.minutes_editText);
 
@@ -212,6 +207,21 @@ public class Insert1Activity extends AppCompatActivity {
         });
     }
 
+    private void setTimeToggleButtonGroup() {
+        timeToggleButtonGroup = new ArrayList<>();
+        timeToggleButtonGroup.add((ToggleButton) findViewById(R.id.fast_toggleButton));
+        timeToggleButtonGroup.add((ToggleButton) findViewById(R.id.medium_toggleButton));
+        timeToggleButtonGroup.add((ToggleButton) findViewById(R.id.long_toggleButton));
+    }
+
+    private void setDishToggleButtonGroup() {
+        dishToggleButtonGroup = new ArrayList<>();
+        dishToggleButtonGroup.add((ToggleButton) findViewById(R.id.toggleButton1));
+        dishToggleButtonGroup.add((ToggleButton) findViewById(R.id.toggleButton2));
+        dishToggleButtonGroup.add((ToggleButton) findViewById(R.id.toggleButton3));
+        dishToggleButtonGroup.add((ToggleButton) findViewById(R.id.toggleButton4));
+    }
+
     @Override
     protected void onStart(){
         super.onStart();
@@ -231,7 +241,7 @@ public class Insert1Activity extends AppCompatActivity {
     }
 
 
-    // Codice su gentile concessione di
+    // Fonte parziale:
     // https://demonuts.com/pick-image-gallery-camera-android/
     private void showPictureDialog(){
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
@@ -257,74 +267,72 @@ public class Insert1Activity extends AppCompatActivity {
     }
 
     public void choosePhotoFromGallery() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-        startActivityForResult(galleryIntent, GALLERY);
+        if (galleryIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(galleryIntent, REQUEST_IMAGE_GALLERY);
+        }
     }
 
-    // TODO: capire perché crasha con questo intent
+    // Richiedi i permessi per utilizzare la fotocamera se necessario
     private void takePhotoFromCamera() {
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, CAMERA);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+            invokeCamera();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, REQUEST_IMAGE_CAMERA);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_IMAGE_CAMERA){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                invokeCamera();
+            } else {
+                Toast.makeText(this, "Inpossibile accedere alla Fotocamera", Toast.LENGTH_SHORT);
+            }
+        }
+    }
+
+    private void invokeCamera() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(cameraIntent, REQUEST_IMAGE_CAMERA);
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == this.RESULT_CANCELED) {
+        if (resultCode == RESULT_CANCELED) {
             return;
         }
-        if (requestCode == GALLERY) {
+        if (requestCode == REQUEST_IMAGE_GALLERY) {
             if (data != null) {
                 Uri contentURI = data.getData();
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                    String path = saveImage(bitmap);
-                    Toast.makeText(Insert1Activity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-                    imageView.setImageBitmap(bitmap);
+                    Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                    imageView.setImageBitmap(imageBitmap);
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Toast.makeText(Insert1Activity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Insert1Activity.this, "Impossibile aprire file!", Toast.LENGTH_SHORT).show();
                 }
             }
 
-        } else if (requestCode == CAMERA) {
-            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(thumbnail);
-            saveImage(thumbnail);
-            Toast.makeText(Insert1Activity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-        }
-    }
+        } else if (requestCode == REQUEST_IMAGE_CAMERA) {
 
-    public String saveImage(Bitmap myBitmap) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-        File wallpaperDirectory = new File(
-                Environment.getExternalStorageDirectory().getAbsolutePath() + IMAGE_DIRECTORY);
-        // have the object build the directory structure, if needed.
-        if (!wallpaperDirectory.exists()) {
-            wallpaperDirectory.mkdirs();
+            if (data != null) {
+                Bundle extras = data.getExtras();
+                Bitmap thumbnailBitmap = (Bitmap) extras.get("data");
+                imageView.setImageBitmap(thumbnailBitmap);
+            }
+
         }
 
-        try {
-            File f = new File(wallpaperDirectory, Calendar.getInstance().getTimeInMillis() + ".jpg");
-            f.createNewFile();
-            FileOutputStream fo = new FileOutputStream(f);
-            fo.write(bytes.toByteArray());
-            MediaScannerConnection.scanFile(this,
-                    new String[]{f.getPath()},
-                    new String[]{"image/jpeg"}, null);
-            fo.close();
-            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
-
-            return f.getAbsolutePath();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        return "";
     }
 
 }
