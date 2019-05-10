@@ -9,27 +9,18 @@ import android.view.View;
 
 public class Insert3Activity extends AppCompatActivity {
 
-    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getActionBar() != null)
+            getActionBar().hide();
+
         setContentView(R.layout.activity_insert3);
 
-        // Assegno titolo alla toolbar
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle("Preparazione");
+
 
     }
 
-    @Override
-    protected void onStart(){
-        super.onStart();
-
-        // Assegno titolo alla toolbar
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle("Preparazione");
-    }
 }

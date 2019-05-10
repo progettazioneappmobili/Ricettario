@@ -9,18 +9,17 @@ import android.view.View;
 
 public class Insert2Activity extends AppCompatActivity {
 
-    private Toolbar toolbar;
     private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getActionBar() != null)
+            getActionBar().hide();
+
         setContentView(R.layout.activity_insert2);
 
-        // Assegno titolo alla toolbar
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle("Ingredienti");
 
         // Cliccando sul bottone passo alla schermata di inserimento ingredienti
         fab = findViewById(R.id.next2_floatingActionButton);
@@ -33,13 +32,4 @@ public class Insert2Activity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStart(){
-        super.onStart();
-
-        // Assegno titolo alla toolbar
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle("Ingredienti");
-    }
 }

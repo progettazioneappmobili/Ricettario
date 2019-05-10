@@ -41,7 +41,7 @@ import java.util.Calendar;
 
 public class Insert1Activity extends AppCompatActivity {
 
-    private Toolbar toolbar;
+
     private FloatingActionButton fab;
     private FloatingActionButton camera_fab;
 
@@ -61,12 +61,11 @@ public class Insert1Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_insert1);
 
-        // Assegno titolo alla toolbar
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(R.string.toolbar_insert1);
+        if (getActionBar() != null)
+            getActionBar().hide();
+
+        setContentView(R.layout.activity_insert1);
 
 
         // Cliccando sul bottone passo alla schermata di inserimento ingredienti
@@ -222,15 +221,6 @@ public class Insert1Activity extends AppCompatActivity {
         dishToggleButtonGroup.add((ToggleButton) findViewById(R.id.toggleButton4));
     }
 
-    @Override
-    protected void onStart(){
-        super.onStart();
-
-        // Assegno titolo alla toolbar
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(R.string.toolbar_insert1);
-    }
 
 
     // Per avere un flow di inserimento più fluido nascondo la tastiera quando viene selezionato un pulsante
