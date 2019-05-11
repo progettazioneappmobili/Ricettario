@@ -7,10 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.ImageDecoder;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -19,10 +16,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
@@ -31,12 +26,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 
 public class Insert1Activity extends AppCompatActivity {
@@ -45,18 +36,21 @@ public class Insert1Activity extends AppCompatActivity {
     private FloatingActionButton fab;
     private FloatingActionButton camera_fab;
 
+    private  EditText recipeName_editText;
     private ArrayList<ToggleButton> dishToggleButtonGroup;
     private ArrayList<ToggleButton> timeToggleButtonGroup;
     private EditText minutes_editText;
 
-    private int fast_time = 30;
-    private int medium_time = 60;
-    private int long_time = 90;
+    private Recipe recipe;
 
     private ImageView imageView;
 
     private static final int REQUEST_IMAGE_GALLERY = 1, REQUEST_IMAGE_CAMERA = 2;
-    private static final String IMAGE_DIRECTORY = "/FoodBook/images";
+
+
+    public Insert1Activity() {
+        recipe = new Recipe();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,24 +62,7 @@ public class Insert1Activity extends AppCompatActivity {
         setContentView(R.layout.activity_insert1);
 
 
-        // Cliccando sul bottone passo alla schermata di inserimento ingredienti
-        fab = findViewById(R.id.next_floatingActionButton);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent insert2_intent = new Intent(v.getContext(), Insert2Activity.class);
-                startActivity(insert2_intent);
-            }
-        });
-
-        // Cliccando sul bottone passo alla schermata di inserimento ingredienti
-        camera_fab = findViewById(R.id.camera_floatingActionButton);
-        camera_fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPictureDialog();
-            }
-        });
+        recipeName_editText = findViewById(R.id.recipeName_editText);
 
         setDishToggleButtonGroup();
         setTimeToggleButtonGroup();
@@ -94,90 +71,93 @@ public class Insert1Activity extends AppCompatActivity {
 
         imageView = findViewById(R.id.imageView);
 
-        for(ToggleButton toggleButton : dishToggleButtonGroup){
-            // onCheckedChanged quando lo stato del pulsante cambia, anche con .setChecked()
-            toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-                // da questa funzione modificherò gli stati dei triggerbutton,
-                // quindi devo implementare un meccanismo per evitare cicli infiniti
-                boolean avoidRecursions = false;
+        // Observer pattern
+        Recipe.addRecipeTimeChangedListener(new Recipe.RecipeTimeChangedListener() {
 
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            // Quando cambiano i toggle button cambio i minuti
+            @Override
+            public void OnTimeTypeChanged() {
+                minutes_editText.setText("");
+                minutes_editText.setHint("" + recipe.getMinutes());
+            }
 
-                    if(avoidRecursions) return;
-                    avoidRecursions = true;
 
-                    // Radio group behaviour for ToggleButtons
-                    for(ToggleButton tB : dishToggleButtonGroup){
-                        if (buttonView.getId() != tB.getId() && tB.isChecked()) tB.setChecked(false);
-                    }
-
-                    // non sono sicuro del perché sia necessario, ma lo è
-                    // altrimenti il pulsante selezionato non viene impostato come selezionato
-                    buttonView.setChecked(isChecked);
-
-                    avoidRecursions = false;
+            // Quando cambiano i minuti aggiorno i toggle button
+            @Override
+            public void OnMinutesChanged() {
+                switch (recipe.getTimeType()){
+                    case FAST:
+                        toggleButtonGroupRadioBehaviour(timeToggleButtonGroup, (CompoundButton) findViewById(R.id.fast_toggleButton));
+                        break;
+                    case MEDIUM:
+                        toggleButtonGroupRadioBehaviour(timeToggleButtonGroup, (CompoundButton) findViewById(R.id.medium_toggleButton));
+                        break;
+                    case LONG:
+                        toggleButtonGroupRadioBehaviour(timeToggleButtonGroup, (CompoundButton) findViewById(R.id.long_toggleButton));
+                        break;
+                    default:
                 }
-            });
+            }
+        });
 
-            // onClick quando viene premuto il pulsante
+
+        for(ToggleButton toggleButton : dishToggleButtonGroup){
+
+            // Quando viene premuto il pulsante aggiorna la recipe
             toggleButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    toggleButtonGroupRadioBehaviour(dishToggleButtonGroup, (CompoundButton) v);
+
+                    switch (v.getId()){
+                        case R.id.toggleButton1:
+                            recipe.setDishType(Recipe.DishType.FIRST);
+                            break;
+                        case R.id.toggleButton2:
+                            recipe.setDishType(Recipe.DishType.SECOND);
+                            break;
+                        case R.id.toggleButton3:
+                            recipe.setDishType(Recipe.DishType.APPETIZER);
+                            break;
+                        case R.id.toggleButton4:
+                            recipe.setDishType(Recipe.DishType.DESSERT);
+                            break;
+                    }
+
                     hideSoftKeyboard(Insert1Activity.this, v);
                 }
             });
 
         }
 
+        // TODO: refactoring per rimuovere codice duplicato (for qua sopra e qua sotto)
+        //       ? spostare gli switch
         for(ToggleButton toggleButton : timeToggleButtonGroup){
-            toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-                boolean avoidRecursions = false;
-
+            toggleButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                public void onClick(View v) {
+                    toggleButtonGroupRadioBehaviour(timeToggleButtonGroup, (CompoundButton) v);
 
-                    // return per evitare i trigger causati dai setChecked nel loop
-                    if(avoidRecursions) return;
-                    avoidRecursions = true;
-
-                    // Radio group behaviour for ToggleButtons
-                    for(ToggleButton tB : timeToggleButtonGroup){
-                        if (buttonView.getId() != tB.getId() && tB.isChecked()) tB.setChecked(false);
-                    }
-
-                    buttonView.setChecked(isChecked);
-
-                    // setHint anziché setText per evitare ancora altri trigger del TextChangedListener
-                    // e perché è più elegante
-                    switch (buttonView.getId()){
+                    switch (v.getId()){
                         case R.id.fast_toggleButton:
-                            minutes_editText.setHint(Integer.toString(fast_time));
+                            recipe.setTimeType(Recipe.TimeType.FAST);
                             break;
                         case R.id.medium_toggleButton:
-                            minutes_editText.setHint(Integer.toString(medium_time));
+                            recipe.setTimeType(Recipe.TimeType.MEDIUM);
                             break;
                         case R.id.long_toggleButton:
-                            minutes_editText.setHint(Integer.toString(long_time));
+                            recipe.setTimeType(Recipe.TimeType.LONG);
                             break;
                         default:
                     }
-
-                    avoidRecursions = false;
-
-                }
-            });
-
-            toggleButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
                     hideSoftKeyboard(Insert1Activity.this, v);
-                    minutes_editText.setText("");
                 }
             });
+
         }
+
 
         minutes_editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -192,16 +172,35 @@ public class Insert1Activity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
                 if (s.toString().equals("")){
-                    return;
-                } else if (Integer.parseInt(s.toString()) <= fast_time) {
-                    ((ToggleButton) findViewById(R.id.fast_toggleButton)).setChecked(true);
-                } else if (Integer.parseInt(s.toString()) <= medium_time) {
-                    ((ToggleButton) findViewById(R.id.medium_toggleButton)).setChecked(true);
-                } else if (Integer.parseInt(s.toString()) > medium_time) {
-                    ((ToggleButton) findViewById(R.id.long_toggleButton)).setChecked(true);
+                    //per impostare l'hint dei minuti al giusto valore
+                    recipe.setMinutes(recipe.getTimeType().getMinutes());
+                    minutes_editText.setHint("" + recipe.getMinutes());
+                }else {
+                    recipe.setMinutes(Integer.parseInt(s.toString()));
                 }
+            }
+        });
+
+        // Cliccando sul bottone passo alla schermata di inserimento ingredienti
+        fab = findViewById(R.id.next_floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: controllare che tutti i campi siano compilati
+                recipe.setName(recipeName_editText.getText().toString());
+
+                Intent insert2_intent = new Intent(v.getContext(), Insert2Activity.class);
+                startActivity(insert2_intent);
+            }
+        });
+
+        // Cliccando sul bottone passo alla schermata di inserimento ingredienti
+        camera_fab = findViewById(R.id.camera_floatingActionButton);
+        camera_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPictureDialog();
             }
         });
     }
@@ -221,6 +220,17 @@ public class Insert1Activity extends AppCompatActivity {
         dishToggleButtonGroup.add((ToggleButton) findViewById(R.id.toggleButton4));
     }
 
+    private void toggleButtonGroupRadioBehaviour(ArrayList<ToggleButton> toggleButtonGroup, CompoundButton toggledButton){
+
+        // Radio group behaviour for ToggleButtons
+        for(ToggleButton tB : toggleButtonGroup){
+            if (toggledButton.getId() != tB.getId() && tB.isChecked()) tB.setChecked(false);
+        }
+
+        // non sono sicuro del perché sia necessario, ma lo è
+        // altrimenti il pulsante selezionato non viene impostato come selezionato
+        toggledButton.setChecked(true);
+    }
 
 
     // Per avere un flow di inserimento più fluido nascondo la tastiera quando viene selezionato un pulsante
