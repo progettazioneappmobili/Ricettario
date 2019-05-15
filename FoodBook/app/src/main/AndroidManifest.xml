@@ -14,13 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
         <activity
-            android:name=".Insert3Activity"
-            android:theme="@style/AppTheme2" />
-        <activity
-            android:name=".Insert2Activity"
-            android:theme="@style/AppTheme2" />
-        <activity
-            android:name=".Insert1Activity"
+            android:name=".InsertActivity"
             android:theme="@style/AppTheme2" />
         <activity
             android:name=".ResultsActivity"

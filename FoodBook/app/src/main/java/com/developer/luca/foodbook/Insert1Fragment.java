@@ -8,17 +8,21 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -29,48 +33,68 @@ import android.widget.ToggleButton;
 import java.io.IOException;
 import java.util.ArrayList;
 
+public class Insert1Fragment extends Fragment {
 
-public class Insert1Activity extends AppCompatActivity {
+    private final String fragment1 = "FRAGMENT1";
+    private Activity mainActivity;
+    private View view;
+    private Recipe recipe;
 
-
-    private FloatingActionButton fab;
+    // Fragment widgets
     private FloatingActionButton camera_fab;
 
-    private  EditText recipeName_editText;
+    private EditText recipeName_editText;
     private ArrayList<ToggleButton> dishToggleButtonGroup;
     private ArrayList<ToggleButton> timeToggleButtonGroup;
     private EditText minutes_editText;
-
-    private Recipe recipe;
 
     private ImageView imageView;
 
     private static final int REQUEST_IMAGE_GALLERY = 1, REQUEST_IMAGE_CAMERA = 2;
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-    public Insert1Activity() {
-        recipe = new Recipe();
+        view = inflater.inflate(R.layout.fragment_insert1, container, false);
+
+        return view;
     }
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onStart() {
+        super.onStart();
 
-        if (getActionBar() != null)
-            getActionBar().hide();
-
-        setContentView(R.layout.activity_insert1);
+        mainActivity = getActivity();
+        recipe = ((InsertActivity) mainActivity).recipe;
 
 
-        recipeName_editText = findViewById(R.id.recipeName_editText);
+        // Fragment code
+        recipeName_editText = view.findViewById(R.id.recipeName_editText);
 
         setDishToggleButtonGroup();
         setTimeToggleButtonGroup();
 
-        minutes_editText = findViewById(R.id.minutes_editText);
+        minutes_editText = view.findViewById(R.id.minutes_editText);
 
-        imageView = findViewById(R.id.imageView);
+        imageView = view.findViewById(R.id.imageView);
 
+
+        recipeName_editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                recipe.setName(s.toString());
+            }
+        });
 
         // Observer pattern
         Recipe.addRecipeTimeChangedListener(new Recipe.RecipeTimeChangedListener() {
@@ -79,22 +103,22 @@ public class Insert1Activity extends AppCompatActivity {
             @Override
             public void OnTimeTypeChanged() {
                 minutes_editText.setText("");
-                minutes_editText.setHint("" + recipe.getMinutes());
+                minutes_editText.setHint("" + ((InsertActivity) mainActivity).recipe.getMinutes());
             }
 
 
             // Quando cambiano i minuti aggiorno i toggle button
             @Override
             public void OnMinutesChanged() {
-                switch (recipe.getTimeType()){
+                switch (((InsertActivity) mainActivity).recipe.getTimeType()) {
                     case FAST:
-                        toggleButtonGroupRadioBehaviour(timeToggleButtonGroup, (CompoundButton) findViewById(R.id.fast_toggleButton));
+                        toggleButtonGroupRadioBehaviour(timeToggleButtonGroup, (CompoundButton) view.findViewById(R.id.fast_toggleButton));
                         break;
                     case MEDIUM:
-                        toggleButtonGroupRadioBehaviour(timeToggleButtonGroup, (CompoundButton) findViewById(R.id.medium_toggleButton));
+                        toggleButtonGroupRadioBehaviour(timeToggleButtonGroup, (CompoundButton) view.findViewById(R.id.medium_toggleButton));
                         break;
                     case LONG:
-                        toggleButtonGroupRadioBehaviour(timeToggleButtonGroup, (CompoundButton) findViewById(R.id.long_toggleButton));
+                        toggleButtonGroupRadioBehaviour(timeToggleButtonGroup, (CompoundButton) view.findViewById(R.id.long_toggleButton));
                         break;
                     default:
                 }
@@ -102,7 +126,7 @@ public class Insert1Activity extends AppCompatActivity {
         });
 
 
-        for(ToggleButton toggleButton : dishToggleButtonGroup){
+        for (ToggleButton toggleButton : dishToggleButtonGroup) {
 
             // Quando viene premuto il pulsante aggiorna la recipe
             toggleButton.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +134,7 @@ public class Insert1Activity extends AppCompatActivity {
                 public void onClick(View v) {
                     toggleButtonGroupRadioBehaviour(dishToggleButtonGroup, (CompoundButton) v);
 
-                    switch (v.getId()){
+                    switch (v.getId()) {
                         case R.id.toggleButton1:
                             recipe.setDishType(Recipe.DishType.FIRST);
                             break;
@@ -125,7 +149,7 @@ public class Insert1Activity extends AppCompatActivity {
                             break;
                     }
 
-                    hideSoftKeyboard(Insert1Activity.this, v);
+                    hideSoftKeyboard(mainActivity, v);
                 }
             });
 
@@ -133,14 +157,14 @@ public class Insert1Activity extends AppCompatActivity {
 
         // TODO: refactoring per rimuovere codice duplicato (for qua sopra e qua sotto)
         //       ? spostare gli switch
-        for(ToggleButton toggleButton : timeToggleButtonGroup){
+        for (ToggleButton toggleButton : timeToggleButtonGroup) {
 
             toggleButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     toggleButtonGroupRadioBehaviour(timeToggleButtonGroup, (CompoundButton) v);
 
-                    switch (v.getId()){
+                    switch (v.getId()) {
                         case R.id.fast_toggleButton:
                             recipe.setTimeType(Recipe.TimeType.FAST);
                             break;
@@ -152,12 +176,11 @@ public class Insert1Activity extends AppCompatActivity {
                             break;
                         default:
                     }
-                    hideSoftKeyboard(Insert1Activity.this, v);
+                    hideSoftKeyboard(mainActivity, v);
                 }
             });
 
         }
-
 
         minutes_editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -172,31 +195,21 @@ public class Insert1Activity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().equals("")){
+
+                if (s.toString().equals("")) {
                     //per impostare l'hint dei minuti al giusto valore
                     recipe.setMinutes(recipe.getTimeType().getMinutes());
                     minutes_editText.setHint("" + recipe.getMinutes());
-                }else {
+                } else {
                     recipe.setMinutes(Integer.parseInt(s.toString()));
                 }
+
             }
         });
 
-        // Cliccando sul bottone passo alla schermata di inserimento ingredienti
-        fab = findViewById(R.id.next_floatingActionButton);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: controllare che tutti i campi siano compilati
-                recipe.setName(recipeName_editText.getText().toString());
-
-                Intent insert2_intent = new Intent(v.getContext(), Insert2Activity.class);
-                startActivity(insert2_intent);
-            }
-        });
 
         // Cliccando sul bottone passo alla schermata di inserimento ingredienti
-        camera_fab = findViewById(R.id.camera_floatingActionButton);
+        camera_fab = view.findViewById(R.id.camera_floatingActionButton);
         camera_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,19 +218,20 @@ public class Insert1Activity extends AppCompatActivity {
         });
     }
 
+
     private void setTimeToggleButtonGroup() {
         timeToggleButtonGroup = new ArrayList<>();
-        timeToggleButtonGroup.add((ToggleButton) findViewById(R.id.fast_toggleButton));
-        timeToggleButtonGroup.add((ToggleButton) findViewById(R.id.medium_toggleButton));
-        timeToggleButtonGroup.add((ToggleButton) findViewById(R.id.long_toggleButton));
+        timeToggleButtonGroup.add((ToggleButton) view.findViewById(R.id.fast_toggleButton));
+        timeToggleButtonGroup.add((ToggleButton) view.findViewById(R.id.medium_toggleButton));
+        timeToggleButtonGroup.add((ToggleButton) view.findViewById(R.id.long_toggleButton));
     }
 
     private void setDishToggleButtonGroup() {
         dishToggleButtonGroup = new ArrayList<>();
-        dishToggleButtonGroup.add((ToggleButton) findViewById(R.id.toggleButton1));
-        dishToggleButtonGroup.add((ToggleButton) findViewById(R.id.toggleButton2));
-        dishToggleButtonGroup.add((ToggleButton) findViewById(R.id.toggleButton3));
-        dishToggleButtonGroup.add((ToggleButton) findViewById(R.id.toggleButton4));
+        dishToggleButtonGroup.add((ToggleButton) view.findViewById(R.id.toggleButton1));
+        dishToggleButtonGroup.add((ToggleButton) view.findViewById(R.id.toggleButton2));
+        dishToggleButtonGroup.add((ToggleButton) view.findViewById(R.id.toggleButton3));
+        dishToggleButtonGroup.add((ToggleButton) view.findViewById(R.id.toggleButton4));
     }
 
     private void toggleButtonGroupRadioBehaviour(ArrayList<ToggleButton> toggleButtonGroup, CompoundButton toggledButton){
@@ -244,7 +258,7 @@ public class Insert1Activity extends AppCompatActivity {
     // Fonte parziale:
     // https://demonuts.com/pick-image-gallery-camera-android/
     private void showPictureDialog(){
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(mainActivity);
         pictureDialog.setTitle("Aggiungi immagine");
         String[] pictureDialogItems = {
                 "Scegli immagine dalla Galleria",
@@ -269,7 +283,7 @@ public class Insert1Activity extends AppCompatActivity {
     public void choosePhotoFromGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-        if (galleryIntent.resolveActivity(getPackageManager()) != null) {
+        if (galleryIntent.resolveActivity(mainActivity.getPackageManager()) != null) {
             startActivityForResult(galleryIntent, REQUEST_IMAGE_GALLERY);
         }
     }
@@ -277,10 +291,10 @@ public class Insert1Activity extends AppCompatActivity {
     // Richiedi i permessi per utilizzare la fotocamera se necessario
     private void takePhotoFromCamera() {
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
             invokeCamera();
         } else {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, REQUEST_IMAGE_CAMERA);
+            ActivityCompat.requestPermissions(mainActivity, new String[] {Manifest.permission.CAMERA}, REQUEST_IMAGE_CAMERA);
         }
     }
 
@@ -290,7 +304,7 @@ public class Insert1Activity extends AppCompatActivity {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 invokeCamera();
             } else {
-                Toast.makeText(this, "Inpossibile accedere alla Fotocamera", Toast.LENGTH_SHORT);
+                Toast.makeText(mainActivity, "Inpossibile accedere alla Fotocamera", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -298,7 +312,7 @@ public class Insert1Activity extends AppCompatActivity {
     private void invokeCamera() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+        if (cameraIntent.resolveActivity(mainActivity.getPackageManager()) != null) {
             startActivityForResult(cameraIntent, REQUEST_IMAGE_CAMERA);
         }
     }
@@ -307,19 +321,19 @@ public class Insert1Activity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_CANCELED) {
+        if (resultCode == Activity.RESULT_CANCELED) {
             return;
         }
         if (requestCode == REQUEST_IMAGE_GALLERY) {
             if (data != null) {
                 Uri contentURI = data.getData();
                 try {
-                    Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                    Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(mainActivity.getContentResolver(), contentURI);
                     imageView.setImageBitmap(imageBitmap);
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Toast.makeText(Insert1Activity.this, "Impossibile aprire file!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mainActivity, "Impossibile aprire file!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -334,5 +348,4 @@ public class Insert1Activity extends AppCompatActivity {
         }
 
     }
-
 }
