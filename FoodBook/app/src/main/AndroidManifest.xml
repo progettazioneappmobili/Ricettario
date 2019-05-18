@@ -20,6 +20,9 @@
             android:name=".ResultsActivity"
             android:theme="@style/AppTheme2" />
         <activity
+            android:name=".ShowRecipeActivity"
+            android:theme="@style/AppTheme2" />
+        <activity
             android:name=".SearchActivity"
             android:theme="@style/AppTheme2" />
         <activity

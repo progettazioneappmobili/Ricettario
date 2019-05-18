@@ -41,7 +41,7 @@ public class ResultsActivity extends AppCompatActivity {
 
         item.put(getString(R.string.primi), primiGroup);
 
-        MyExpandableListAdapter adapter = new MyExpandableListAdapter(item);
+        MyExpandableListAdapter adapter = new MyExpandableListAdapter(item, "Results");
         expandableListView.setAdapter(adapter);
     }
 
@@ -73,7 +73,7 @@ public class ResultsActivity extends AppCompatActivity {
 
         item.put(getString(R.string.primi), primiGroup);
 
-        MyExpandableListAdapter adapter = new MyExpandableListAdapter(item);
+        MyExpandableListAdapter adapter = new MyExpandableListAdapter(item, "Results");
         expandableListView.setAdapter(adapter);
     }
 }

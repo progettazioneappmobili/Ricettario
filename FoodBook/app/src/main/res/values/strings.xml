@@ -5,4 +5,8 @@
     <string name="toolbar_insert1">Informazioni</string>
     <string name="antipasti">Antipasti</string>
     <string name="primi">Primi</string>
+    <string name="recipe_name">Nome Ricetta</string>
+    <string name="recipe_info">Informazioni</string>
+    <string name="ingredients">Ingredienti</string>
+    <string name="preparation">Preparazione</string>
 </resources>
