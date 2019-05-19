@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
             case (R.id.action_preferred):
-                Intent preferred_intent = new Intent(this, ShowRecipeActivity.class);
+                Intent preferred_intent = new Intent(this, ResultsActivity.class);
                 startActivity(preferred_intent);
                 break;
 

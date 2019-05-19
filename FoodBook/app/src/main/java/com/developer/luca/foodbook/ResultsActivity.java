@@ -11,7 +11,6 @@ import java.util.List;
 
 public class ResultsActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,4 +75,5 @@ public class ResultsActivity extends AppCompatActivity {
         MyExpandableListAdapter adapter = new MyExpandableListAdapter(item, "Results");
         expandableListView.setAdapter(adapter);
     }
+
 }

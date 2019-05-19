@@ -1,9 +1,12 @@
 package com.developer.luca.foodbook;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -107,6 +110,33 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView textView2 = convertView.findViewById(R.id.textView2);
         textView2.setText(piatti2.get(1));
+
+        // TODO l'id del piatto va calcolato (adesso e' una prova)
+
+        // OnClickListener per le immagini presenti nella schermata (gallery) in modo da poter cambiare activity quando clicco su un'immagine
+        ImageView imgview = convertView.findViewById(R.id.dishOne);
+        imgview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent show_recipe_intent = new Intent(v.getContext(), ShowRecipeActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("key", 1); // id del piatto di cui mostro i dettgali
+                show_recipe_intent.putExtras(b); // passo l'id al nuovo intent
+                v.getContext().startActivity(show_recipe_intent);
+            }
+        });
+
+        ImageView imgview2 = convertView.findViewById(R.id.dishTwo);
+        imgview2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent show_recipe_intent = new Intent(v.getContext(), ShowRecipeActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("key", 2); // id del piatto di cui mostro i dettgali
+                show_recipe_intent.putExtras(b); // passo l'id al nuovo intent
+                v.getContext().startActivity(show_recipe_intent);
+            }
+        });
 
         return convertView;
     }

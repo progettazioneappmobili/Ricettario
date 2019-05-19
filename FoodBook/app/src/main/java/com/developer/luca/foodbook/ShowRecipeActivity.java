@@ -11,10 +11,16 @@ import java.util.List;
 
 public class ShowRecipeActivity extends AppCompatActivity {
 
+    private int dishId = 0; // id del piatto di cui dovro mostrare i dettagli
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show);
+
+        Bundle b = getIntent().getExtras();
+        if(b != null)
+            dishId = b.getInt("key");
 
         // Assegno il titolo alla toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -28,7 +34,7 @@ public class ShowRecipeActivity extends AppCompatActivity {
 
         ArrayList<String> informazioniGroup = new ArrayList<>();
         // Unisco le stringhe con un carattere speciale
-        informazioniGroup.add("Antipasto§Veloce 6 minuti");
+        informazioniGroup.add("Antipasto§Veloce 6 minuti" + "\n" + dishId);
 
         item2.put(getString(R.string.recipe_info), informazioniGroup);
 
@@ -80,7 +86,7 @@ public class ShowRecipeActivity extends AppCompatActivity {
 
         ArrayList<String> informazioniGroup = new ArrayList<>();
         // Unisco le stringhe con un carattere speciale
-        informazioniGroup.add("Antipasto§Veloce 6 minuti");
+        informazioniGroup.add("Antipasto§Veloce 6 minuti" + "\n" + dishId);
 
         item2.put(getString(R.string.recipe_info), informazioniGroup);
 

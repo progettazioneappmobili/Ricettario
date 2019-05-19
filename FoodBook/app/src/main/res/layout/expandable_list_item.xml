@@ -13,6 +13,7 @@
             android:layout_weight="1">
 
             <ImageView
+                android:id="@+id/dishOne"
                 android:src="@drawable/lasagne"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -40,6 +41,7 @@
             android:layout_weight="1">
 
             <ImageView
+                android:id="@+id/dishTwo"
                 android:src="@drawable/lasagne"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
