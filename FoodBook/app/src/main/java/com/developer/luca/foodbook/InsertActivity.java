@@ -10,9 +10,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class InsertActivity extends AppCompatActivity {
+
+    private Activity mainActivity;
 
     public Recipe recipe;
 
@@ -28,6 +31,7 @@ public class InsertActivity extends AppCompatActivity {
 
     public InsertActivity() {
         recipe = new Recipe();
+        mainActivity = this;
     }
 
     @Override
@@ -60,14 +64,41 @@ public class InsertActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager vP){
         sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         sectionsPagerAdapter.addFragment(new Insert1Fragment(), "Informazioni");
-        sectionsPagerAdapter.addFragment(new Insert2Fragment(), "Ingredienti");  // Change to Insert__2__Fragment()
-        sectionsPagerAdapter.addFragment(new Insert3Fragment(), "Preparazione"); // Change to Insert__3__Fragment()
+        sectionsPagerAdapter.addFragment(new Insert2Fragment(), "Ingredienti");
+        sectionsPagerAdapter.addFragment(new Insert3Fragment(), "Preparazione");
 
         vP.setAdapter(sectionsPagerAdapter);
 
         vP.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            private boolean noRepeatingFlag = true;
+
             @Override
             public void onPageScrolled(int i, float v, int i1) {
+
+                if (noRepeatingFlag){
+                    noRepeatingFlag = false;
+                    switch (i){
+                        case 0: //  se tutto compilato ok continua altrimenti viewPager.setCurrentItem(i)
+                            if (!isInsert1Compiled()){
+                                // TODO: commenta sotto per evitare di dover compilare
+                                viewPager.setCurrentItem(i);
+                                Toast.makeText(mainActivity, "Compila tutti i campi!", Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+
+                        case 1: //  se tutti ingredienti ok continua altrimenti viewPager.setCurrentItem(i)
+
+                            // Salva gli ingredienti nella ricetta quando cerca di passare alla schermata successiva
+                            ((Insert2Fragment)viewPager.getAdapter().instantiateItem(viewPager, 1)).setIngredients();
+
+                            if (!isInsert2Compiled()){
+                                // TODO: commenta sotto per evitare di dover compilare
+                                viewPager.setCurrentItem(i);
+                                Toast.makeText(mainActivity, "Inserisci almeno un ingrediente!", Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+                    }
+                }
 
             }
 
@@ -97,20 +128,42 @@ public class InsertActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int i) {
-
+                if (i == ViewPager.SCROLL_STATE_IDLE){
+                    noRepeatingFlag = true;
+                }
             }
         });
 
     }
 
+    // Controlla se nome, tipo di piatto e tempo di preparazione sono stati impostati
+    // il numero esatto di minuti e l'immmagine sono opzionali
+    private boolean isInsert1Compiled() {
+        return recipe.getName() != null && !recipe.getName().equals("") &&
+            recipe.getDishType() != null && recipe.getTimeType() != null ;
+    }
+
+    // Vengono inseriti solo gli ingredienti con il nome impostato
+    private boolean isInsert2Compiled(){
+        return !recipe.getIngredients().isEmpty();
+    }
+
+    private boolean isInsert3Compiled(){
+        return false;
+    }
+
     public void nextPage(int pos){
         if(pos < viewPager.getAdapter().getCount())
-            viewPager.setCurrentItem(pos + 1);
+            viewPager.setCurrentItem(pos + 1, true);
+
+        if (pos == viewPager.getAdapter().getCount() && !isInsert3Compiled()){
+            viewPager.setCurrentItem(pos); // TODO: vai alla schermata successiva
+        }
     }
 
     public void prevPage(int pos){
         if(pos > 0)
-            viewPager.setCurrentItem(pos - 1);
+            viewPager.setCurrentItem(pos - 1, true);
     }
 
     @Override

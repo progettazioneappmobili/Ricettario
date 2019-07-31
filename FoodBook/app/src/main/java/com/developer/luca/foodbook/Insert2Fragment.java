@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 public class Insert2Fragment extends Fragment {
 
@@ -15,15 +18,59 @@ public class Insert2Fragment extends Fragment {
     private View view;
     private Recipe recipe;
 
+    //private NewIngredientFragment ingredient_fragment;
+    private LinearLayout ingredients_linearLayout;
+    private ImageButton addIngredient_imageButton;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mainActivity = getActivity();
-        view = inflater.inflate(R.layout.fragment_insert2, container, false);
-        recipe = ((InsertActivity) getActivity()).recipe;
 
+        view = inflater.inflate(R.layout.fragment_insert2, container, false);
 
         return view;
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        mainActivity = getActivity();
+        recipe = ((InsertActivity) getActivity()).recipe;
+
+        //ingredient_fragment = (NewIngredientFragment) getFragmentManager().findFragmentById(R.id.newIngredient_fragment);
+
+        ingredients_linearLayout = view.findViewById(R.id.ingredients_linearLayout);
+
+        addIngredient_imageButton = view.findViewById(R.id.addIngredient_imageButton);
+        addIngredient_imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addIngredientFragment();
+            }
+        });
+
+        // Inserisci primo ingrediente
+        addIngredientFragment();
+    }
+
+    public void addIngredientFragment(){
+        getFragmentManager().beginTransaction().add(ingredients_linearLayout.getId(), NewIngredientFragment.newInstance(), "INGREDIENT_FRAGMENT_" + ingredients_linearLayout.getChildCount()).commit();
+    }
+
+    public void setIngredients(){
+        recipe.clearIngredients();
+        int t = ingredients_linearLayout.getChildCount();
+        for (int i = 0; i < t; i++) {
+            NewIngredientFragment nif = (NewIngredientFragment) getFragmentManager().findFragmentByTag("INGREDIENT_FRAGMENT_"+i);
+            Ingredient ing = nif.getIngredient();
+
+            if (!ing.getIngredient().equals("")){
+                Log.d("SET INGREDIENTS", "setIngredients: "+ing.getIngredient());
+                recipe.addIngredient(ing);
+            }
+        }
     }
 }

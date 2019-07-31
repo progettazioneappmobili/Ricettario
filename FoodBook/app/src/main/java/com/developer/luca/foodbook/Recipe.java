@@ -36,6 +36,7 @@ public class Recipe {
     private int minutes;
     private File photo;
     //private list of ingredients;
+    private ArrayList<Ingredient> ingredients;
     //private list of preparation phases;
 
     // Observer pattern -----
@@ -49,6 +50,7 @@ public class Recipe {
 
     public Recipe(){
         listeners = new ArrayList<RecipeTimeChangedListener>();
+        ingredients = new ArrayList<>();
     }
 
     public static void addRecipeTimeChangedListener(RecipeTimeChangedListener l){
@@ -131,4 +133,16 @@ public class Recipe {
         this.photo = photo;
     }
 
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void clearIngredients(){
+        ingredients.clear();
+    }
+
+    public void addIngredient(Ingredient ingredient) {
+        ingredients.add(ingredient);
+    }
 }
