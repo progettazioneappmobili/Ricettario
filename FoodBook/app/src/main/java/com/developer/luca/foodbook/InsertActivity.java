@@ -21,7 +21,7 @@ public class InsertActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter sectionsPagerAdapter;
     private ViewPager viewPager;
-
+    private int currentViewPagerItem = 0;
 
     private ProgressBar progressBar;
     private TextView currentProgress_textView;
@@ -68,42 +68,21 @@ public class InsertActivity extends AppCompatActivity {
         sectionsPagerAdapter.addFragment(new Insert3Fragment(), "Preparazione");
 
         vP.setAdapter(sectionsPagerAdapter);
+        vP.setOffscreenPageLimit(2);
 
         vP.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            private boolean noRepeatingFlag = true;
 
             @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-                if (noRepeatingFlag){
-                    noRepeatingFlag = false;
-                    switch (i){
-                        case 0: //  se tutto compilato ok continua altrimenti viewPager.setCurrentItem(i)
-                            if (!isInsert1Compiled()){
-                                // TODO: commenta sotto per evitare di dover compilare
-                                viewPager.setCurrentItem(i);
-                                Toast.makeText(mainActivity, "Compila tutti i campi!", Toast.LENGTH_SHORT).show();
-                            }
-                            break;
-
-                        case 1: //  se tutti ingredienti ok continua altrimenti viewPager.setCurrentItem(i)
-
-                            // Salva gli ingredienti nella ricetta quando cerca di passare alla schermata successiva
-                            ((Insert2Fragment)viewPager.getAdapter().instantiateItem(viewPager, 1)).setIngredients();
-
-                            if (!isInsert2Compiled()){
-                                // TODO: commenta sotto per evitare di dover compilare
-                                viewPager.setCurrentItem(i);
-                                Toast.makeText(mainActivity, "Inserisci almeno un ingrediente!", Toast.LENGTH_SHORT).show();
-                            }
-                            break;
-                    }
-                }
-
-            }
+            public void onPageScrolled(int i, float v, int i1) { }
 
             @Override
             public void onPageSelected(int i) {
+
+                if (currentViewPagerItem < i && !isInsertCompiled(currentViewPagerItem)){
+                    viewPager.setCurrentItem(currentViewPagerItem);
+                    return ;
+                }
+
                 switch (i){
                     case 0:
                         progressBar.setProgress(1); // second argument "animate = true" not supported by all API
@@ -124,16 +103,48 @@ public class InsertActivity extends AppCompatActivity {
                         next_fab.setImageResource(R.drawable.ic_icon_tick);
                         break;
                 }
+                currentViewPagerItem = i;
             }
 
             @Override
-            public void onPageScrollStateChanged(int i) {
-                if (i == ViewPager.SCROLL_STATE_IDLE){
-                    noRepeatingFlag = true;
-                }
-            }
+            public void onPageScrollStateChanged(int i) { }
         });
 
+    }
+
+    private boolean isInsertCompiled(int i) {
+        switch (i){
+            case 0: //  se tutto compilato ok continua altrimenti viewPager.setCurrentItem(i)
+                if (!isInsert1Compiled()){
+                    // TODO: commenta sotto per evitare di dover compilare
+                    Toast.makeText(mainActivity, "Compila tutti i campi!", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                break;
+
+            case 1: //  se tutti ingredienti ok continua altrimenti viewPager.setCurrentItem(i)
+
+                // Salva gli ingredienti nella ricetta quando cerca di passare alla schermata successiva
+                ((Insert2Fragment)viewPager.getAdapter().instantiateItem(viewPager, 1)).setIngredients();
+
+                if (!isInsert2Compiled()){
+                    // TODO: commenta sotto per evitare di dover compilare
+                    Toast.makeText(mainActivity, "Inserisci almeno un ingrediente!", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                break;
+            case 2:
+                ((Insert3Fragment)viewPager.getAdapter().instantiateItem(viewPager, 2)).setPhases();
+
+                if (!isInsert3Compiled()){
+                    // TODO: commenta sotto per evitare di dover compilare
+                    Toast.makeText(mainActivity, "Inserisci almeno un passo!", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                break;
+        }
+
+        return true;
     }
 
     // Controlla se nome, tipo di piatto e tempo di preparazione sono stati impostati
@@ -149,21 +160,27 @@ public class InsertActivity extends AppCompatActivity {
     }
 
     private boolean isInsert3Compiled(){
-        return false;
+        return !recipe.getPhases().isEmpty();
     }
 
     public void nextPage(int pos){
-        if(pos < viewPager.getAdapter().getCount())
-            viewPager.setCurrentItem(pos + 1, true);
-
-        if (pos == viewPager.getAdapter().getCount() && !isInsert3Compiled()){
-            viewPager.setCurrentItem(pos); // TODO: vai alla schermata successiva
+        if(pos <= viewPager.getAdapter().getCount()){
+            if(!isInsertCompiled(pos)){
+                viewPager.setCurrentItem(currentViewPagerItem);
+            } else{
+                if (pos < viewPager.getAdapter().getCount()){
+                    viewPager.setCurrentItem(pos + 1);
+                    currentViewPagerItem = pos + 1;
+                } else {
+                    // vai alla prossima schermata
+                }
+            }
         }
     }
 
     public void prevPage(int pos){
         if(pos > 0)
-            viewPager.setCurrentItem(pos - 1, true);
+            viewPager.setCurrentItem(pos - 1);
     }
 
     @Override

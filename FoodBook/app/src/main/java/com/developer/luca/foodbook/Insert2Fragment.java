@@ -18,7 +18,6 @@ public class Insert2Fragment extends Fragment {
     private View view;
     private Recipe recipe;
 
-    //private NewIngredientFragment ingredient_fragment;
     private LinearLayout ingredients_linearLayout;
     private ImageButton addIngredient_imageButton;
 
@@ -33,14 +32,14 @@ public class Insert2Fragment extends Fragment {
     }
 
 
+    private static boolean firstTime = true;
+
     @Override
     public void onStart() {
         super.onStart();
 
         mainActivity = getActivity();
         recipe = ((InsertActivity) getActivity()).recipe;
-
-        //ingredient_fragment = (NewIngredientFragment) getFragmentManager().findFragmentById(R.id.newIngredient_fragment);
 
         ingredients_linearLayout = view.findViewById(R.id.ingredients_linearLayout);
 
@@ -53,7 +52,10 @@ public class Insert2Fragment extends Fragment {
         });
 
         // Inserisci primo ingrediente
-        addIngredientFragment();
+        if (firstTime){
+            addIngredientFragment();
+            firstTime = false;
+        }
     }
 
     public void addIngredientFragment(){

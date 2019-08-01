@@ -38,6 +38,7 @@ public class Recipe {
     //private list of ingredients;
     private ArrayList<Ingredient> ingredients;
     //private list of preparation phases;
+    private ArrayList<Phase> phases;
 
     // Observer pattern -----
     interface RecipeTimeChangedListener {
@@ -50,7 +51,8 @@ public class Recipe {
 
     public Recipe(){
         listeners = new ArrayList<RecipeTimeChangedListener>();
-        ingredients = new ArrayList<>();
+        ingredients = new ArrayList<Ingredient>();
+        phases = new ArrayList<Phase>();
     }
 
     public static void addRecipeTimeChangedListener(RecipeTimeChangedListener l){
@@ -144,5 +146,17 @@ public class Recipe {
 
     public void addIngredient(Ingredient ingredient) {
         ingredients.add(ingredient);
+    }
+
+    public List<Phase> getPhases() {
+        return phases;
+    }
+
+    public void clearPhases(){
+        phases.clear();
+    }
+
+    public void addPhase(Phase phase) {
+        phases.add(phase);
     }
 }
