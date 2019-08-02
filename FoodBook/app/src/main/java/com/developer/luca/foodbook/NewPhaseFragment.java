@@ -22,6 +22,7 @@ public class NewPhaseFragment extends Fragment {
     private TextView phaseNumber_textView;
 
     private Phase phase;
+    private static int phaseNumber = 1;
 
 
     public static NewPhaseFragment newInstance(){
@@ -46,7 +47,9 @@ public class NewPhaseFragment extends Fragment {
 
         phaseDescription_editText = view.findViewById(R.id.phaseDescription_editText);
         phaseNumber_textView = view.findViewById(R.id.phaseNumber_textView);
+        phaseNumber_textView.setText(String.valueOf(phaseNumber));
 
+        phase.setPhaseNumber(phaseNumber++);
     }
 
     public Phase getPhase(){
