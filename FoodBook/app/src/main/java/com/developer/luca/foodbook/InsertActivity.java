@@ -114,30 +114,30 @@ public class InsertActivity extends AppCompatActivity {
 
     private boolean isInsertCompiled(int i) {
         switch (i){
-            case 0: //  se tutto compilato ok continua altrimenti viewPager.setCurrentItem(i)
-                if (!isInsert1Compiled()){
-                    // TODO: commenta sotto per evitare di dover compilare
+            case 0:
+                // Controlla se nome, tipo di piatto e tempo di preparazione sono stati impostati
+                // il numero esatto di minuti e l'immmagine sono opzionali
+                if (recipe.getName() == null || recipe.getName().equals("") ||
+                        recipe.getDishType() == null || recipe.getTimeType() == null){
                     Toast.makeText(mainActivity, "Compila tutti i campi!", Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 break;
 
-            case 1: //  se tutti ingredienti ok continua altrimenti viewPager.setCurrentItem(i)
-
-                // Salva gli ingredienti nella ricetta quando cerca di passare alla schermata successiva
+            case 1:
+                // Salva gli ingredienti nella ricetta
                 ((Insert2Fragment)viewPager.getAdapter().instantiateItem(viewPager, 1)).setIngredients();
-
-                if (!isInsert2Compiled()){
-                    // TODO: commenta sotto per evitare di dover compilare
+                
+                if (recipe.getIngredients().isEmpty()){
                     Toast.makeText(mainActivity, "Inserisci almeno un ingrediente!", Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 break;
             case 2:
+                // Salva i passi nella ricetta
                 ((Insert3Fragment)viewPager.getAdapter().instantiateItem(viewPager, 2)).setPhases();
 
-                if (!isInsert3Compiled()){
-                    // TODO: commenta sotto per evitare di dover compilare
+                if (recipe.getPhases().isEmpty()){
                     Toast.makeText(mainActivity, "Inserisci almeno un passo!", Toast.LENGTH_SHORT).show();
                     return false;
                 }
@@ -147,34 +147,13 @@ public class InsertActivity extends AppCompatActivity {
         return true;
     }
 
-    // Controlla se nome, tipo di piatto e tempo di preparazione sono stati impostati
-    // il numero esatto di minuti e l'immmagine sono opzionali
-    private boolean isInsert1Compiled() {
-        return recipe.getName() != null && !recipe.getName().equals("") &&
-            recipe.getDishType() != null && recipe.getTimeType() != null ;
-    }
-
-    // Vengono inseriti solo gli ingredienti con il nome impostato
-    private boolean isInsert2Compiled(){
-        return !recipe.getIngredients().isEmpty();
-    }
-
-    private boolean isInsert3Compiled(){
-        return !recipe.getPhases().isEmpty();
-    }
 
     public void nextPage(int pos){
-        if(pos <= viewPager.getAdapter().getCount()){
-            if(!isInsertCompiled(pos)){
-                viewPager.setCurrentItem(currentViewPagerItem);
-            } else{
-                if (pos < viewPager.getAdapter().getCount()){
-                    viewPager.setCurrentItem(pos + 1);
-                    currentViewPagerItem = pos + 1;
-                } else {
-                    // vai alla prossima schermata
-                }
-            }
+        if(pos < viewPager.getAdapter().getCount()){
+            viewPager.setCurrentItem(pos + 1);
+        } else {
+            // TODO: vai alla prossima schermata
+            isInsertCompiled(pos);
         }
     }
 

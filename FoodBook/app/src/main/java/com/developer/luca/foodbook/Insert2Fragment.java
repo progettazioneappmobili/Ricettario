@@ -70,7 +70,7 @@ public class Insert2Fragment extends Fragment {
             Ingredient ing = nif.getIngredient();
 
             if (!ing.getIngredient().equals("")){
-                Log.d("SET INGREDIENTS", "setIngredients: "+ing.getIngredient());
+                Log.d("SET INGREDIENTS", "setIngredients: "+ing.getIngredient()+" qnt:"+ing.getQuantity()+ing.getUnit().name());
                 recipe.addIngredient(ing);
             }
         }

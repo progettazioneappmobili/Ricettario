@@ -3,7 +3,7 @@ package com.developer.luca.foodbook;
 public class Ingredient {
 
     public enum Unit {
-        GM,
+        GR,
         ML,
         UNIT
     }
