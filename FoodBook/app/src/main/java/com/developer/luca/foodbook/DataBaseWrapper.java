@@ -82,6 +82,12 @@ public class DataBaseWrapper {
         return mCursor;
     }
 
+    // Cerco ricetta per tipo
+    public Cursor fetchRecipeByType(String portata){
+        Cursor mCursor = database.query(true, DATABASE_TABLE, new String[]{KEY_RECIPEID, KEY_NAME, KEY_DISHTYPE, KEY_FILENAME, KEY_PREPARATION, KEY_PREPARATIONTIME }, KEY_DISHTYPE + " like '%" + portata + "%'" ,null, null, null, null,null);
+        return mCursor;
+    }
+
     private static class DatabaseHelper extends SQLiteOpenHelper {
 
         private static final String DATABASE_NAME = "mydatabase.db";

@@ -4,6 +4,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+/**
+ * Classe che permette di cercare una ricetta tramite un form che consente di inserire
+ * dei filtri per i valori di alcuni parametri (es: tempo di preparazione, nome della ricetta,..).
+ */
+
 public class SearchActivity extends AppCompatActivity {
 
     private Toolbar toolbar;

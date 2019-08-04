@@ -21,20 +21,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Cliccando sul bottone passo alla schermata di inserimento ricetta
-/*        fab = findViewById(R.id.floatingActionButton);
+        fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent insert_intent = new Intent(v.getContext(), InsertActivity.class);
                 startActivity(insert_intent);
-            }
-        });*/
-        fab = findViewById(R.id.floatingActionButton);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent db_intent = new Intent(v.getContext(), DatabaseActivity.class);
-                startActivity(db_intent);
             }
         });
 

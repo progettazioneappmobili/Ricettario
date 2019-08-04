@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+/**
+ * Classe temporanea per testare il funzionamento del database
+ */
+
 public class DatabaseActivity extends Activity {
 
     private DataBaseWrapper dbWrapper;
