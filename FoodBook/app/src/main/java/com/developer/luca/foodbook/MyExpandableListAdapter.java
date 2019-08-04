@@ -13,12 +13,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Classe ausiliaria che mi consente di gestire i contenuti degli elementi di tipo ExpandableListView.
+ */
+
 public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
     private HashMap<String, List<String>> mStringListHashMap;
     private String[] mListHeaderGroup;
     private Character separator = '§';
-    private String forActivity = ""; // in questo modo so che elementi visualizzare all'interno dei group item
+    private String forActivity; // in questo modo so che elementi visualizzare all'interno dei group item
 
 
     public MyExpandableListAdapter(HashMap<String, List<String>> stringListHashMap, String activityName) {
@@ -120,7 +124,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 Intent show_recipe_intent = new Intent(v.getContext(), ShowRecipeActivity.class);
                 Bundle b = new Bundle();
-                b.putInt("key", 1); // id del piatto di cui mostro i dettgali
+                b.putInt("key", 1); // id del piatto di cui mostro i dettagli
                 show_recipe_intent.putExtras(b); // passo l'id al nuovo intent
                 v.getContext().startActivity(show_recipe_intent);
             }
@@ -132,7 +136,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 Intent show_recipe_intent = new Intent(v.getContext(), ShowRecipeActivity.class);
                 Bundle b = new Bundle();
-                b.putInt("key", 2); // id del piatto di cui mostro i dettgali
+                b.putInt("key", 2); // id del piatto di cui mostro i dettagli
                 show_recipe_intent.putExtras(b); // passo l'id al nuovo intent
                 v.getContext().startActivity(show_recipe_intent);
             }
@@ -183,12 +187,12 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-    // Funzione ausiliaria per effettuare lo split di una stringa in base
+    // Funzione ausiliaria per effettuare lo split di una stringa in base ad un carattere "separator" definito all'inizio della classe
     private ArrayList<String> splitStrings(String toSplit){
         StringBuilder contenuto1 = new StringBuilder();
         StringBuilder contenuto2 = new StringBuilder();
 
-        Boolean separatorFound = false;
+        boolean separatorFound = false;
 
         while(toSplit.length() > 0){
             if(toSplit.charAt(0) == separator){
@@ -204,7 +208,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
             }
         }
 
-        ArrayList<String> result = new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<>();
         result.add(contenuto1.toString());
         result.add(contenuto2.toString());
 

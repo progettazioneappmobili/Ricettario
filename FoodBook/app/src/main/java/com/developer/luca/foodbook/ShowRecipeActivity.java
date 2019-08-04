@@ -9,6 +9,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Classe che utilizzo per mostrare i dettagli relativi ad un piatto;
+ * ricevo un dishId da altre activity e poi mostro i dettagli relativi al piatto
+ * con quell'id tramite tre expandableListView: informazioni, ingredienti e preparazione.
+ */
+
 public class ShowRecipeActivity extends AppCompatActivity {
 
     private int dishId = 0; // id del piatto di cui dovro mostrare i dettagli
@@ -18,7 +24,7 @@ public class ShowRecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show);
 
-        Bundle b = getIntent().getExtras();
+        Bundle b = getIntent().getExtras(); // ricevo l'id del piatto da un'altra activity
         if(b != null)
             dishId = b.getInt("key");
 
@@ -29,44 +35,36 @@ public class ShowRecipeActivity extends AppCompatActivity {
 
         // Configuro la ListView
         ExpandableListView expandableListView2 = findViewById(R.id.expandableListView2);
-
-        HashMap<String, List<String>> item2 = new HashMap<>();
-
+        HashMap<String, List<String>> item_info = new HashMap<>();
         ArrayList<String> informazioniGroup = new ArrayList<>();
-        // Unisco le stringhe con un carattere speciale
-        informazioniGroup.add("Antipasto§Veloce 6 minuti" + "\n" + dishId);
 
-        item2.put(getString(R.string.recipe_info), informazioniGroup);
+        informazioniGroup.add("Antipasto§Veloce 6 minuti" + "\n" + dishId);
+        item_info.put(getString(R.string.recipe_info), informazioniGroup);
 
         // Configuro la ListView
         ExpandableListView expandableListView3 = findViewById(R.id.expandableListView3);
-
-        HashMap<String, List<String>> item3 = new HashMap<>();
-
+        HashMap<String, List<String>> item_ingred = new HashMap<>();
         ArrayList<String> ingredientiGroup = new ArrayList<>();
-        // Unisco le stringhe con un carattere speciale
-        ingredientiGroup.add("50 grammi di burro\n100 grammi di farina\n2 uova");
 
-        item3.put(getString(R.string.ingredients), ingredientiGroup);
+        ingredientiGroup.add("50 grammi di burro\n100 grammi di farina\n2 uova");
+        item_ingred.put(getString(R.string.ingredients), ingredientiGroup);
 
         // Configuro la ListView
         ExpandableListView expandableListView4 = findViewById(R.id.expandableListView4);
-
-        HashMap<String, List<String>> item4 = new HashMap<>();
-
+        HashMap<String, List<String>> item_preparaz = new HashMap<>();
         ArrayList<String> preparazioneGroup = new ArrayList<>();
-        // Unisco le stringhe con un carattere speciale
+
         preparazioneGroup.add("Passo1\nDescrizione del primo passo...\n\nPasso2\nDescrizione del...");
+        item_preparaz.put(getString(R.string.preparation), preparazioneGroup);
 
-        item4.put(getString(R.string.preparation), preparazioneGroup);
-
-        MyExpandableListAdapter adapter2 = new MyExpandableListAdapter(item2, "ShowRecipe1");
+        // Passo l'activityName all'Adapter in modo che sappia quale layout mostrare
+        MyExpandableListAdapter adapter2 = new MyExpandableListAdapter(item_info, "ShowRecipe1");
         expandableListView2.setAdapter(adapter2);
 
-        MyExpandableListAdapter adapter3 = new MyExpandableListAdapter(item3, "ShowRecipe2");
+        MyExpandableListAdapter adapter3 = new MyExpandableListAdapter(item_ingred, "ShowRecipe2");
         expandableListView3.setAdapter(adapter3);
 
-        MyExpandableListAdapter adapter4 = new MyExpandableListAdapter(item4, "ShowRecipe3");
+        MyExpandableListAdapter adapter4 = new MyExpandableListAdapter(item_preparaz, "ShowRecipe3");
         expandableListView4.setAdapter(adapter4);
     }
 
@@ -81,44 +79,36 @@ public class ShowRecipeActivity extends AppCompatActivity {
 
         // Configuro la ListView
         ExpandableListView expandableListView2 = findViewById(R.id.expandableListView2);
-
-        HashMap<String, List<String>> item2 = new HashMap<>();
-
+        HashMap<String, List<String>> item_info = new HashMap<>(); // salvo qui le informazioni che poi passero all'Adapter
         ArrayList<String> informazioniGroup = new ArrayList<>();
-        // Unisco le stringhe con un carattere speciale
-        informazioniGroup.add("Antipasto§Veloce 6 minuti" + "\n" + dishId);
 
-        item2.put(getString(R.string.recipe_info), informazioniGroup);
+        informazioniGroup.add("Antipasto§Veloce 6 minuti" + "\n" + dishId); // Contenuto della expandableListView
+        item_info.put(getString(R.string.recipe_info), informazioniGroup); // Titolo e contenuto della expandableListView
 
-        // Configuro la ListView
+        // Configuro la ListView, come sopra
         ExpandableListView expandableListView3 = findViewById(R.id.expandableListView3);
-
-        HashMap<String, List<String>> item3 = new HashMap<>();
-
+        HashMap<String, List<String>> item_ingred = new HashMap<>();
         ArrayList<String> ingredientiGroup = new ArrayList<>();
-        // Unisco le stringhe con un carattere speciale
-        ingredientiGroup.add("50 grammi di burro\n100 grammi di farina\n2 uova");
 
-        item3.put(getString(R.string.ingredients), ingredientiGroup);
+        ingredientiGroup.add("50 grammi di burro\n100 grammi di farina\n2 uova");
+        item_ingred.put(getString(R.string.ingredients), ingredientiGroup);
 
         // Configuro la ListView
         ExpandableListView expandableListView4 = findViewById(R.id.expandableListView4);
-
-        HashMap<String, List<String>> item4 = new HashMap<>();
-
+        HashMap<String, List<String>> item_preparaz = new HashMap<>();
         ArrayList<String> preparazioneGroup = new ArrayList<>();
-        // Unisco le stringhe con un carattere speciale
+
         preparazioneGroup.add("Passo1\nDescrizione del primo passo...\n\nPasso2\nDescrizione del...");
+        item_preparaz.put(getString(R.string.preparation), preparazioneGroup);
 
-        item4.put(getString(R.string.preparation), preparazioneGroup);
-
-        MyExpandableListAdapter adapter2 = new MyExpandableListAdapter(item2, "ShowRecipe1");
+        // Passo l'activityName all'Adapter in modo che sappia quale layout mostrare
+        MyExpandableListAdapter adapter2 = new MyExpandableListAdapter(item_info, "ShowRecipe1");
         expandableListView2.setAdapter(adapter2);
 
-        MyExpandableListAdapter adapter3 = new MyExpandableListAdapter(item3, "ShowRecipe2");
+        MyExpandableListAdapter adapter3 = new MyExpandableListAdapter(item_ingred, "ShowRecipe2");
         expandableListView3.setAdapter(adapter3);
 
-        MyExpandableListAdapter adapter4 = new MyExpandableListAdapter(item4, "ShowRecipe3");
+        MyExpandableListAdapter adapter4 = new MyExpandableListAdapter(item_preparaz, "ShowRecipe3");
         expandableListView4.setAdapter(adapter4);
     }
 }

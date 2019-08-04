@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Foto del piatto, TextView con tipo di portata e TextView con tempo di preparazione -->
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -20,7 +21,7 @@
         android:layout_height="wrap_content"
         android:background="#00000000"
         android:padding="12dip"
-        android:text="SomeText"
+        android:text=""
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +33,7 @@
         android:layout_height="wrap_content"
         android:background="#00000000"
         android:padding="12dip"
-        android:text="SomeText2"
+        android:text=""
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- View usata come home page dell'applicazione, mostra una gallery fatta usando un TableLayout in cui ogni TableRow
+ contiene una coppia di ImageView + TextView = foto del piatto + nome del piatto. Questa schermata verra anche usata per
+ mostrare i risultati di un'operazione di ricerca di una ricetta. -->
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
