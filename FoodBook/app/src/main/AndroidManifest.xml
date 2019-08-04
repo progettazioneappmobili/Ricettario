@@ -26,6 +26,9 @@
             android:name=".SearchActivity"
             android:theme="@style/AppTheme2" />
         <activity
+            android:name=".DatabaseActivity"
+            android:theme="@style/AppTheme2" />
+        <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
