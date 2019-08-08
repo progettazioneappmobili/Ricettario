@@ -58,13 +58,13 @@ public class ShowRecipeActivity extends AppCompatActivity {
         item_preparaz.put(getString(R.string.preparation), preparazioneGroup);
 
         // Passo l'activityName all'Adapter in modo che sappia quale layout mostrare
-        MyExpandableListAdapter adapter2 = new MyExpandableListAdapter(item_info, "ShowRecipe1");
+        ShowExpandableListAdapter adapter2 = new ShowExpandableListAdapter(item_info, "ShowRecipe1");
         expandableListView2.setAdapter(adapter2);
 
-        MyExpandableListAdapter adapter3 = new MyExpandableListAdapter(item_ingred, "ShowRecipe2");
+        ShowExpandableListAdapter adapter3 = new ShowExpandableListAdapter(item_ingred, "ShowRecipe2");
         expandableListView3.setAdapter(adapter3);
 
-        MyExpandableListAdapter adapter4 = new MyExpandableListAdapter(item_preparaz, "ShowRecipe3");
+        ShowExpandableListAdapter adapter4 = new ShowExpandableListAdapter(item_preparaz, "ShowRecipe3");
         expandableListView4.setAdapter(adapter4);
     }
 
@@ -102,13 +102,13 @@ public class ShowRecipeActivity extends AppCompatActivity {
         item_preparaz.put(getString(R.string.preparation), preparazioneGroup);
 
         // Passo l'activityName all'Adapter in modo che sappia quale layout mostrare
-        MyExpandableListAdapter adapter2 = new MyExpandableListAdapter(item_info, "ShowRecipe1");
+        ShowExpandableListAdapter adapter2 = new ShowExpandableListAdapter(item_info, "ShowRecipe1");
         expandableListView2.setAdapter(adapter2);
 
-        MyExpandableListAdapter adapter3 = new MyExpandableListAdapter(item_ingred, "ShowRecipe2");
+        ShowExpandableListAdapter adapter3 = new ShowExpandableListAdapter(item_ingred, "ShowRecipe2");
         expandableListView3.setAdapter(adapter3);
 
-        MyExpandableListAdapter adapter4 = new MyExpandableListAdapter(item_preparaz, "ShowRecipe3");
+        ShowExpandableListAdapter adapter4 = new ShowExpandableListAdapter(item_preparaz, "ShowRecipe3");
         expandableListView4.setAdapter(adapter4);
     }
 }
