@@ -1,11 +1,12 @@
 package com.developer.luca.foodbook;
 
+// Classe che rappresenta un ingrediente
 public class Ingredient {
 
     public enum Unit {
-        GR,
-        ML,
-        UNIT
+        GR, // Grammi
+        ML, // Millilitri
+        UNIT // Quantità senza unità di muisura (eg. 3 uova)
     }
 
     private String ingredient = "";
@@ -27,6 +28,8 @@ public class Ingredient {
     public void setQuantity(int quantity) {
         if(quantity >= 0)
             this.quantity = quantity;
+        else
+            this.quantity = 0;
     }
 
     public Unit getUnit() {

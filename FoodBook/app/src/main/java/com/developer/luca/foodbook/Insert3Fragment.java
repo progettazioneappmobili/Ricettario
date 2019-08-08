@@ -12,6 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+/* Classe relativa al frammento che gestisce la terza pagina del viewpager del attività InsertActivity
+   Raccoglie la lista delle fasi necessarie per la preparazione della ricetta.
+   Le fasi vengono visualizzate a schermo con dei frammenti.
+ */
 public class Insert3Fragment extends Fragment {
 
     private Activity mainActivity;
@@ -38,7 +42,7 @@ public class Insert3Fragment extends Fragment {
         super.onStart();
 
         mainActivity = getActivity();
-        recipe = ((InsertActivity) getActivity()).recipe;
+        recipe = ((InsertActivity) mainActivity).recipe;
 
         phases_linearLayout = view.findViewById(R.id.phases_linearLayout);
 
@@ -51,29 +55,38 @@ public class Insert3Fragment extends Fragment {
         });
 
         // Inserisci prima fase
+        // utilizzo firstTime perchè altrimenti aggiungerebbe ingredienti anche quando nascondo e riapro l'app
         if(firstTime){
             addPhaseFragment();
             firstTime = false;
         }
     }
 
+    // Aggiunge un frammento relativo ad una fase alla lista
     public void addPhaseFragment(){
         getFragmentManager().beginTransaction().add(phases_linearLayout.getId(), NewPhaseFragment.newInstance(), "PHASE_FRAGMENT_" + phases_linearLayout.getChildCount()).commit();
     }
 
+    // Questa funzione viene chiamata per evitare di dover aggiornare la ricetta
+    // ogni volta che viene agiunta o modificata una fase
     public void setPhases(){
         recipe.clearPhases();
         int t = phases_linearLayout.getChildCount();
         NewPhaseFragment npf;
-        Phase phs;
+        Phase phase;
+        int counter = 1;
 
         for (int i = 0; i < t; i++) {
+            // Recupera il frammento del i-esima fase
             npf = (NewPhaseFragment) getFragmentManager().findFragmentByTag("PHASE_FRAGMENT_" + i);
-            phs = npf.getPhase();
+            phase = npf.getPhase();
 
-            if (!phs.getPhaseDescription().equals("")){
-                Log.d("SET PHASE", "setPhases: "+phs.getPhaseDescription());
-                recipe.addPhase(phs);
+            // Vengono ignorate le fasi senza testo
+            if (!phase.getPhaseDescription().equals("")){
+                // Rinumera le fasi considerando solo quelle valide
+                phase.setPhaseNumber(counter++);
+                Log.d("SET PHASE", "n:"+phase.getPhaseNumber()+" setPhases: "+phase.getPhaseDescription());
+                recipe.addPhase(phase);
             }
         }
     }

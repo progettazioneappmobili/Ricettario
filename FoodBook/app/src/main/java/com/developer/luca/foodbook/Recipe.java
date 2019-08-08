@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+
+// Classe che rappresenta la ricetta
 public class Recipe {
 
     public enum DishType {
@@ -13,7 +15,7 @@ public class Recipe {
         DESSERT
     }
 
-    // gli enum in java sono potenti: si possono mettere dei valori e recuperarli con un metodo
+    // Assegno dei valori agli enum e li rendo recuperarli con il metodo getMinutes
     public  enum  TimeType {
         FAST(30),
         MEDIUM(60),
@@ -35,19 +37,19 @@ public class Recipe {
     private TimeType timeType;
     private int minutes;
     private File photo;
-    //private list of ingredients;
     private ArrayList<Ingredient> ingredients;
-    //private list of preparation phases;
     private ArrayList<Phase> phases;
 
-    // Observer pattern -----
+    // Utilizzo un observer pattern per controllare quando il valore di minutes o timeType viene modificato
+    // e im questo modo mantentere la coerenza tra varie parti del UI e i dati salvati.
     interface RecipeTimeChangedListener {
         void OnTimeTypeChanged();
         void OnMinutesChanged();
     }
 
-    // lista di subscribers
+    // Lista di subscribers observer pattern
     private static List<RecipeTimeChangedListener> listeners;
+
 
     public Recipe(){
         listeners = new ArrayList<RecipeTimeChangedListener>();
@@ -55,14 +57,15 @@ public class Recipe {
         phases = new ArrayList<Phase>();
     }
 
+    // Observer pattern
     public static void addRecipeTimeChangedListener(RecipeTimeChangedListener l){
         listeners.add(l);
     }
 
+    // Observer pattern
     public static void removeRecipeTimeChangedListener(RecipeTimeChangedListener l){
         listeners.remove(l);
     }
-    // Fine Observer pattern -----
 
     public String getName() {
         return name;
@@ -84,6 +87,7 @@ public class Recipe {
         return timeType;
     }
 
+    // Impostare il timeType richiede l'aggiornamento del valore di minuti inserito precedentemente
     public void setTimeType(TimeType timeType) {
         this.timeType = timeType;
 
@@ -96,7 +100,7 @@ public class Recipe {
 
         // Observer pattern
         for (RecipeTimeChangedListener listener : listeners) {
-            // notifica del cambiamento tutti i listener (anche se è solo uno)
+            // Notifica del cambiamento tutti i listener (aggiorna UI)
             listener.OnTimeTypeChanged();
         }
     }
@@ -105,8 +109,8 @@ public class Recipe {
         return minutes;
     }
 
+    // Impostare il valore dei minuti richiede l'aggiornamento del timeType inserito precedentemente
     public void setMinutes(int minutes) {
-
         this.minutes = minutes;
 
             if(minutes <= TimeType.FAST.getMinutes()) {
@@ -121,7 +125,7 @@ public class Recipe {
 
             // Observer pattern
             for (RecipeTimeChangedListener listener : listeners) {
-                // notifica del cambiamento tutti i listener (anche se è solo uno)
+                // Notifica del cambiamento tutti i listener (aggiorna UI)
                 listener.OnMinutesChanged();
             }
     }

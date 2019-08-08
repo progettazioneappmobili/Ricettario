@@ -12,7 +12,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/* Attività che gestisce l'inserimento delle informazioni necessarie alla creazione di una nuova ricetta.
 
+   La schermata ha un view pager contenente frammenti di interfacia grafica per l'inserimento di:
+   - informazioni generali
+   - ingredienti
+   - fasi di preparazione
+   inoltre c'è un progression tracker che mostra il titolo della schermata corrente.
+
+   Per spostarisi tra le varie pagine si possono utilizzare il floating action button e il pulsante indietro
+   oppure si può utilizzare lo swipe a sinistra/destra per passare alla schermata successiva/precedente.
+   Non si può passare alla schermata sucessiva se la schermata attuale non è competata correttamente.
+ */
 public class InsertActivity extends AppCompatActivity {
 
     private Activity mainActivity;
@@ -30,6 +41,9 @@ public class InsertActivity extends AppCompatActivity {
     private FloatingActionButton next_fab;
 
     public InsertActivity() {
+
+        // La ricetta viene tenuta nel attività principale,
+        // così non c'è bisogno di passarla tra le pagine
         recipe = new Recipe();
         mainActivity = this;
     }
@@ -38,6 +52,7 @@ public class InsertActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Nasconde l'actionbar di default.
         if (getActionBar() != null)
             getActionBar().hide();
 
@@ -63,11 +78,15 @@ public class InsertActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager vP){
         sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Aggiunge le pagine al viewpager
         sectionsPagerAdapter.addFragment(new Insert1Fragment(), "Informazioni");
         sectionsPagerAdapter.addFragment(new Insert2Fragment(), "Ingredienti");
         sectionsPagerAdapter.addFragment(new Insert3Fragment(), "Preparazione");
 
         vP.setAdapter(sectionsPagerAdapter);
+
+        // Impedisce la distruzione delle pagine che non vengono visualizzate
         vP.setOffscreenPageLimit(2);
 
         vP.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -78,11 +97,14 @@ public class InsertActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int i) {
 
+                // Se cerco di andare alla pagina successiva e quella attuale non è compilata correttamente
+                // viene rimandato alla pagina corrente.
                 if (currentViewPagerItem < i && !isInsertCompiled(currentViewPagerItem)){
                     viewPager.setCurrentItem(currentViewPagerItem);
                     return ;
                 }
 
+                // Aggiorna il progress tracker per la schermata corrente
                 switch (i){
                     case 0:
                         progressBar.setProgress(1); // second argument "animate = true" not supported by all API
@@ -112,6 +134,7 @@ public class InsertActivity extends AppCompatActivity {
 
     }
 
+    // Se la pagina i è compilata in modo corretto ritorna true, false altrimenti.
     private boolean isInsertCompiled(int i) {
         switch (i){
             case 0:
@@ -126,8 +149,10 @@ public class InsertActivity extends AppCompatActivity {
 
             case 1:
                 // Salva gli ingredienti nella ricetta
+                // vengono ignorati gli ingredienti senza nome
                 ((Insert2Fragment)viewPager.getAdapter().instantiateItem(viewPager, 1)).setIngredients();
-                
+
+                // Controlla se è stato inserito almeno un ingrediente.
                 if (recipe.getIngredients().isEmpty()){
                     Toast.makeText(mainActivity, "Inserisci almeno un ingrediente!", Toast.LENGTH_SHORT).show();
                     return false;
@@ -135,41 +160,63 @@ public class InsertActivity extends AppCompatActivity {
                 break;
             case 2:
                 // Salva i passi nella ricetta
+                // vengono ignorati i passi senza testo
                 ((Insert3Fragment)viewPager.getAdapter().instantiateItem(viewPager, 2)).setPhases();
 
+                // Controlla se è stato inserito almeno un passo
                 if (recipe.getPhases().isEmpty()){
                     Toast.makeText(mainActivity, "Inserisci almeno un passo!", Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 break;
+            default: return false;
         }
 
         return true;
     }
 
 
+    // Se pos è una posizione valida passa alla pagina successiva
+    // se sono state inserite tutte le informazioni per la preparazione passa alla attività successiva
     public void nextPage(int pos){
-        if(pos < viewPager.getAdapter().getCount()){
+        if(pos < 0)
+            return;
+
+        if(pos < viewPager.getAdapter().getCount()-1){
             viewPager.setCurrentItem(pos + 1);
         } else {
-            // TODO: vai alla prossima schermata
+            // TODO: controlla se insert3 corretto e vai alla prossima attività
             isInsertCompiled(pos);
         }
     }
 
+
+    // Se pos è una posizione valida passa alla pagina precendente
     public void prevPage(int pos){
         if(pos > 0)
             viewPager.setCurrentItem(pos - 1);
     }
 
+    // Imposta il comportamento per il pulsante indietro
+    // se siamo alla prima pagina chiedi la conferma per l'annullamento del inserimento
+    // altrimenti passa alla pagina precedente
     @Override
     public void onBackPressed() {
         int count = viewPager.getCurrentItem();
         if (count == 0) {
-            showAlertDialog();
+            showCancelAlertDialog();
         } else {
             prevPage(count);
         }
+    }
+
+
+    private void showCancelAlertDialog(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Anullare l'inserimento?");
+        alertDialog.setPositiveButton("Sì", dialogClickListener);
+        alertDialog.setNegativeButton("No", dialogClickListener);
+        alertDialog.show();
     }
 
     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -177,20 +224,16 @@ public class InsertActivity extends AppCompatActivity {
         public void onClick(DialogInterface dialog, int which) {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
+                    // Anullare l'inserimento? Sì -> Esci dal attività
                     finish();
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
+                    // Anullare l'inserimento? No -> Non fare niente
                     break;
             }
         }
     };
 
-    private void showAlertDialog(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("Anullare l'inserimento?");
-        alertDialog.setPositiveButton("Sì", dialogClickListener);
-        alertDialog.setNegativeButton("No", dialogClickListener);
-        alertDialog.show();
-    }
+
 
 }

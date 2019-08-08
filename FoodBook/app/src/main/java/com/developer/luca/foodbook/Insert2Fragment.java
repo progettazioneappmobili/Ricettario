@@ -12,6 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+/* Classe relativa al frammento che gestisce la seconda pagina del viewpager del attività InsertActivity
+   Raccoglie la lista degli ingredienti necessari per la preparazione della ricetta.
+   Gli ingredienti vengono visualizzati a schermo con dei frammenti.
+ */
 public class Insert2Fragment extends Fragment {
 
     private Activity mainActivity;
@@ -39,7 +43,7 @@ public class Insert2Fragment extends Fragment {
         super.onStart();
 
         mainActivity = getActivity();
-        recipe = ((InsertActivity) getActivity()).recipe;
+        recipe = ((InsertActivity) mainActivity).recipe;
 
         ingredients_linearLayout = view.findViewById(R.id.ingredients_linearLayout);
 
@@ -52,24 +56,29 @@ public class Insert2Fragment extends Fragment {
         });
 
         // Inserisci primo ingrediente
+        // utilizzo firstTime perchè altrimenti aggiungerebbe ingredienti anche quando nascondo e riapro l'app
         if (firstTime){
             addIngredientFragment();
             firstTime = false;
         }
     }
 
+    // Aggiunge un frammento relativo ad un ingrediente alla lista
     public void addIngredientFragment(){
         getFragmentManager().beginTransaction().add(ingredients_linearLayout.getId(), NewIngredientFragment.newInstance(), "INGREDIENT_FRAGMENT_" + ingredients_linearLayout.getChildCount()).commit();
     }
 
+    // Questa funzione viene chiamata per evitare di dover aggiornare la ricetta
+    // ogni volta che viene agiunto o modificato un ingrediente
     public void setIngredients(){
         recipe.clearIngredients();
         int t = ingredients_linearLayout.getChildCount();
         for (int i = 0; i < t; i++) {
+            // Recupera il frammento del i-esimo ingrediente
             NewIngredientFragment nif = (NewIngredientFragment) getFragmentManager().findFragmentByTag("INGREDIENT_FRAGMENT_"+i);
             Ingredient ing = nif.getIngredient();
 
-            if (!ing.getIngredient().equals("")){
+            if (!ing.getIngredient().equals("")){ // L'ingrediente è già trimmato
                 Log.d("SET INGREDIENTS", "setIngredients: "+ing.getIngredient()+" qnt:"+ing.getQuantity()+ing.getUnit().name());
                 recipe.addIngredient(ing);
             }

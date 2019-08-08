@@ -19,7 +19,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +32,16 @@ import android.widget.ToggleButton;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/* Classe relativa al frammento che gestisce la prima pagina del viewpager del attività InsertActivity
+   Raccoeglie informazioni generali sulla ricetta:
+   - Nome
+   - Tipo di piatto (primo, secondo...)
+   - Tempo di preparazione indicativo (veloce, medio, lungo)
+   - Tempo di preparazione in minuti
+   - Foto del piatto
+*/
 public class Insert1Fragment extends Fragment {
 
-    private final String fragment1 = "FRAGMENT1";
     private Activity mainActivity;
     private View view;
     private Recipe recipe;
@@ -66,21 +72,23 @@ public class Insert1Fragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        // Recupera la ricetta dal attività principale
         mainActivity = getActivity();
         recipe = ((InsertActivity) mainActivity).recipe;
 
 
-        // Fragment code
         recipeName_editText = view.findViewById(R.id.recipeName_editText);
 
+        // Aggiunge tutti i pulsanti relativi al tipo di piatto al array dishToggleButtonGroup
         setDishToggleButtonGroup();
+        // Aggiunge tutti i pulsanti relativi al tempo di preparazione al array timeToggleButtonGroup
         setTimeToggleButtonGroup();
 
         minutes_editText = view.findViewById(R.id.minutes_editText);
 
         imageView = view.findViewById(R.id.imageView);
 
-
+        // Aggiorna il nome della ricetta quando questo viene mdificato
         recipeName_editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -128,7 +136,7 @@ public class Insert1Fragment extends Fragment {
 
         for (ToggleButton toggleButton : dishToggleButtonGroup) {
 
-            // Quando viene premuto il pulsante aggiorna la recipe
+            // Quando viene premuto un pulsante di dishToggleButtonGroup aggiorna la recipe
             toggleButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -149,16 +157,17 @@ public class Insert1Fragment extends Fragment {
                             break;
                     }
 
+                    // Nascondi automaticamente la tastiera per migliorare l'esperienza del utente
                     hideSoftKeyboard(mainActivity, v);
                 }
             });
 
         }
 
-        // TODO: refactoring per rimuovere codice duplicato (for qua sopra e qua sotto)
-        //       ? spostare gli switch
         for (ToggleButton toggleButton : timeToggleButtonGroup) {
 
+            // Quando viene premuto un pulsante di timeToggleButtonGroup aggiorna la recipe
+            // ci pensarà l'observer pattern ad aggiornare i minuti
             toggleButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -197,18 +206,20 @@ public class Insert1Fragment extends Fragment {
             public void afterTextChanged(Editable s) {
 
                 if (s.toString().equals("")) {
-                    //per impostare l'hint dei minuti al giusto valore
+                    //Imposta l'hint dei minuti al valore corrispondente al timeType
                     recipe.setMinutes(recipe.getTimeType().getMinutes());
                     minutes_editText.setHint("" + recipe.getMinutes());
                 } else {
-                    recipe.setMinutes(Integer.parseInt(s.toString()));
+                    try{
+                        recipe.setMinutes(Integer.parseInt(s.toString()));
+                    } catch (Exception e){
+                        minutes_editText.setText("");
+                    }
                 }
-
             }
         });
 
 
-        // Cliccando sul bottone passo alla schermata di inserimento ingredienti
         camera_fab = view.findViewById(R.id.camera_floatingActionButton);
         camera_fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,29 +245,28 @@ public class Insert1Fragment extends Fragment {
         dishToggleButtonGroup.add((ToggleButton) view.findViewById(R.id.toggleButton4));
     }
 
+    // Radio group behaviour for ToggleButtons
+    // rimane selezionato solo un pulsante tra quelli presenti nel array
+    // Si potrebbe anche utilizzare direttamente dei radio buttons ma dovremmo modificarne l'aspetto
     private void toggleButtonGroupRadioBehaviour(ArrayList<ToggleButton> toggleButtonGroup, CompoundButton toggledButton){
-
-        // Radio group behaviour for ToggleButtons
         for(ToggleButton tB : toggleButtonGroup){
             if (toggledButton.getId() != tB.getId() && tB.isChecked()) tB.setChecked(false);
         }
 
-        // non sono sicuro del perché sia necessario, ma lo è
-        // altrimenti il pulsante selezionato non viene impostato come selezionato
         toggledButton.setChecked(true);
     }
 
 
     // Per avere un flow di inserimento più fluido nascondo la tastiera quando viene selezionato un pulsante
-    public static void hideSoftKeyboard (Activity activity, View view)
-    {
+    public static void hideSoftKeyboard (Activity activity, View view){
         InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 
 
-    // Fonte parziale:
+    // Modificato a partire da:
     // https://demonuts.com/pick-image-gallery-camera-android/
+    // Mostra una finestra di dialogo in cui scegliere se prendere un immagine dalla galleria o scattare una nuova foto
     private void showPictureDialog(){
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(mainActivity);
         pictureDialog.setTitle("Aggiungi immagine");

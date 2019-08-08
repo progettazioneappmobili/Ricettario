@@ -1,6 +1,5 @@
 package com.developer.luca.foodbook;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+// Classe che gestisce il frammento di un singolo ingrediente.
 public class NewIngredientFragment extends Fragment {
 
-    private Activity mainActivity;
     private View view;
 
     private EditText ingredientName_editText;
@@ -39,12 +38,13 @@ public class NewIngredientFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        mainActivity = getActivity();
         ingredient = new Ingredient();
 
         ingredientName_editText = view.findViewById(R.id.ingredientName_editText);
         ingredientQuantity_editText = view.findViewById(R.id.ingredientQuantity_editText);
         unit_button = view.findViewById(R.id.unit_button);
+
+        // Ogni volta che viene premuto il bottone cicla al unità di misura successiva
         unit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +65,7 @@ public class NewIngredientFragment extends Fragment {
         });
     }
 
+    // Ritorna l'ingrediente rappresentato.
     public Ingredient getIngredient(){
         ingredient.setIngredient(ingredientName_editText.getText().toString().trim());
 
@@ -73,7 +74,6 @@ public class NewIngredientFragment extends Fragment {
         } catch (Exception e){
             ingredient.setQuantity(0);
         }
-
 
         return ingredient;
     }
