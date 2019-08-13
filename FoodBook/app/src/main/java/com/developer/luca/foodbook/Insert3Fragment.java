@@ -85,7 +85,7 @@ public class Insert3Fragment extends Fragment {
             if (!phase.getPhaseDescription().equals("")){
                 // Rinumera le fasi considerando solo quelle valide
                 phase.setPhaseNumber(counter++);
-                Log.d("SET PHASE", "n:"+phase.getPhaseNumber()+" setPhases: "+phase.getPhaseDescription());
+                Log.d("RECIPE SET", "n:"+phase.getPhaseNumber()+" setPhases: "+phase.getPhaseDescription());
                 recipe.addPhase(phase);
             }
         }

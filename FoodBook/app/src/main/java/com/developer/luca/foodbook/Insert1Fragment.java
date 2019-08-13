@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,9 +17,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +32,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /* Classe relativa al frammento che gestisce la prima pagina del viewpager del attività InsertActivity
    Raccoeglie informazioni generali sulla ricetta:
@@ -56,7 +62,7 @@ public class Insert1Fragment extends Fragment {
 
     private ImageView imageView;
 
-    private static final int REQUEST_IMAGE_GALLERY = 1, REQUEST_IMAGE_CAMERA = 2;
+    private static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1, REQUEST_IMAGE_CAMERA = 2, REQUEST_IMAGE_GALLERY =3;
 
     @Nullable
     @Override
@@ -224,7 +230,8 @@ public class Insert1Fragment extends Fragment {
         camera_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPictureDialog();
+                if (checkAndRequestPermissions())
+                    showPictureDialog();
             }
         });
     }
@@ -264,6 +271,28 @@ public class Insert1Fragment extends Fragment {
     }
 
 
+    // Controlla se sono stati dati i permassi per accedere alla camera e alla memoria, in caso contrario li chiede.
+    private  boolean checkAndRequestPermissions() {
+        int cameraPermission = ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.CAMERA);
+        int galleryWritePermission = ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        List<String> listPermissionsNeeded = new ArrayList<>();
+
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (galleryWritePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(mainActivity, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),REQUEST_ID_MULTIPLE_PERMISSIONS);
+            return false;
+        }
+        return true;
+    }
+
+
     // Modificato a partire da:
     // https://demonuts.com/pick-image-gallery-camera-android/
     // Mostra una finestra di dialogo in cui scegliere se prendere un immagine dalla galleria o scattare una nuova foto
@@ -279,10 +308,10 @@ public class Insert1Fragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                choosePhotoFromGallery();
+                                invokeGallery();
                                 break;
                             case 1:
-                                takePhotoFromCamera();
+                                invokeCamera();
                                 break;
                         }
                     }
@@ -290,7 +319,40 @@ public class Insert1Fragment extends Fragment {
         pictureDialog.show();
     }
 
-    public void choosePhotoFromGallery() {
+    private void invokeCamera() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if (cameraIntent.resolveActivity(mainActivity.getPackageManager()) != null) {
+            File photoFile = null;
+
+            try {
+                photoFile = createImageFile();
+            } catch (IOException e) {
+                Toast.makeText(mainActivity, "Impossibile creare file!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(mainActivity, "com.developer.luca.foodbook", photoFile);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(cameraIntent, REQUEST_IMAGE_CAMERA);
+            }
+        }
+    }
+
+    String mCurrentPhotoPath;
+    private File createImageFile() throws IOException {
+        String imageFileName = "" + Calendar.getInstance().getTimeInMillis();
+
+        File storageDir = mainActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);;
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    private void invokeGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         if (galleryIntent.resolveActivity(mainActivity.getPackageManager()) != null) {
@@ -298,64 +360,45 @@ public class Insert1Fragment extends Fragment {
         }
     }
 
-    // Richiedi i permessi per utilizzare la fotocamera se necessario
-    private void takePhotoFromCamera() {
-
-        if (ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
-            invokeCamera();
-        } else {
-            ActivityCompat.requestPermissions(mainActivity, new String[] {Manifest.permission.CAMERA}, REQUEST_IMAGE_CAMERA);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_IMAGE_CAMERA){
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                invokeCamera();
-            } else {
-                Toast.makeText(mainActivity, "Inpossibile accedere alla Fotocamera", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private void invokeCamera() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        if (cameraIntent.resolveActivity(mainActivity.getPackageManager()) != null) {
-            startActivityForResult(cameraIntent, REQUEST_IMAGE_CAMERA);
-        }
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_CANCELED) {
+
+        if (resultCode != Activity.RESULT_OK) {
             return;
         }
+
         if (requestCode == REQUEST_IMAGE_GALLERY) {
             if (data != null) {
                 Uri contentURI = data.getData();
                 try {
                     Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(mainActivity.getContentResolver(), contentURI);
                     imageView.setImageBitmap(imageBitmap);
-
+                    recipe.setImageUri(contentURI);
+                    //saveImage(imageBitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(mainActivity, "Impossibile aprire file!", Toast.LENGTH_SHORT).show();
                 }
             }
-
         } else if (requestCode == REQUEST_IMAGE_CAMERA) {
 
             if (data != null) {
-                Bundle extras = data.getExtras();
-                Bitmap thumbnailBitmap = (Bitmap) extras.get("data");
-                imageView.setImageBitmap(thumbnailBitmap);
+                File file = new File(mCurrentPhotoPath);
+
+                try {
+                    Uri contentURI = Uri.fromFile(file);
+                    Bitmap thumbnailBitmap = MediaStore.Images.Media.getBitmap(mainActivity.getContentResolver(), contentURI);
+                    recipe.setImageUri(contentURI);
+                    Log.d("RECIPE SET", "uri: "+contentURI.toString());
+
+                    if (thumbnailBitmap != null){
+                        imageView.setImageBitmap(thumbnailBitmap);
+                    }
+                } catch (IOException e) {
+                    Toast.makeText(mainActivity, "Errore nel salvataggio della foto!", Toast.LENGTH_SHORT).show();
+                }
             }
-
         }
-
     }
 }

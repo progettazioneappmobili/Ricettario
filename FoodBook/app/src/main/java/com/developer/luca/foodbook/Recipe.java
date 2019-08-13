@@ -1,6 +1,7 @@
 package com.developer.luca.foodbook;
 
-import java.io.File;
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class Recipe {
     private DishType dishType;
     private TimeType timeType;
     private int minutes;
-    private File photo;
+    private Uri imageUri;
     private ArrayList<Ingredient> ingredients;
     private ArrayList<Phase> phases;
 
@@ -130,13 +131,13 @@ public class Recipe {
             }
     }
 
-    public File getPhoto() {
-        return photo;
+    public Uri getImageUri() {
+        return imageUri;
     }
 
     // TODO: salva file in dimensioni massime
-    public void setPhoto(File photo) {
-        this.photo = photo;
+    public void setImageUri(Uri imageUri) {
+        this.imageUri = imageUri;
     }
 
 

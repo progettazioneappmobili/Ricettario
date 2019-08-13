@@ -79,7 +79,7 @@ public class Insert2Fragment extends Fragment {
             Ingredient ing = nif.getIngredient();
 
             if (!ing.getIngredient().equals("")){ // L'ingrediente è già trimmato
-                Log.d("SET INGREDIENTS", "setIngredients: "+ing.getIngredient()+" qnt:"+ing.getQuantity()+ing.getUnit().name());
+                Log.d("RECIPE SET", "setIngredients: "+ing.getIngredient()+" qnt:"+ing.getQuantity()+ing.getUnit().name());
                 recipe.addIngredient(ing);
             }
         }
