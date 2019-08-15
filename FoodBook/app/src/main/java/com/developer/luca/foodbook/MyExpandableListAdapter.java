@@ -106,7 +106,8 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
         // TODO l'id del piatto va calcolato (adesso e' una prova)
 
-        // OnClickListener per le immagini presenti nella schermata (gallery) in modo da poter cambiare activity quando clicco su un'immagine
+        // OnClickListener per le immagini presenti nella schermata (gallery) in modo da poter cambiare
+        // activity quando clicco su un'immagine. In particolare da qui passo ai dettagli di una ricetta.
         ImageView imgview = convertView.findViewById(R.id.dishOne); // immagine a sx nella schermata
         imgview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,7 +140,8 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    // Funzione ausiliaria per effettuare lo split di una stringa in base ad un carattere separatore
+    // Funzione ausiliaria per effettuare lo split di una stringa in base ad un carattere separatore;
+    // salvo il risultato (due stringhe) in un ArrayList.
     private ArrayList<String> splitStrings(Character separatore, String toSplit){
         StringBuilder contenuto1 = new StringBuilder();
         StringBuilder contenuto2 = new StringBuilder();
@@ -147,14 +149,15 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         boolean separatorFound = false;
 
         while(toSplit.length() > 0){
+            // controllo se ho trovato il separatore
             if(toSplit.charAt(0) == separatore){
                 separatorFound = true;
                 toSplit = toSplit.substring(1);
             }
-            if(separatorFound){
+            if(separatorFound){ // se si inserisco il testo nella seconda parola
                 contenuto2.append(toSplit.charAt(0));
                 toSplit = toSplit.substring(1);
-            }else{
+            }else{ // se no continuo a scrivere sulla prima
                 contenuto1.append(toSplit.charAt(0));
                 toSplit = toSplit.substring(1);
             }

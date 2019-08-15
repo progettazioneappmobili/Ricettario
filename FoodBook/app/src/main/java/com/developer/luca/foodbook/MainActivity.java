@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case (R.id.action_search):
-                Intent search_intent = new Intent(this, SearchActivity.class);
+                Intent search_intent = new Intent(this, DatabaseActivity.class); // TODO temp per i test (SearchActivity)
                 startActivity(search_intent);
                 break;
 

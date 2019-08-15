@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,7 +18,6 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
 
     private HashMap<String, List<String>> mStringListHashMap; // es: <"Antipasto",<"Patatine",...>>, <"Primo",<"Spaghetti","Pasta",..>>
     private String[] mListHeaderGroup;
-    private Character separator = '§';
     private String forActivity; // in questo modo so che elementi visualizzare all'interno dei group item
 
 
@@ -95,20 +93,16 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    // Funzione per ShowRecipeActivity 1: Foto del piatto, textview con tipo di portata e textview con tempo di preparazione
+    // Funzione per ShowRecipeActivity 1: Foto del piatto, nome del piatto, tipo di portata e tempo di preparazione;
+    // i vari campi sono separati da "\n", verranno inseriti in un unico TextView.
     private View getChildView1(int groupPosition, int childPosition, View convertView, ViewGroup parent) {
         if (convertView == null)
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_list_item2, parent, false);
 
         String contenuti = String.valueOf(getChild(groupPosition, childPosition));
 
-        ArrayList<String> coppieContenuti = splitStrings(contenuti);
-
         TextView textView = convertView.findViewById(R.id.textView);
-        textView.setText(coppieContenuti.get(0));
-
-        TextView textView2 = convertView.findViewById(R.id.textView2);
-        textView2.setText(coppieContenuti.get(1));
+        textView.setText(contenuti);
 
         return convertView;
     }
@@ -135,34 +129,6 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
         // preparazione, separati da \n
 
         return convertView;
-    }
-
-    // Funzione ausiliaria per effettuare lo split di una stringa in base ad un carattere "separator" definito all'inizio della classe
-    private ArrayList<String> splitStrings(String toSplit){
-        StringBuilder contenuto1 = new StringBuilder();
-        StringBuilder contenuto2 = new StringBuilder();
-
-        boolean separatorFound = false;
-
-        while(toSplit.length() > 0){
-            if(toSplit.charAt(0) == separator){
-                separatorFound = true;
-                toSplit = toSplit.substring(1);
-            }
-            if(separatorFound){
-                contenuto2.append(toSplit.charAt(0));
-                toSplit = toSplit.substring(1);
-            }else{
-                contenuto1.append(toSplit.charAt(0));
-                toSplit = toSplit.substring(1);
-            }
-        }
-
-        ArrayList<String> result = new ArrayList<>();
-        result.add(contenuto1.toString());
-        result.add(contenuto2.toString());
-
-        return result;
     }
 
 }

@@ -1,9 +1,11 @@
 package com.developer.luca.foodbook;
 
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,12 +19,16 @@ import java.util.List;
 
 public class ShowRecipeActivity extends AppCompatActivity {
 
+    private DataBaseWrapper dbWrapper; // per recuperare dal db i dettagli della ricetta
+    private Cursor cursor; // ausiliario per la query al db
     private int dishId = 0; // id del piatto di cui dovro mostrare i dettagli
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show);
+
+        dbWrapper = new DataBaseWrapper(this);
 
         Bundle b = getIntent().getExtras(); // ricevo l'id del piatto da un'altra activity
         if(b != null)
@@ -38,7 +44,19 @@ public class ShowRecipeActivity extends AppCompatActivity {
         HashMap<String, List<String>> item_info = new HashMap<>();
         ArrayList<String> informazioniGroup = new ArrayList<>();
 
-        informazioniGroup.add("Antipasto§Veloce 6 minuti" + "\n" + dishId);
+        // Estraggo dal db i dettagli della ricetta
+        ArrayList<String> recipeInfos = getRecipeDetails(dishId);
+        String name = recipeInfos.get(0);
+        String dishType = recipeInfos.get(1);
+        String preparation = recipeInfos.get(2);
+        String prepTime = recipeInfos.get(3);
+        String ingred = recipeInfos.get(4);
+        String minutes = "minuti";
+        int time = Integer.parseInt(prepTime);
+        if (time < 2)
+                minutes = "minuto";
+
+        informazioniGroup.add(name + "\n" + dishType + "\n\n" + prepTime + " " + minutes + "\n" + dishId); // TODO rimuovere id
         item_info.put(getString(R.string.recipe_info), informazioniGroup);
 
         // Configuro la ListView
@@ -46,7 +64,7 @@ public class ShowRecipeActivity extends AppCompatActivity {
         HashMap<String, List<String>> item_ingred = new HashMap<>();
         ArrayList<String> ingredientiGroup = new ArrayList<>();
 
-        ingredientiGroup.add("50 grammi di burro\n100 grammi di farina\n2 uova");
+        ingredientiGroup.add(ingred);
         item_ingred.put(getString(R.string.ingredients), ingredientiGroup);
 
         // Configuro la ListView
@@ -54,7 +72,7 @@ public class ShowRecipeActivity extends AppCompatActivity {
         HashMap<String, List<String>> item_preparaz = new HashMap<>();
         ArrayList<String> preparazioneGroup = new ArrayList<>();
 
-        preparazioneGroup.add("Passo1\nDescrizione del primo passo...\n\nPasso2\nDescrizione del...");
+        preparazioneGroup.add(preparation);
         item_preparaz.put(getString(R.string.preparation), preparazioneGroup);
 
         // Passo l'activityName all'Adapter in modo che sappia quale layout mostrare
@@ -71,45 +89,28 @@ public class ShowRecipeActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
+    }
 
-        // Assegno il titolo alla toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(R.string.recipe_name);
-
-        // Configuro la ListView
-        ExpandableListView expandableListView2 = findViewById(R.id.expandableListView2);
-        HashMap<String, List<String>> item_info = new HashMap<>(); // salvo qui le informazioni che poi passero all'Adapter
-        ArrayList<String> informazioniGroup = new ArrayList<>();
-
-        informazioniGroup.add("Antipasto§Veloce 6 minuti" + "\n" + dishId); // Contenuto della expandableListView
-        item_info.put(getString(R.string.recipe_info), informazioniGroup); // Titolo e contenuto della expandableListView
-
-        // Configuro la ListView, come sopra
-        ExpandableListView expandableListView3 = findViewById(R.id.expandableListView3);
-        HashMap<String, List<String>> item_ingred = new HashMap<>();
-        ArrayList<String> ingredientiGroup = new ArrayList<>();
-
-        ingredientiGroup.add("50 grammi di burro\n100 grammi di farina\n2 uova");
-        item_ingred.put(getString(R.string.ingredients), ingredientiGroup);
-
-        // Configuro la ListView
-        ExpandableListView expandableListView4 = findViewById(R.id.expandableListView4);
-        HashMap<String, List<String>> item_preparaz = new HashMap<>();
-        ArrayList<String> preparazioneGroup = new ArrayList<>();
-
-        preparazioneGroup.add("Passo1\nDescrizione del primo passo...\n\nPasso2\nDescrizione del...");
-        item_preparaz.put(getString(R.string.preparation), preparazioneGroup);
-
-        // Passo l'activityName all'Adapter in modo che sappia quale layout mostrare
-        ShowExpandableListAdapter adapter2 = new ShowExpandableListAdapter(item_info, "ShowRecipe1");
-        expandableListView2.setAdapter(adapter2);
-
-        ShowExpandableListAdapter adapter3 = new ShowExpandableListAdapter(item_ingred, "ShowRecipe2");
-        expandableListView3.setAdapter(adapter3);
-
-        ShowExpandableListAdapter adapter4 = new ShowExpandableListAdapter(item_preparaz, "ShowRecipe3");
-        expandableListView4.setAdapter(adapter4);
+    protected ArrayList<String> getRecipeDetails(long recipeIdent){
+        ArrayList<String> result = new ArrayList<>();
+        dbWrapper.open();
+        cursor = dbWrapper.fetchRecipe(recipeIdent);
+        while(cursor.moveToNext()){
+            String name = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_NAME));
+            String preparation = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_PREPARATION));
+            String prepTime = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_PREPARATIONTIME));
+            String dishType = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_DISHTYPE));
+            String ingred = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_INGREDIENTS));
+            Toast.makeText(getApplicationContext(),"recipe name = " + name,Toast.LENGTH_SHORT).show(); // TODO temp test
+            result.add(name);
+            result.add(dishType);
+            result.add(preparation);
+            result.add(prepTime);
+            result.add(ingred);
+        }
+        cursor.close();
+        dbWrapper.close();
+        return result;
     }
 }
 

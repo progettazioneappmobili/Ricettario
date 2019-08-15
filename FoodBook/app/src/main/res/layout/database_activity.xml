@@ -12,6 +12,13 @@
         android:onClick="addRecord" />
 
     <Button
+        android:id="@+id/database_activity_button_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update Records"
+        android:onClick="updateRecords" />
+
+    <Button
         android:id="@+id/database_activity_button_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
