@@ -104,8 +104,6 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         TextView textView2 = convertView.findViewById(R.id.textView2);
         textView2.setText(piatto2.get(0)); // nome del piatto 2
 
-        // TODO l'id del piatto va calcolato (adesso e' una prova)
-
         // OnClickListener per le immagini presenti nella schermata (gallery) in modo da poter cambiare
         // activity quando clicco su un'immagine. In particolare da qui passo ai dettagli di una ricetta.
         ImageView imgview = convertView.findViewById(R.id.dishOne); // immagine a sx nella schermata
