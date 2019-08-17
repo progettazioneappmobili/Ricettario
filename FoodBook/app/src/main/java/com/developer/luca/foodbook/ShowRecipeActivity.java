@@ -86,11 +86,12 @@ public class ShowRecipeActivity extends AppCompatActivity {
         expandableListView4.setAdapter(adapter4);
     }
 
-    @Override
-    protected void onStart(){
-        super.onStart();
-    }
-
+    /**
+     * Funzione che dato l'id di una ricetta effettua una query al db ed estrae tutti i dettagli della
+     * ricetta salvandoli in un ArrayList<String>
+     * @param recipeIdent: id della ricetta
+     * @return lista di stringhe, ognuna rappresenta uno dei campi del db (ingredienti, preparazione,..)
+     */
     protected ArrayList<String> getRecipeDetails(long recipeIdent){
         ArrayList<String> result = new ArrayList<>();
         dbWrapper.open();

@@ -2,7 +2,7 @@
 <!-- View che contiene tre elementi di tipo ExpandableListView, il primo conterra alcune informazioni e la foto del piatto,
 il secondo conterra la lista degli ingredienti della ricetta, il terzo conterra la lista dei passi della preparazione.
 Ognuno di questi tre elementi risiede in un file xml (expandable_list_item) e i contenuti vengono popolati dalla
-classe MyExpandableListAdapter. -->
+classe ShowExpandableListAdapter. -->
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"

@@ -19,8 +19,8 @@ import java.util.HashMap;
 
 public class ResultsActivity extends AppCompatActivity {
 
-    private DataBaseWrapper dbWrapper;
-    private Cursor cursor;
+    private DataBaseWrapper dbWrapper; // comunicazione db
+    private Cursor cursor; // ausiliario per scorrere i record trovati con la query
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +32,8 @@ public class ResultsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.found_recipes);
 
+        // Inizializzo questa classe per la comunicazione con il db
         dbWrapper = new DataBaseWrapper(this);
-
-        Toast.makeText(getApplicationContext(),"title create setted",Toast.LENGTH_SHORT).show();
 
         // Configuro la ListView
         ExpandableListView expandableListView = findViewById(R.id.expandableListView);
@@ -52,11 +51,6 @@ public class ResultsActivity extends AppCompatActivity {
 
         MyExpandableListAdapter adapter = new MyExpandableListAdapter(item);
         expandableListView.setAdapter(adapter);
-    }
-
-    @Override
-    protected void onStart(){
-        super.onStart();
     }
 
     /**
