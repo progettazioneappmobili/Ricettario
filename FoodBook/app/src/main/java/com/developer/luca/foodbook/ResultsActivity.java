@@ -29,6 +29,7 @@ public class ResultsActivity extends AppCompatActivity {
 
         // Assegno il titolo alla toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.found_recipes);
 
@@ -63,7 +64,7 @@ public class ResultsActivity extends AppCompatActivity {
     // TODO gestire caso singola ricetta (TableLayout)
     public ArrayList<String> getRecipesByType(String tipo, ArrayList<String> result){
         dbWrapper.open();
-        cursor = dbWrapper.fetchRecipeByType(tipo);
+        cursor = dbWrapper.fetchPrefRecipeByType(tipo);
         int count = 0;
         String nome1 = "";
         String id1 = "";

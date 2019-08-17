@@ -23,7 +23,7 @@ public class DataBaseWrapper {
     public static final String KEY_PREPARATIONTIME = "preparationtime"; // tempo di preparazione in minuti
     public static final String KEY_FILENAME = "filename"; // nome del file, foto del piatto
     public static final String KEY_INGREDIENTS = "ingredients"; // lista di ingredienti separati da ";"
-    public static final String KEY_ISPREFERRED = "ispreferred"; // flag true o false
+    public static final String KEY_ISPREFERRED = "ispreferred"; // flag 1 = true o 0 = false
 
     public DataBaseWrapper(Context context){
         this.context = context;
@@ -40,13 +40,13 @@ public class DataBaseWrapper {
     }
 
     // Metodo per creare un nuovo record
-    public long createRecipe (String name, String preparation, String dishType, String filename, int preparationTime, String ingredients, Boolean ispreferred){
+    public long createRecipe (String name, String preparation, String dishType, String filename, int preparationTime, String ingredients, int ispreferred){
         ContentValues initialValues = createContentValues(name, preparation, dishType, filename, preparationTime, ingredients, ispreferred);
         return database.insertOrThrow(DATABASE_TABLE, null, initialValues);
     }
 
     // Metodo ausiliario per aggiungere un nuovo record (riga del db)
-    private ContentValues createContentValues(String name, String preparation, String dishType, String filename, int preparationTime, String ingredients, Boolean ispreferred){
+    private ContentValues createContentValues(String name, String preparation, String dishType, String filename, int preparationTime, String ingredients, int ispreferred){
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, name);
         values.put(KEY_DISHTYPE, dishType);
@@ -60,7 +60,7 @@ public class DataBaseWrapper {
     }
 
     // Metodo per aggiornare un record
-    public boolean updateRecipe(long recipeId, String name, String preparation, String dishType, String filename, int preparationTime, String ingredients, Boolean ispreferred){
+    public boolean updateRecipe(long recipeId, String name, String preparation, String dishType, String filename, int preparationTime, String ingredients, int ispreferred){
         ContentValues updateValues = createContentValues(name, preparation, dishType, filename, preparationTime, ingredients, ispreferred);
         return database.update(DATABASE_TABLE, updateValues, KEY_RECIPEID + "=" + recipeId,null) > 0;
     }
@@ -82,14 +82,17 @@ public class DataBaseWrapper {
 
     // Cerco ricetta per nome
     public Cursor fetchRecipeByName(String name){
-        Cursor mCursor = database.query(true, DATABASE_TABLE, new String[]{KEY_RECIPEID, KEY_NAME, KEY_DISHTYPE, KEY_FILENAME, KEY_PREPARATION, KEY_PREPARATIONTIME, KEY_INGREDIENTS, KEY_ISPREFERRED }, KEY_NAME + " like '%" + name + "%'" ,null, null, null, null,null);
-        return mCursor;
+        return database.query(true, DATABASE_TABLE, new String[]{KEY_RECIPEID, KEY_NAME, KEY_DISHTYPE, KEY_FILENAME, KEY_PREPARATION, KEY_PREPARATIONTIME, KEY_INGREDIENTS, KEY_ISPREFERRED }, KEY_NAME + " like '%" + name + "%'" ,null, null, null, null,null);
     }
 
     // Cerco ricetta per tipo
     public Cursor fetchRecipeByType(String portata){
-        Cursor mCursor = database.query(true, DATABASE_TABLE, new String[]{KEY_RECIPEID, KEY_NAME, KEY_DISHTYPE, KEY_FILENAME, KEY_PREPARATION, KEY_PREPARATIONTIME, KEY_INGREDIENTS, KEY_ISPREFERRED }, KEY_DISHTYPE + " like '%" + portata + "%'" ,null, null, null, null,null);
-        return mCursor;
+        return database.query(true, DATABASE_TABLE, new String[]{KEY_RECIPEID, KEY_NAME, KEY_DISHTYPE, KEY_FILENAME, KEY_PREPARATION, KEY_PREPARATIONTIME, KEY_INGREDIENTS, KEY_ISPREFERRED }, KEY_DISHTYPE + " like '%" + portata + "%'",null, null, null, null,null);
+    }
+
+    // Cerco ricetta per tipo e deve essere fra le preferite
+    public Cursor fetchPrefRecipeByType(String portata){
+        return database.query(true, DATABASE_TABLE, new String[]{KEY_RECIPEID, KEY_NAME, KEY_DISHTYPE, KEY_FILENAME, KEY_PREPARATION, KEY_PREPARATIONTIME, KEY_INGREDIENTS, KEY_ISPREFERRED }, KEY_DISHTYPE + " like '%" + portata + "%'" + " AND " + KEY_ISPREFERRED + " = 1",null, null, null, null,null);
     }
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -106,7 +109,7 @@ public class DataBaseWrapper {
                 + KEY_FILENAME + " text not null, "
                 + KEY_PREPARATION + " text not null, "
                 + KEY_INGREDIENTS + " text not null, "
-                + KEY_ISPREFERRED + "bool not null,"
+                + KEY_ISPREFERRED + " integer not null,"
                 + KEY_PREPARATIONTIME + " integer);";
 
         // Costruttore

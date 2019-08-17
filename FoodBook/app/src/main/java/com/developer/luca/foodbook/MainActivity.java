@@ -10,7 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Inizializzo questa classe per la comunicazione con il db
         dbWrapper = new DataBaseWrapper(this);
+
+        // Aggiungo alcuni record se db vuoto
+        if (checkDb())
+            addRecords();
 
         // Configuro la ListView
         ExpandableListView expandableListView = findViewById(R.id.expandableListView5);
@@ -109,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
         while (cursor.moveToNext()) {
             String recipeId = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_RECIPEID));
             String name = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_NAME));
-            Toast.makeText(getApplicationContext(),name,Toast.LENGTH_SHORT).show(); // TODO temp for tests
             if (count == 0) {
                 nome1 = name;
                 id1 = recipeId;
@@ -129,5 +131,36 @@ public class MainActivity extends AppCompatActivity {
         dbWrapper.close();
 
         return result;
+    }
+
+    // Funzione usata per i test: creo un certo numero di record con i loro dettagli
+    public void addRecords(){
+        dbWrapper.open();
+        dbWrapper.createRecipe("Spaghetti", "Passo1\nButta l'acqua\nPasso2\nMetti il sale", "Primo","lasagne.jpg",18,"Spaghetti\nIngred2",1);
+        dbWrapper.createRecipe("Pasta", "Passo1\nButta un po d'acqua\nPasso2\nAggiungi il sale", "Primo","lasagne.jpg",21,"Pasta\nIngred2",1);
+        dbWrapper.createRecipe("Patatine", "Passo1\nApri il sacchetto\nPasso2\nBla bla bla", "Antipasto","lasagne.jpg",5,"Pringles\nIngred2",1);
+        dbWrapper.createRecipe("Antipasto di pesce", "Passo1\nTira fuori il pesce\nPasso2\nBla bla bla", "Antipasto","lasagne.jpg",20,"Calamari\nSeppie\nGamberi",1);
+        dbWrapper.close();
+    }
+
+    /**
+     * Funzione usata per controllare se il db ha almeno un record
+     * @return true se il db non ha record, false altrimenti
+     */
+    public Boolean checkDb(){
+        dbWrapper.open();
+        cursor = dbWrapper.fetchAllRecipes();
+        while (cursor.moveToNext()) {
+            String recipeId = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_RECIPEID));
+            if (recipeId.length() > 0) { // esiste almeno un record
+                cursor.close();
+                dbWrapper.close();
+                return false;
+            }
+        }
+        // Chiudo la connessione al db
+        cursor.close();
+        dbWrapper.close();
+        return true; // db vuoto
     }
 }
