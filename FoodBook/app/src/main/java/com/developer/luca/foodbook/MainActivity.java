@@ -21,7 +21,6 @@ import java.util.HashMap;
  * da cui e' possibile accedere all'inserimento di una nuova ricetta.
  */
 
-
 public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton fab; // bottone + sulla home

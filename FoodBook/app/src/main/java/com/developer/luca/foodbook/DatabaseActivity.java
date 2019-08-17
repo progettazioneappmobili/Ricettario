@@ -26,19 +26,19 @@ public class DatabaseActivity extends Activity {
     // Funzione usata per i test: creo un certo numero di record con i loro dettagli
     public void addRecord(View v){
         dbWrapper.open();
-        dbWrapper.createRecipe("Spaghetti", "Passo1\nButta l'acqua\nPasso2\nMetti il sale", "Primo","lasagne.jpg",18,"Spaghetti\nIngred2");
-        dbWrapper.createRecipe("Pasta", "Passo1\nButta un po d'acqua\nPasso2\nAggiungi il sale", "Primo","lasagne.jpg",21,"Pasta\nIngred2");
-        dbWrapper.createRecipe("Patatine", "Passo1\nApri il sacchetto\nPasso2\nBla bla bla", "Antipasto","lasagne.jpg",5,"Pringles\nIngred2");
-        dbWrapper.createRecipe("Antipasto di pesce", "Passo1\nTira fuori il pesce\nPasso2\nBla bla bla", "Antipasto","lasagne.jpg",20,"Calamari\nSeppie\nGamberi");
+        dbWrapper.createRecipe("Spaghetti", "Passo1\nButta l'acqua\nPasso2\nMetti il sale", "Primo","lasagne.jpg",18,"Spaghetti\nIngred2",true);
+        dbWrapper.createRecipe("Pasta", "Passo1\nButta un po d'acqua\nPasso2\nAggiungi il sale", "Primo","lasagne.jpg",21,"Pasta\nIngred2",true);
+        dbWrapper.createRecipe("Patatine", "Passo1\nApri il sacchetto\nPasso2\nBla bla bla", "Antipasto","lasagne.jpg",5,"Pringles\nIngred2",true);
+        dbWrapper.createRecipe("Antipasto di pesce", "Passo1\nTira fuori il pesce\nPasso2\nBla bla bla", "Antipasto","lasagne.jpg",20,"Calamari\nSeppie\nGamberi",true);
         dbWrapper.close();
     }
 
     public void updateRecords(View v){
         dbWrapper.open();
-        dbWrapper.updateRecipe(1,"Spaghetti", "Passo1\nButta l'acqua\nPasso2\nMetti il sale", "Primo","lasagne.jpg",18,"Spaghetti\nIngred2");
-        dbWrapper.updateRecipe(2,"Pasta", "Passo1\nButta un po d'acqua\nPasso2\nAggiungi il sale", "Primo","lasagne.jpg",21,"Pasta\nIngred2");
-        dbWrapper.updateRecipe(3,"Patatine", "Passo1\nApri il sacchetto\nPasso2\nBla bla bla", "Antipasto","lasagne.jpg",5,"Pringles\nIngred2");
-        dbWrapper.updateRecipe(4,"Antipasto di pesce", "Passo1\nTira fuori il pesce\nPasso2\nBla bla bla", "Antipasto","lasagne.jpg",20,"Calamari\nSeppie\nGamberi");
+        dbWrapper.updateRecipe(1,"Spaghetti", "Passo1\nButta l'acqua\nPasso2\nMetti il sale", "Primo","lasagne.jpg",18,"Spaghetti\nIngred2",true);
+        dbWrapper.updateRecipe(2,"Pasta", "Passo1\nButta un po d'acqua\nPasso2\nAggiungi il sale", "Primo","lasagne.jpg",21,"Pasta\nIngred2",true);
+        dbWrapper.updateRecipe(3,"Patatine", "Passo1\nApri il sacchetto\nPasso2\nBla bla bla", "Antipasto","lasagne.jpg",5,"Pringles\nIngred2",true);
+        dbWrapper.updateRecipe(4,"Antipasto di pesce", "Passo1\nTira fuori il pesce\nPasso2\nBla bla bla", "Antipasto","lasagne.jpg",20,"Calamari\nSeppie\nGamberi",true);
         dbWrapper.close();
     }
 
