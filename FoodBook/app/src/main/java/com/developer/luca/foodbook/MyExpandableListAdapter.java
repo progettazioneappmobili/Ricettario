@@ -92,17 +92,12 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         ArrayList<String> piatto1 = splitStrings(separator2, piatti2.get(0));
         // Es: <"spaghetti","12">
 
-        ArrayList<String> piatto2 = splitStrings(separator2, piatti2.get(1));
-        // Es: <"pasta","38">
-
-        final Long id_piatto_1 = Long.parseLong(piatto1.get(1));
-        final Long id_piatto_2 = Long.parseLong(piatto2.get(1));
-
+        // Nome del piatto nella textview sopra l'immagine
         TextView textView = convertView.findViewById(R.id.textView);
         textView.setText(piatto1.get(0)); // nome del piatto 1
 
-        TextView textView2 = convertView.findViewById(R.id.textView2);
-        textView2.setText(piatto2.get(0)); // nome del piatto 2
+        // Id del piatto, per passarlo alla ShowRecipeActivity
+        final Long id_piatto_1 = Long.parseLong(piatto1.get(1));
 
         // OnClickListener per le immagini presenti nella schermata (gallery) in modo da poter cambiare
         // activity quando clicco su un'immagine. In particolare da qui passo ai dettagli di una ricetta.
@@ -118,17 +113,35 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
             }
         });
 
-        ImageView imgview2 = convertView.findViewById(R.id.dishTwo); // immagine a dx nella schermata
-        imgview2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent show_recipe_intent = new Intent(v.getContext(), ShowRecipeActivity.class);
-                Bundle b = new Bundle();
-                b.putInt("key", id_piatto_2.intValue()); // id del piatto di cui mostro i dettagli
-                show_recipe_intent.putExtras(b); // passo l'id al nuovo intent
-                v.getContext().startActivity(show_recipe_intent);
-            }
-        });
+        if(piatti2.get(1).equals("")){ // non c'e il secondo piatto => non serve estrarre id ricetta e settare il listener
+            // Hide textView
+            TextView textView2 = convertView.findViewById(R.id.textView2);
+            textView2.setVisibility(View.INVISIBLE);
+            // Hide imageView
+            ImageView imgview2 = convertView.findViewById(R.id.dishTwo); // immagine a dx nella schermata
+            imgview2.setVisibility(View.INVISIBLE);
+        }else{ // c'e anche il secondo piatto
+            ArrayList<String> piatto2 = splitStrings(separator2, piatti2.get(1)); // Es: <"pasta","38">
+            // Nome del piatto nella textview sopra l'immagine
+            TextView textView2 = convertView.findViewById(R.id.textView2);
+            textView2.setVisibility(View.VISIBLE);
+            textView2.setText(piatto2.get(0)); // nome del piatto 2
+            // Id del piatto, per passarlo alla ShowRecipeActivity
+            final Long id_piatto_2 = Long.parseLong(piatto2.get(1));
+            // ImageView e listener
+            ImageView imgview2 = convertView.findViewById(R.id.dishTwo); // immagine a dx nella schermata
+            imgview2.setVisibility(View.VISIBLE);
+            imgview2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent show_recipe_intent = new Intent(v.getContext(), ShowRecipeActivity.class);
+                    Bundle b = new Bundle();
+                    b.putInt("key", id_piatto_2.intValue()); // id del piatto di cui mostro i dettagli
+                    show_recipe_intent.putExtras(b); // passo l'id al nuovo intent
+                    v.getContext().startActivity(show_recipe_intent);
+                }
+            });
+        }
 
         return convertView;
     }
@@ -152,10 +165,10 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
                 separatorFound = true;
                 toSplit = toSplit.substring(1);
             }
-            if(separatorFound){ // se si inserisco il testo nella seconda parola
+            if(separatorFound && toSplit.length() > 0){ // se si inserisco il testo nella seconda parola
                 contenuto2.append(toSplit.charAt(0));
                 toSplit = toSplit.substring(1);
-            }else{ // se no continuo a scrivere sulla prima
+            }else if(!separatorFound){ // se no continuo a scrivere sulla prima
                 contenuto1.append(toSplit.charAt(0));
                 toSplit = toSplit.substring(1);
             }

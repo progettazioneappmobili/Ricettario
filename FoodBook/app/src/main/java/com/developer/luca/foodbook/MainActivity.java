@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Cliccando sul bottone passo alla schermata di inserimento ricetta
+        // Cliccando sul bottone + dalla home page passo alla schermata di inserimento nuova ricetta
         fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         dbWrapper = new DataBaseWrapper(this);
 
         // Aggiungo alcuni record se db vuoto
-        if (checkDb())
+        if (checkDb()) // restituisce true se db vuoto => aggiungo i record
             addRecords();
 
         // Configuro la ListView
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case (R.id.action_search):
-                Intent search_intent = new Intent(this, DatabaseActivity.class); // TODO temp per i test (SearchActivity)
+                Intent search_intent = new Intent(this, DatabaseActivity.class); // TODO temp per i test (sarebbe SearchActivity)
                 startActivity(search_intent);
                 break;
 
@@ -133,13 +133,14 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    // Funzione usata per i test: creo un certo numero di record con i loro dettagli
+    // Funzione usata per i test: creo un certo numero di ricette con i loro dettagli
     public void addRecords(){
         dbWrapper.open();
         dbWrapper.createRecipe("Spaghetti", "Passo1\nButta l'acqua\nPasso2\nMetti il sale", "Primo","lasagne.jpg",18,"Spaghetti\nIngred2",1);
         dbWrapper.createRecipe("Pasta", "Passo1\nButta un po d'acqua\nPasso2\nAggiungi il sale", "Primo","lasagne.jpg",21,"Pasta\nIngred2",1);
         dbWrapper.createRecipe("Patatine", "Passo1\nApri il sacchetto\nPasso2\nBla bla bla", "Antipasto","lasagne.jpg",5,"Pringles\nIngred2",1);
         dbWrapper.createRecipe("Antipasto di pesce", "Passo1\nTira fuori il pesce\nPasso2\nBla bla bla", "Antipasto","lasagne.jpg",20,"Calamari\nSeppie\nGamberi",1);
+        dbWrapper.createRecipe("Formaggi misti", "Passo1\nTira fuori il formaggio\nPasso2\nBla bla bla", "Antipasto","lasagne.jpg",10,"Gorgonzola\nMontasio\nEmmenthal",0);
         dbWrapper.close();
     }
 
@@ -161,6 +162,6 @@ public class MainActivity extends AppCompatActivity {
         // Chiudo la connessione al db
         cursor.close();
         dbWrapper.close();
-        return true; // db vuoto
+        return true; // se arrivo qui => db vuoto
     }
 }
