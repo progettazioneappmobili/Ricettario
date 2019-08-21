@@ -102,10 +102,9 @@ public class MainActivity extends AppCompatActivity {
      * @param result ArrayList su cui andro a scrivere il risultato
      * @return lista di stringhe contenenti coppie di piatti e i loro id
      */
-    // TODO gestire caso singola ricetta (TableLayout)
     public ArrayList<String> getRecipesByType(String tipo, ArrayList<String> result){
         dbWrapper.open();
-        cursor = dbWrapper.fetchRecipeByType(tipo);
+        cursor = dbWrapper.fetchRecipeByType(tipo); // tutte le ricette di un certo tipo
         int count = 0;
         String nome1 = "";
         String id1 = "";
@@ -136,11 +135,11 @@ public class MainActivity extends AppCompatActivity {
     // Funzione usata per i test: creo un certo numero di ricette con i loro dettagli
     public void addRecords(){
         dbWrapper.open();
-        dbWrapper.createRecipe("Spaghetti", "Passo1\nButta l'acqua\nPasso2\nMetti il sale", "Primo","lasagne.jpg",18,"Spaghetti\nIngred2",1);
-        dbWrapper.createRecipe("Pasta", "Passo1\nButta un po d'acqua\nPasso2\nAggiungi il sale", "Primo","lasagne.jpg",21,"Pasta\nIngred2",1);
-        dbWrapper.createRecipe("Patatine", "Passo1\nApri il sacchetto\nPasso2\nBla bla bla", "Antipasto","lasagne.jpg",5,"Pringles\nIngred2",1);
-        dbWrapper.createRecipe("Antipasto di pesce", "Passo1\nTira fuori il pesce\nPasso2\nBla bla bla", "Antipasto","lasagne.jpg",20,"Calamari\nSeppie\nGamberi",1);
-        dbWrapper.createRecipe("Formaggi misti", "Passo1\nTira fuori il formaggio\nPasso2\nBla bla bla", "Antipasto","lasagne.jpg",10,"Gorgonzola\nMontasio\nEmmenthal",0);
+        dbWrapper.createRecipe("Spaghetti", "Passo1\nButta l'acqua\nPasso2\nMetti il sale", "Primo","dish_icon",18,"Spaghetti\nIngred2",1);
+        dbWrapper.createRecipe("Pasta", "Passo1\nButta un po d'acqua\nPasso2\nAggiungi il sale", "Primo","lasagne",21,"Pasta\nIngred2",1);
+        dbWrapper.createRecipe("Patatine", "Passo1\nApri il sacchetto\nPasso2\nBla bla bla", "Antipasto","lasagne",5,"Pringles\nIngred2",1);
+        dbWrapper.createRecipe("Antipasto di pesce", "Passo1\nTira fuori il pesce\nPasso2\nBla bla bla", "Antipasto","lasagne",20,"Calamari\nSeppie\nGamberi",1);
+        dbWrapper.createRecipe("Formaggi misti", "Passo1\nTira fuori il formaggio\nPasso2\nBla bla bla", "Antipasto","lasagne",10,"Gorgonzola\nMontasio\nEmmenthal",0);
         dbWrapper.close();
     }
 

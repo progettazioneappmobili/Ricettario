@@ -61,10 +61,9 @@ public class ResultsActivity extends AppCompatActivity {
      * @param result ArrayList su cui andro a scrivere il risultato
      * @return lista di stringhe contenenti coppie di piatti e i loro id
      */
-    // TODO gestire caso singola ricetta (TableLayout)
     public ArrayList<String> getRecipesByType(String tipo, ArrayList<String> result){
         dbWrapper.open();
-        cursor = dbWrapper.fetchPrefRecipeByType(tipo);
+        cursor = dbWrapper.fetchPrefRecipeByType(tipo); // prendo tutte le ricette con il flag preferita e del tipo che cerco
         int count = 0;
         String nome1 = "";
         String id1 = "";

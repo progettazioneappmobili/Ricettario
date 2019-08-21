@@ -1,6 +1,7 @@
 package com.developer.luca.foodbook;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,8 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     private String[] mListHeaderGroup;
     private Character separator = '§'; // separatore fra coppie di piatti
     private Character separator2 = '£'; // separatore fra piatto e suo id
+    private DataBaseWrapper dbWrapper; // comunicazione db
+    private Cursor cursor; // ausiliario per scorrere i record trovati con la query
 
     public MyExpandableListAdapter(HashMap<String, ArrayList<String>> stringListHashMap) {
         mStringListHashMap = stringListHashMap;
@@ -83,6 +86,9 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null)
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_list_item, parent, false);
 
+        // Inizializzo questa classe per la comunicazione con il db
+        dbWrapper = new DataBaseWrapper(convertView.getContext());
+
         String piatti = String.valueOf(getChild(groupPosition, childPosition));
         // Es: "spaghetti£12§pasta£38" => nome del piatto seguito da '£' e il suo id, seguito da '§' e il nome del secondo piatto
 
@@ -102,6 +108,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         // OnClickListener per le immagini presenti nella schermata (gallery) in modo da poter cambiare
         // activity quando clicco su un'immagine. In particolare da qui passo ai dettagli di una ricetta.
         ImageView imgview = convertView.findViewById(R.id.dishOne); // immagine a sx nella schermata
+        imgview = setImage(id_piatto_1, imgview, convertView); // scelgo l'immagine in base al nome del file (db)
         imgview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,6 +137,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
             final Long id_piatto_2 = Long.parseLong(piatto2.get(1));
             // ImageView e listener
             ImageView imgview2 = convertView.findViewById(R.id.dishTwo); // immagine a dx nella schermata
+            imgview2 = setImage(id_piatto_2, imgview2, convertView); // scelgo l'immagine in base al nome del file (db)
             imgview2.setVisibility(View.VISIBLE);
             imgview2.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -151,8 +159,14 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    // Funzione ausiliaria per effettuare lo split di una stringa in base ad un carattere separatore;
-    // salvo il risultato (due stringhe) in un ArrayList.
+    /**
+     * Funzione ausiliaria per effettuare lo split di una stringa in base ad un carattere separatore;
+     * salvo il risultato (due stringhe) in un ArrayList.
+     * @param separatore
+     * @param toSplit
+     * @return ArrayList<String> che contiene le due stringhe risultanti dallo split della stringa di partenza,
+     * la seconda puo essere vuota.
+     */
     private ArrayList<String> splitStrings(Character separatore, String toSplit){
         StringBuilder contenuto1 = new StringBuilder();
         StringBuilder contenuto2 = new StringBuilder();
@@ -179,6 +193,45 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         result.add(contenuto2.toString());
 
         return result;
+    }
+
+    /**
+     * Dato l'id di una ricetta effettuo una query al db per ottenere il nome del file che
+     * contiene la foto del piatto.
+     * @param id: id della ricetta di cui voglio trovare il nome del file
+     * @return nome del file (stringa)
+     */
+    private String getFilename(long id){
+        dbWrapper.open();
+        cursor = dbWrapper.fetchRecipe(id);
+        String filename = "";
+        while (cursor.moveToNext()) {
+            filename = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_FILENAME));
+        }
+        // Chiudo la connessione al db
+        cursor.close();
+        dbWrapper.close();
+        return filename; // se arrivo qui => db vuoto
+    }
+
+    /**
+     * Setto l'immagine di una ricetta (se non presente ne scelgo una di default)
+     * @param id: id della ricetta
+     * @param img: imageView di cui devo settare l'immagine
+     * @param convertView: mi serve per cercare la risorsa
+     * @return imageView con immagine settata
+     */
+    private ImageView setImage(long id, ImageView img, View convertView){
+        String filename = getFilename(id);
+        if (filename.equals("dish_icon")){ // icona di default => foto non presente
+            img.setImageResource(R.drawable.dish_icon);
+//            img.setMaxHeight(25);
+        }else{ // icona presente, cerco l'id del file
+            int resID = convertView.getResources().getIdentifier(filename , "drawable", "com.developer.luca.foodbook");
+            img.setImageResource(resID);
+//            img.setMaxHeight(25);
+        }
+        return img;
     }
 
 }
