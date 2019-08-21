@@ -2,9 +2,11 @@ package com.developer.luca.foodbook;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private DataBaseWrapper dbWrapper; // comunicazione db
     private Cursor cursor; // ausiliario per scorrere i record trovati con la query
 
+    static final int INSERT_RECIPE_REQUEST = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent insert_intent = new Intent(v.getContext(), InsertActivity.class);
-                startActivity(insert_intent);
+                startActivityForResult(insert_intent, INSERT_RECIPE_REQUEST);
             }
         });
 
@@ -163,5 +167,28 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
         dbWrapper.close();
         return true; // se arrivo qui => db vuoto
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode != RESULT_OK)
+            return;
+
+        if (requestCode == INSERT_RECIPE_REQUEST) {
+            if (data != null) {
+                // TODO: inserire la ricetta nel database
+                // dbWrapper.createRecipe(
+                Log.d("RECIPE", "name: " +       data.getStringExtra( "name")         );
+                Log.d("RECIPE", "phases: " +        data.getStringExtra( "phases")       );
+                Log.d("RECIPE", "dishType: " +        data.getStringExtra( "dishType")        );
+                Log.d("RECIPE", "imageUri: " +        data.getStringExtra( "imageUri")           );
+                Log.d("RECIPE", "timeType: " +        data.getStringExtra( "timeType")               ); // Manca nel db
+                Log.d("RECIPE", "minutes: " +        data.getIntExtra( "minutes", 0)     );
+                Log.d("RECIPE", "ingredients: " +        data.getStringExtra( "ingredients")              );
+                Log.d("RECIPE", "isPreferred: " +        data.getIntExtra( "isPreferred", 0)    );
+                // );
+            }
+        }
     }
 }

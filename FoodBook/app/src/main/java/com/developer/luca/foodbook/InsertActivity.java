@@ -2,6 +2,7 @@ package com.developer.luca.foodbook;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -186,7 +187,20 @@ public class InsertActivity extends AppCompatActivity {
             viewPager.setCurrentItem(pos + 1);
         } else {
             // TODO: controlla se insert3 corretto e vai alla prossima attività
-            isInsertCompiled(pos);
+            if( isInsertCompiled(pos)){
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("name",recipe.getName());
+                returnIntent.putExtra("phases", recipe.getPhasesString());
+                returnIntent.putExtra("dishType", recipe.getDishType().getDishTypeString());
+                returnIntent.putExtra("imageUri", recipe.getImageUri().getPath());
+                returnIntent.putExtra("timeType", recipe.getTimeType().getTimeTypeString());
+                returnIntent.putExtra("minutes", recipe.getMinutes());
+                returnIntent.putExtra("ingredients", recipe.getIngredientsString());
+                returnIntent.putExtra("isPreferred", 0);
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
+            }
+
         }
     }
 
@@ -225,6 +239,7 @@ public class InsertActivity extends AppCompatActivity {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
                     // Anullare l'inserimento? Sì -> Esci dal attività
+                    setResult(Activity.RESULT_CANCELED);
                     finish();
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
