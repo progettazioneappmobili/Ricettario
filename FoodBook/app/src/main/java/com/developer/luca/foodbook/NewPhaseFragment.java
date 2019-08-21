@@ -48,7 +48,12 @@ public class NewPhaseFragment extends Fragment {
 
         phaseDescription_editText = view.findViewById(R.id.phaseDescription_editText);
         phaseNumber_textView = view.findViewById(R.id.phaseNumber_textView);
-        phaseNumber_textView.setText(String.valueOf(phaseNumber++));
+
+        if(phaseNumber_textView.getText().equals("")){
+            phaseNumber_textView.setText(String.valueOf(phaseNumber));
+            phaseNumber++;
+        }
+
     }
 
     // Ritorna la fase rappresentata.

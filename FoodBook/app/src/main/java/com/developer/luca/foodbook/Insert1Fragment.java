@@ -286,12 +286,26 @@ public class Insert1Fragment extends Fragment {
         }
 
         if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(mainActivity, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),REQUEST_ID_MULTIPLE_PERMISSIONS);
+            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),REQUEST_ID_MULTIPLE_PERMISSIONS);
             return false;
         }
         return true;
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == REQUEST_ID_MULTIPLE_PERMISSIONS){
+
+            // Se tutti i permessi sono stati accettati
+            for(int i = 0; i<2; i++){
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED)
+                    return;
+            }
+
+            // Apri la scelta del'immagine
+            showPictureDialog();
+        }
+    }
 
     // Modificato a partire da:
     // https://demonuts.com/pick-image-gallery-camera-android/

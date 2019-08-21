@@ -186,7 +186,6 @@ public class InsertActivity extends AppCompatActivity {
         if(pos < viewPager.getAdapter().getCount()-1){
             viewPager.setCurrentItem(pos + 1);
         } else {
-            // TODO: controlla se insert3 corretto e vai alla prossima attività
             if( isInsertCompiled(pos)){
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("name",recipe.getName());
@@ -200,7 +199,6 @@ public class InsertActivity extends AppCompatActivity {
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             }
-
         }
     }
 
