@@ -4,9 +4,15 @@ package com.developer.luca.foodbook;
 public class Ingredient {
 
     public enum Unit {
-        GR, // Grammi
-        ML, // Millilitri
-        UNIT // Quantità senza unità di muisura (eg. 3 uova)
+        GR("gr"), // Grammi
+        ML("ml"), // Millilitri
+        UNIT(""); // Quantità senza unità di muisura (eg. 3 uova) ;
+
+        private String unitString;
+
+        Unit(String unitString){ this.unitString = unitString; }
+
+        public String getUnitString() { return unitString; }
     }
 
     private String ingredient = "";

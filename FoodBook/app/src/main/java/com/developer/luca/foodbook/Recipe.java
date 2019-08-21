@@ -10,27 +10,36 @@ import java.util.List;
 public class Recipe {
 
     public enum DishType {
-        FIRST,
-        SECOND,
-        APPETIZER,
-        DESSERT
+        FIRST("Primo"),
+        SECOND("Secondo"),
+        APPETIZER("Antipasto"),
+        DESSERT("Dolce");
+
+        private String dishTypeString;
+
+        DishType(String dishTypeString){ this.dishTypeString = dishTypeString; }
+
+        public String getDishTypeString() { return dishTypeString; }
     }
 
     // Assegno dei valori agli enum e li rendo recuperarli con il metodo getMinutes
     public  enum  TimeType {
-        FAST(30),
-        MEDIUM(60),
-        LONG(90);
+        FAST(30, "Veloce"),
+        MEDIUM(60, "Media"),
+        LONG(90, "Lunga");
 
         private int minutes;
+        private String timeTypeString;
 
-        TimeType(int minutes){
+        TimeType(int minutes, String timeTypeString){
             this.minutes = minutes;
+            this.timeTypeString = timeTypeString;
         }
 
         public int getMinutes() {
             return minutes;
         }
+        public String getTimeTypeString(){ return timeTypeString; }
     }
 
     private String name;
@@ -135,10 +144,10 @@ public class Recipe {
         return imageUri;
     }
 
-    // TODO: salva file in dimensioni massime
     public void setImageUri(Uri imageUri) {
         this.imageUri = imageUri;
     }
+
 
 
     public List<Ingredient> getIngredients() {
@@ -153,6 +162,22 @@ public class Recipe {
         ingredients.add(ingredient);
     }
 
+    // Trasforma la lista degli ingredienti in una stringa
+    public String getIngredientsString(){
+        StringBuilder ingredientsString = new StringBuilder();
+
+        for (Ingredient ingredient: ingredients) {
+            ingredientsString.append(ingredient.getQuantity())
+                    .append(" ").append(ingredient.getUnit().getUnitString())
+                    .append(", ").append(ingredient.getIngredient())
+                    .append("\n");
+        }
+
+        return ingredientsString.toString();
+    }
+
+
+
     public List<Phase> getPhases() {
         return phases;
     }
@@ -163,5 +188,18 @@ public class Recipe {
 
     public void addPhase(Phase phase) {
         phases.add(phase);
+    }
+
+    // Trasforma la lista dei passi in una stringa
+    public String getPhasesString(){
+        StringBuilder phasesString = new StringBuilder();
+
+        for (Phase phase: phases) {
+            phasesString.append("Passo ").append(phase.getPhaseNumber())
+                    .append("\n").append(phase.getPhaseDescription())
+                    .append("\n");
+        }
+
+        return phasesString.toString();
     }
 }
