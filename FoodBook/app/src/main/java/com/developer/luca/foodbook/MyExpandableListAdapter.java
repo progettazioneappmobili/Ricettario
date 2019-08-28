@@ -225,11 +225,9 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         String filename = getFilename(id);
         if (filename.equals("dish_icon")){ // icona di default => foto non presente
             img.setImageResource(R.drawable.dish_icon);
-//            img.setMaxHeight(25);
         }else{ // icona presente, cerco l'id del file
             int resID = convertView.getResources().getIdentifier(filename , "drawable", "com.developer.luca.foodbook");
             img.setImageResource(resID);
-//            img.setMaxHeight(25);
         }
         return img;
     }
