@@ -56,7 +56,7 @@ public class ShowRecipeActivity extends AppCompatActivity {
         if (time < 2)
                 minutes = "minuto";
 
-        informazioniGroup.add(name + "\n" + dishType + "\n\n" + prepTime + " " + minutes + "\n" + dishId); // TODO rimuovere id
+        informazioniGroup.add(name + "\n" + dishType + "\n" + prepTime + " " + minutes + "\n" + dishId);
         item_info.put(getString(R.string.recipe_info), informazioniGroup);
 
         // Configuro la ListView

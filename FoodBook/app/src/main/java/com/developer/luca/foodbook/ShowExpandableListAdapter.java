@@ -1,11 +1,14 @@
 package com.developer.luca.foodbook;
 
+import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,6 +22,8 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
     private HashMap<String, List<String>> mStringListHashMap; // es: <"Antipasto",<"Patatine",...>>, <"Primo",<"Spaghetti","Pasta",..>>
     private String[] mListHeaderGroup;
     private String forActivity; // in questo modo so che elementi visualizzare all'interno dei group item
+    private DataBaseWrapper dbWrapper; // comunicazione db
+    private Cursor cursor; // ausiliario per scorrere i record trovati con la query
 
 
     public ShowExpandableListAdapter(HashMap<String, List<String>> stringListHashMap, String activityName) {
@@ -99,10 +104,19 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null)
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_list_item2, parent, false);
 
+        // Inizializzo questa classe per la comunicazione con il db
+        dbWrapper = new DataBaseWrapper(convertView.getContext());
+
         String contenuti = String.valueOf(getChild(groupPosition, childPosition));
+        ArrayList<String> cont = split(contenuti); // divido info del piatto dall'id
 
         TextView textView = convertView.findViewById(R.id.textView);
-        textView.setText(contenuti);
+        textView.setText(cont.get(0)); // info del piatto
+
+        final Long id_piatto = Long.parseLong(cont.get(1)); // id
+
+        ImageView imgview = convertView.findViewById(R.id.imageView2); // immagine a sx nella schermata
+        imgview = setImage(id_piatto, imgview, convertView); // scelgo l'immagine in base al nome del file (db)
 
         return convertView;
     }
@@ -129,6 +143,70 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
         // preparazione, separati da \n
 
         return convertView;
+    }
+
+    /**
+     * Setto l'immagine di una ricetta (se non presente ne scelgo una di default)
+     * @param id: id della ricetta
+     * @param img: imageView di cui devo settare l'immagine
+     * @param convertView: mi serve per cercare la risorsa
+     * @return imageView con immagine settata
+     */
+    private ImageView setImage(long id, ImageView img, View convertView){
+        String filename = getFilename(id);
+        if (filename.equals("dish_icon")){ // icona di default => foto non presente
+            img.setImageResource(R.drawable.dish_icon);
+        }else{ // icona presente, cerco l'id del file
+            int resID = convertView.getResources().getIdentifier(filename , "drawable", "com.developer.luca.foodbook");
+            img.setImageResource(resID);
+        }
+        return img;
+    }
+
+    /**
+     * Dato l'id di una ricetta effettuo una query al db per ottenere il nome del file che
+     * contiene la foto del piatto.
+     * @param id: id della ricetta di cui voglio trovare il nome del file
+     * @return nome del file (stringa)
+     */
+    private String getFilename(long id){
+        dbWrapper.open();
+        cursor = dbWrapper.fetchRecipe(id);
+        String filename = "";
+        while (cursor.moveToNext()) {
+            filename = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_FILENAME));
+        }
+        // Chiudo la connessione al db
+        cursor.close();
+        dbWrapper.close();
+        return filename; // se arrivo qui => db vuoto
+    }
+
+    /**
+     * Data una stringa contenente valori separati da \n separo i primi tre valori dall'ultimo
+     * @param contenuti stringa da analizzare
+     * @return ArrayList che nella prima posizione contiene: "nome ricetta\ntipo portata\ntempo preparazione",
+     * mentre nella seconda posizione contiene l'id del piatto
+     */
+    private ArrayList<String> split(String contenuti) {
+        ArrayList<String> result = new ArrayList<>();
+        int count = 0; // numero di caratteri = '\n'
+        StringBuilder contenuto = new StringBuilder();
+        StringBuilder id_piatto = new StringBuilder();
+        while(contenuti.length() > 0){
+            if(contenuti.charAt(0) == '\n'){
+                contenuto.append(contenuti.charAt(0));
+                count = count + 1;
+            }else if(count > 2){ // ho trovato 3 '\n'
+                id_piatto.append(contenuti.charAt(0));
+            }else{ // carattere != da \n
+                contenuto.append(contenuti.charAt(0));
+            }
+            contenuti = contenuti.substring(1);
+        }
+        result.add(contenuto.toString());
+        result.add(id_piatto.toString());
+        return result;
     }
 
 }
