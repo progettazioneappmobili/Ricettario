@@ -36,7 +36,7 @@ public class Insert2Fragment extends Fragment {
     }
 
 
-    private static boolean firstTime = true;
+    private boolean firstTime = true;
 
     @Override
     public void onStart() {
