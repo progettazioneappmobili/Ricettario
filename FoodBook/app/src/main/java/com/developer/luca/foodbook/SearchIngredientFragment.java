@@ -14,7 +14,7 @@ public class SearchIngredientFragment extends Fragment {
 
     private View view;
 
-    private EditText ingredientName_editText;
+    private EditText ingredientNameSearch_editText;
 
     public static SearchIngredientFragment newInstance(){
         return new SearchIngredientFragment();
@@ -33,10 +33,10 @@ public class SearchIngredientFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        ingredientName_editText = view.findViewById(R.id.ingredientName_editText);
+        ingredientNameSearch_editText = view.findViewById(R.id.ingredientNameSearch_editText);
     }
 
     public String getText(){
-        return ingredientName_editText.getText().toString().trim();
+        return ingredientNameSearch_editText.getText().toString().trim();
     }
 }

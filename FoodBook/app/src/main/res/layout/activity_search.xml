@@ -165,7 +165,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/toggleButton3Search" />
 
             <ToggleButton
-                android:id="@+id/toggleButton13"
+                android:id="@+id/fastSearch_toggleButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -175,12 +175,12 @@
                 android:layout_marginRight="8dp"
                 android:textOff="Veloce"
                 android:textOn="Veloce"
-                app:layout_constraintEnd_toStartOf="@+id/toggleButton14"
+                app:layout_constraintEnd_toStartOf="@+id/mediumSearch_toggleButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
             <ToggleButton
-                android:id="@+id/toggleButton14"
+                android:id="@+id/mediumSearch_toggleButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -190,12 +190,12 @@
                 android:layout_marginRight="8dp"
                 android:textOff="Medio"
                 android:textOn="Medio"
-                app:layout_constraintEnd_toStartOf="@+id/toggleButton15"
-                app:layout_constraintStart_toEndOf="@+id/toggleButton13"
+                app:layout_constraintEnd_toStartOf="@+id/longSearch_toggleButton"
+                app:layout_constraintStart_toEndOf="@+id/fastSearch_toggleButton"
                 app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
             <ToggleButton
-                android:id="@+id/toggleButton15"
+                android:id="@+id/longSearch_toggleButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -206,7 +206,7 @@
                 android:textOff="Lungo"
                 android:textOn="Lungo"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/toggleButton14"
+                app:layout_constraintStart_toEndOf="@+id/mediumSearch_toggleButton"
                 app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
             <TextView
@@ -219,7 +219,7 @@
                 android:text="Ingredienti"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toggleButton13" />
+                app:layout_constraintTop_toBottomOf="@+id/fastSearch_toggleButton" />
 
             <LinearLayout
                 android:id="@+id/ingredientsSearch_linearLayout"

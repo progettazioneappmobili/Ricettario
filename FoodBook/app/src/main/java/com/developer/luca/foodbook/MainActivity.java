@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private Cursor cursor; // ausiliario per scorrere i record trovati con la query
 
     static final int INSERT_RECIPE_REQUEST = 1;
+    static final int SEARCH_RECIPE_REQUEST = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +90,9 @@ public class MainActivity extends AppCompatActivity {
 
             case (R.id.action_search):
                 //Intent search_intent = new Intent(this, DatabaseActivity.class); // TODO temp per i test (sarebbe SearchActivity)
+                //startActivity(search_intent);
                 Intent search_intent = new Intent(this, SearchActivity.class);
-                startActivity(search_intent);
+                startActivityForResult(search_intent, SEARCH_RECIPE_REQUEST);
                 break;
 
             default:
@@ -175,20 +177,33 @@ public class MainActivity extends AppCompatActivity {
         if(resultCode != RESULT_OK)
             return;
 
-        if (requestCode == INSERT_RECIPE_REQUEST) {
-            if (data != null) {
-                // TODO: inserire la ricetta nel database
-                // dbWrapper.createRecipe(
-                Log.d("RECIPE", "name: " +       data.getStringExtra( "name")         );
-                Log.d("RECIPE", "phases: " +        data.getStringExtra( "phases")       );
-                Log.d("RECIPE", "dishType: " +        data.getStringExtra( "dishType")        );
-                Log.d("RECIPE", "imageUri: " +        data.getStringExtra( "imageUri")           );
-                Log.d("RECIPE", "timeType: " +        data.getStringExtra( "timeType")               ); // Manca nel db
-                Log.d("RECIPE", "minutes: " +        data.getIntExtra( "minutes", 0)     );
-                Log.d("RECIPE", "ingredients: " +        data.getStringExtra( "ingredients")              );
-                Log.d("RECIPE", "isPreferred: " +        data.getIntExtra( "isPreferred", 0)    );
-                // );
-            }
+        switch (requestCode){
+            case INSERT_RECIPE_REQUEST:
+                if (data != null) {
+                    // TODO: inserire la ricetta nel database
+                    // dbWrapper.createRecipe(
+                    Log.d("RECIPE", "name: " +         data.getStringExtra( "name")         );
+                    Log.d("RECIPE", "phases: " +       data.getStringExtra( "phases")       );
+                    Log.d("RECIPE", "dishType: " +     data.getStringExtra( "dishType")        );
+                    Log.d("RECIPE", "imageUri: " +     data.getStringExtra( "imageUri")           );
+                    Log.d("RECIPE", "timeType: " +     data.getStringExtra( "timeType")               ); // Manca nel db
+                    Log.d("RECIPE", "minutes: " +      data.getIntExtra( "minutes", 0)     );
+                    Log.d("RECIPE", "ingredients: " +  data.getStringExtra( "ingredients")              );
+                    Log.d("RECIPE", "isPreferred: " +  data.getIntExtra( "isPreferred", 0)    );
+                    // );
+                }
+                break;
+
+            case SEARCH_RECIPE_REQUEST:
+                if (data != null) {
+                    // TODO: cercare la ricetta
+                    Log.d("SEARCH", "name: "+      data.getStringExtra( "name")         );
+                    Log.d("SEARCH", "dishType: "+  data.getStringArrayListExtra("dishType").toString()         );
+                    Log.d("SEARCH", "timeType: "+  data.getStringArrayListExtra("timeType").toString()         );
+                    Log.d("RECIPE", "ingredients: " +  data.getStringArrayListExtra( "ingredients").toString()              );
+                }
+                break;
         }
+
     }
 }
