@@ -28,22 +28,28 @@
 
         <activity
             android:name=".InsertActivity"
-            android:theme="@style/AppTheme2" />
+            android:theme="@style/AppTheme2"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ResultsActivity"
-            android:theme="@style/AppTheme2" />
+            android:theme="@style/AppTheme2"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ShowRecipeActivity"
-            android:theme="@style/AppTheme2" />
+            android:theme="@style/AppTheme2"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SearchActivity"
-            android:theme="@style/AppTheme2" />
+            android:theme="@style/AppTheme2"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".DatabaseActivity"
-            android:theme="@style/AppTheme2" />
+            android:theme="@style/AppTheme2"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
