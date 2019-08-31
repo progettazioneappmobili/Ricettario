@@ -36,22 +36,8 @@ public class ResultsActivity extends AppCompatActivity {
         // Inizializzo questa classe per la comunicazione con il db
         dbWrapper = new DataBaseWrapper(this);
 
-        // Configuro la ListView
-        ExpandableListView expandableListView = findViewById(R.id.expandableListView);
-        HashMap<String, ArrayList<String>> item = new HashMap<>(); // conterra titolo e contenuti della list view
+        configGallery();
 
-        // Antipasti
-        ArrayList<String> antipastiGroup = new ArrayList<>();
-        antipastiGroup = getRecipesByType("Antipasto", antipastiGroup);
-        item.put(getString(R.string.antipasti), antipastiGroup);
-
-        // Primi
-        ArrayList<String> primiGroup = new ArrayList<>();
-        primiGroup = getRecipesByType("Primo", primiGroup);
-        item.put(getString(R.string.primi), primiGroup);
-
-        MyExpandableListAdapter adapter = new MyExpandableListAdapter(item);
-        expandableListView.setAdapter(adapter);
     }
 
     /**
@@ -90,6 +76,38 @@ public class ResultsActivity extends AppCompatActivity {
         dbWrapper.close();
 
         return result;
+    }
+
+    /**
+     * Inizializzo la Gallery passando le varie ricette raggruppate per tipo alla ListView
+     */
+    public void configGallery() {
+        // Configuro la ListView
+        ExpandableListView expandableListView = findViewById(R.id.expandableListView5);
+        HashMap<String, ArrayList<String>> item = new HashMap<>(); // conterra titolo e contenuti della list view
+
+        // Antipasti
+        ArrayList<String> antipastiGroup = new ArrayList<>();
+        antipastiGroup = getRecipesByType("Antipasto", antipastiGroup);
+        item.put(getString(R.string.antipasti), antipastiGroup);
+
+        // Primi
+        ArrayList<String> primiGroup = new ArrayList<>();
+        primiGroup = getRecipesByType("Primo", primiGroup);
+        item.put(getString(R.string.primi), primiGroup);
+
+        // Secondi
+        ArrayList<String> secondiGroup = new ArrayList<>();
+        secondiGroup = getRecipesByType("Secondo", secondiGroup);
+        item.put(getString(R.string.secondi), secondiGroup);
+
+        // Dolci
+        ArrayList<String> dolciGroup = new ArrayList<>();
+        dolciGroup = getRecipesByType("Dessert", dolciGroup);
+        item.put(getString(R.string.dessert), dolciGroup);
+
+        MyExpandableListAdapter adapter = new MyExpandableListAdapter(item);
+        expandableListView.setAdapter(adapter);
     }
 
 }

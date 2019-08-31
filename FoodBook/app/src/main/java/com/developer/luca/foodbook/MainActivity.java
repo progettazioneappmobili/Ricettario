@@ -53,22 +53,7 @@ public class MainActivity extends AppCompatActivity {
         if (checkDb()) // restituisce true se db vuoto => aggiungo i record
             addRecords();
 
-        // Configuro la ListView
-        ExpandableListView expandableListView = findViewById(R.id.expandableListView5);
-        HashMap<String, ArrayList<String>> item = new HashMap<>(); // conterra titolo e contenuti della list view
-
-        // Antipasti
-        ArrayList<String> antipastiGroup = new ArrayList<>();
-        antipastiGroup = getRecipesByType("Antipasto", antipastiGroup);
-        item.put(getString(R.string.antipasti), antipastiGroup);
-
-        // Primi
-        ArrayList<String> primiGroup = new ArrayList<>();
-        primiGroup = getRecipesByType("Primo", primiGroup);
-        item.put(getString(R.string.primi), primiGroup);
-
-        MyExpandableListAdapter adapter = new MyExpandableListAdapter(item);
-        expandableListView.setAdapter(adapter);
+        configGallery();
 
     }
 
@@ -89,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case (R.id.action_search):
-                //Intent search_intent = new Intent(this, DatabaseActivity.class); // TODO temp per i test (sarebbe SearchActivity)
-                //startActivity(search_intent);
                 Intent search_intent = new Intent(this, SearchActivity.class);
                 startActivityForResult(search_intent, SEARCH_RECIPE_REQUEST);
                 break;
@@ -105,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Dato il tipo di portata ed un ArrayList<String> su cui scrivere il risultato inserisco nell'array
      * tutti i piatti di quel tipo
-     * @param tipo String ad esempio "Antipasto", "Primo",...
+     * @param tipo String con tipo di portata: "Antipasto", "Primo", "Secondo", "Dessert"
      * @param result ArrayList su cui andro a scrivere il risultato
      * @return lista di stringhe contenenti coppie di piatti e i loro id
      */
@@ -139,14 +122,19 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    // Funzione usata per i test: creo un certo numero di ricette con i loro dettagli
+    /**
+     * Funzione usata come seed iniziale per il database: creo un certo numero di ricette con diverso tipo di portata
+     * e con i loro dettagli, alcune le metto come preferite, altre no.
+      */
     public void addRecords(){
         dbWrapper.open();
-        dbWrapper.createRecipe("Spaghetti", "Passo1\nButta l'acqua\nPasso2\nMetti il sale", "Primo","dish_icon",18,"Spaghetti\nIngred2",1);
+        dbWrapper.createRecipe("Spaghetti", "Passo1\nButta l'acqua\nPasso2\nMetti il sale", "Primo","dish_icon",18,"100 gr\tSpaghetti\n2\tIngred2",1);
         dbWrapper.createRecipe("Pasta", "Passo1\nButta un po d'acqua\nPasso2\nAggiungi il sale", "Primo","lasagne",21,"Pasta\nIngred2",1);
         dbWrapper.createRecipe("Patatine", "Passo1\nApri il sacchetto\nPasso2\nBla bla bla", "Antipasto","lasagne",5,"Pringles\nIngred2",1);
         dbWrapper.createRecipe("Antipasto di pesce", "Passo1\nTira fuori il pesce\nPasso2\nBla bla bla", "Antipasto","lasagne",20,"Calamari\nSeppie\nGamberi",1);
         dbWrapper.createRecipe("Formaggi misti", "Passo1\nTira fuori il formaggio\nPasso2\nBla bla bla", "Antipasto","lasagne",10,"Gorgonzola\nMontasio\nEmmenthal",0);
+        dbWrapper.createRecipe("Cheescake","Passo1\nCompra il formaggio\nPasso2\nBla bla","Dessert","dish_icon",35,"Formaggio\nZucchero\nBurro",0);
+        dbWrapper.createRecipe("Filetto di trota","Passo1\nCompra il pesce\nPasso2\n....","Secondo","dish_icon",20,"Trota\nSale",1);
         dbWrapper.close();
     }
 
@@ -169,6 +157,38 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
         dbWrapper.close();
         return true; // se arrivo qui => db vuoto
+    }
+
+    /**
+     * Inizializzo la Gallery passando le varie ricette raggruppate per tipo alla ListView
+     */
+    public void configGallery() {
+        // Configuro la ListView
+        ExpandableListView expandableListView = findViewById(R.id.expandableListView5);
+        HashMap<String, ArrayList<String>> item = new HashMap<>(); // conterra titolo e contenuti della list view
+
+        // Antipasti
+        ArrayList<String> antipastiGroup = new ArrayList<>();
+        antipastiGroup = getRecipesByType("Antipasto", antipastiGroup);
+        item.put(getString(R.string.antipasti), antipastiGroup);
+
+        // Primi
+        ArrayList<String> primiGroup = new ArrayList<>();
+        primiGroup = getRecipesByType("Primo", primiGroup);
+        item.put(getString(R.string.primi), primiGroup);
+
+        // Secondi
+        ArrayList<String> secondiGroup = new ArrayList<>();
+        secondiGroup = getRecipesByType("Secondo", secondiGroup);
+        item.put(getString(R.string.secondi), secondiGroup);
+
+        // Dolci
+        ArrayList<String> dolciGroup = new ArrayList<>();
+        dolciGroup = getRecipesByType("Dessert", dolciGroup);
+        item.put(getString(R.string.dessert), dolciGroup);
+
+        MyExpandableListAdapter adapter = new MyExpandableListAdapter(item);
+        expandableListView.setAdapter(adapter);
     }
 
 

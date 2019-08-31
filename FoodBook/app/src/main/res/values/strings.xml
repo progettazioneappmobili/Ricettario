@@ -9,4 +9,6 @@
     <string name="recipe_info">Informazioni</string>
     <string name="ingredients">Ingredienti</string>
     <string name="preparation">Preparazione</string>
+    <string name="secondi">Secondi</string>
+    <string name="dessert">Dessert</string>
 </resources>
