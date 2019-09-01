@@ -120,6 +120,15 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
             }
         });
 
+        // Icona ricetta preferita
+        if(isPreferred(id_piatto_1)){
+            ImageView icon = convertView.findViewById(R.id.starOne);
+            icon.setVisibility(View.VISIBLE);
+        }else{
+            ImageView icon = convertView.findViewById(R.id.starOne);
+            icon.setVisibility(View.INVISIBLE);
+        }
+
         if(piatti2.get(1).equals("")){ // non c'e il secondo piatto => non serve estrarre id ricetta e settare il listener
             // Hide textView
             TextView textView2 = convertView.findViewById(R.id.textView2);
@@ -127,6 +136,9 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
             // Hide imageView
             ImageView imgview2 = convertView.findViewById(R.id.dishTwo); // immagine a dx nella schermata
             imgview2.setVisibility(View.INVISIBLE);
+            // Hide icon preferred
+            ImageView icon = convertView.findViewById(R.id.starTwo);
+            icon.setVisibility(View.INVISIBLE);
         }else{ // c'e anche il secondo piatto
             ArrayList<String> piatto2 = splitStrings(separator2, piatti2.get(1)); // Es: <"pasta","38">
             // Nome del piatto nella textview sopra l'immagine
@@ -149,6 +161,14 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
                     v.getContext().startActivity(show_recipe_intent);
                 }
             });
+            // Icona ricetta preferita
+            if(isPreferred(id_piatto_2)){
+                ImageView icon = convertView.findViewById(R.id.starTwo);
+                icon.setVisibility(View.VISIBLE);
+            }else{
+                ImageView icon = convertView.findViewById(R.id.starTwo);
+                icon.setVisibility(View.INVISIBLE);
+            }
         }
 
         return convertView;
@@ -162,8 +182,8 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     /**
      * Funzione ausiliaria per effettuare lo split di una stringa in base ad un carattere separatore;
      * salvo il risultato (due stringhe) in un ArrayList.
-     * @param separatore
-     * @param toSplit
+     * @param separatore: carattere separatore
+     * @param toSplit: stringa da splittare
      * @return ArrayList<String> che contiene le due stringhe risultanti dallo split della stringa di partenza,
      * la seconda puo essere vuota.
      */
@@ -211,7 +231,30 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         // Chiudo la connessione al db
         cursor.close();
         dbWrapper.close();
-        return filename; // se arrivo qui => db vuoto
+        return filename;
+    }
+
+    /**
+     * Dato l'id di una ricetta effettuo una query al db per sapere se la ricetta si trova
+     * fra le preferite
+     * @param id: id della ricetta di cui voglio trovare il nome del file
+     * @return true se si, false altrimenti
+     */
+    private boolean isPreferred(long id){
+        dbWrapper.open();
+        cursor = dbWrapper.fetchRecipe(id);
+        int is_preferred = 0;
+        while (cursor.moveToNext()) {
+            is_preferred = cursor.getInt(cursor.getColumnIndex(DataBaseWrapper.KEY_ISPREFERRED));
+        }
+        // Chiudo la connessione al db
+        cursor.close();
+        dbWrapper.close();
+        if (is_preferred == 0) {
+            return false;
+        }else{
+            return true;
+        }
     }
 
     /**

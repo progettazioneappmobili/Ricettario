@@ -1,9 +1,12 @@
 package com.developer.luca.foodbook;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ import java.util.List;
 
 public class ShowRecipeActivity extends AppCompatActivity {
 
+    private FloatingActionButton fab; // bottone stella per aggiungere la ricetta ai preferiti
     private DataBaseWrapper dbWrapper; // per recuperare dal db i dettagli della ricetta
     private Cursor cursor; // ausiliario per la query al db
     private int dishId = 0; // id del piatto di cui dovro mostrare i dettagli
@@ -32,6 +36,15 @@ public class ShowRecipeActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras(); // ricevo l'id del piatto da un'altra activity
         if(b != null)
             dishId = b.getInt("key");
+
+        // Cliccando sul bottone stella aggiungo la ricetta corrente ai preferiti
+        fab = findViewById(R.id.floatingPrefButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setPreferred(dishId);
+            }
+        });
 
         // Assegno il titolo alla toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -110,6 +123,27 @@ public class ShowRecipeActivity extends AppCompatActivity {
         cursor.close();
         dbWrapper.close();
         return result;
+    }
+
+    /**
+     * Dato l'id di una ricetta faccio una query di update per quella ricetta e setto a 1 il
+     * campo KEY_ISPREFERRED.
+     * @param id: id della ricetta di cui voglio fare l'update
+     */
+    public void setPreferred(long id){
+        dbWrapper.open();
+        cursor = dbWrapper.fetchRecipe(id);
+        while(cursor.moveToNext()){
+            String name = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_NAME));
+            String preparation = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_PREPARATION));
+            int prepTime = cursor.getInt(cursor.getColumnIndex(DataBaseWrapper.KEY_PREPARATIONTIME));
+            String dishType = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_DISHTYPE));
+            String ingred = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_INGREDIENTS));
+            String filename = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_FILENAME));
+            dbWrapper.updateRecipe(id, name, preparation, dishType, filename, prepTime, ingred, 1);
+        }
+        cursor.close();
+        dbWrapper.close();
     }
 }
 
