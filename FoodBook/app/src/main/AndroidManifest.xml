@@ -43,10 +43,6 @@
             android:theme="@style/AppTheme2"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".DatabaseActivity"
-            android:theme="@style/AppTheme2"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait">
