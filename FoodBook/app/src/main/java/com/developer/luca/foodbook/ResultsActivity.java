@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +55,6 @@ public class ResultsActivity extends AppCompatActivity {
         while (cursor.moveToNext()) {
             String recipeId = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_RECIPEID));
             String name = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_NAME));
-            Toast.makeText(getApplicationContext(),name,Toast.LENGTH_SHORT).show(); // TODO temp for tests
             if (count == 0) {
                 nome1 = name;
                 id1 = recipeId;

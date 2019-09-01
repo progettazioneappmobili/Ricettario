@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -102,7 +101,6 @@ public class ShowRecipeActivity extends AppCompatActivity {
             String prepTime = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_PREPARATIONTIME));
             String dishType = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_DISHTYPE));
             String ingred = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_INGREDIENTS));
-            Toast.makeText(getApplicationContext(),"recipe name = " + name,Toast.LENGTH_SHORT).show(); // TODO temp test
             result.add(name);
             result.add(dishType);
             result.add(preparation);
