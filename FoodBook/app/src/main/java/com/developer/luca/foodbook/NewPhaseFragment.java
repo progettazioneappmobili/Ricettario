@@ -25,6 +25,11 @@ public class NewPhaseFragment extends Fragment {
     // Utilizzato per numerare le fasi aggiunte
     private static int phaseNumber = 1;
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        phaseNumber = 1;
+    }
 
     public static NewPhaseFragment newInstance(){
         return new NewPhaseFragment();

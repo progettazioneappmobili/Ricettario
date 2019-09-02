@@ -201,16 +201,18 @@ public class MainActivity extends AppCompatActivity {
             case INSERT_RECIPE_REQUEST:
                 if (data != null) {
                     // TODO: inserire la ricetta nel database
-                    // dbWrapper.createRecipe(
-                    Log.d("RECIPE", "name: " +         data.getStringExtra( "name")         );
-                    Log.d("RECIPE", "phases: " +       data.getStringExtra( "phases")       );
-                    Log.d("RECIPE", "dishType: " +     data.getStringExtra( "dishType")        );
-                    Log.d("RECIPE", "imageUri: " +     data.getStringExtra( "imageUri")           );
-                    Log.d("RECIPE", "timeType: " +     data.getStringExtra( "timeType")               ); // Manca nel db
-                    Log.d("RECIPE", "minutes: " +      data.getIntExtra( "minutes", 0)     );
-                    Log.d("RECIPE", "ingredients: " +  data.getStringExtra( "ingredients")              );
-                    Log.d("RECIPE", "isPreferred: " +  data.getIntExtra( "isPreferred", 0)    );
-                    // );
+                    dbWrapper.open();
+                    dbWrapper.createRecipe(
+                    data.getStringExtra( "name"),
+                    data.getStringExtra( "phases"),
+                    data.getStringExtra( "dishType"),
+                    data.getStringExtra( "imageUri"),
+                    //data.getStringExtra( "timeType"), // Manca nel db
+                    data.getIntExtra( "minutes", 0),
+                    data.getStringExtra( "ingredients"),
+                    data.getIntExtra( "isPreferred", 0)
+                    );
+                    dbWrapper.close();
                 }
                 break;
 

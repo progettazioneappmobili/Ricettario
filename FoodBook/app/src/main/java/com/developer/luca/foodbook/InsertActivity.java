@@ -191,7 +191,7 @@ public class InsertActivity extends AppCompatActivity {
                 returnIntent.putExtra("name",recipe.getName());
                 returnIntent.putExtra("phases", recipe.getPhasesString());
                 returnIntent.putExtra("dishType", recipe.getDishType().getDishTypeString());
-                returnIntent.putExtra("imageUri", recipe.getImageUri().getPath());
+                returnIntent.putExtra("imageUri", recipe.getImageUri().toString());
                 returnIntent.putExtra("timeType", recipe.getTimeType().getTimeTypeString());
                 returnIntent.putExtra("minutes", recipe.getMinutes());
                 returnIntent.putExtra("ingredients", recipe.getIngredientsString());
