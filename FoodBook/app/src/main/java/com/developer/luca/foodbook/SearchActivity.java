@@ -140,6 +140,14 @@ public class SearchActivity extends AppCompatActivity {
         if(toggleButton4Search.isChecked())
             returnList.add(Recipe.DishType.DESSERT.getDishTypeString());
 
+        // Nessuno selezionato == tutti selezionati
+        if(returnList.isEmpty()){
+            returnList.add(Recipe.DishType.FIRST.getDishTypeString());
+            returnList.add(Recipe.DishType.SECOND.getDishTypeString());
+            returnList.add(Recipe.DishType.APPETIZER.getDishTypeString());
+            returnList.add(Recipe.DishType.DESSERT.getDishTypeString());
+        }
+
         return returnList;
     }
 
@@ -158,6 +166,13 @@ public class SearchActivity extends AppCompatActivity {
 
         if(longSearch_toggleButton.isChecked())
             returnList.add(Recipe.TimeType.LONG.getTimeTypeString());
+
+        // Nessuno selezionato == tutti selezionati
+        if(returnList.isEmpty()){
+            returnList.add(Recipe.TimeType.FAST.getTimeTypeString());
+            returnList.add(Recipe.TimeType.MEDIUM.getTimeTypeString());
+            returnList.add(Recipe.TimeType.LONG.getTimeTypeString());
+        }
 
         return returnList;
     }

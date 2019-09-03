@@ -219,13 +219,26 @@ public class MainActivity extends AppCompatActivity {
             case SEARCH_RECIPE_REQUEST:
                 if (data != null) {
                     // TODO: cercare la ricetta
-                    Log.d("SEARCH", "name: "+      data.getStringExtra( "name")         );
-                    Log.d("SEARCH", "dishType: "+  data.getStringArrayListExtra("dishType").toString()         );
-                    Log.d("SEARCH", "timeType: "+  data.getStringArrayListExtra("timeType").toString()         );
-                    Log.d("RECIPE", "ingredients: " +  data.getStringArrayListExtra( "ingredients").toString()              );
+                    dbWrapper.open();
+                    cursor = dbWrapper.fetchSearchedRecipes(
+                            data.getStringExtra( "name"),
+                            stringArrayListToArray(data.getStringArrayListExtra("dishType")),
+                            stringArrayListToArray(data.getStringArrayListExtra("timeType")),
+                            stringArrayListToArray(data.getStringArrayListExtra( "ingredients"))
+                    );
+
+                    while (cursor.moveToNext()){
+                        Log.d("SEARCH", "RICETTA TROVATA: " + cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_NAME)));
+                    }
+
+                    dbWrapper.close();
                 }
                 break;
         }
 
+    }
+
+    private String[] stringArrayListToArray(ArrayList<String> dishType) {
+        return dishType.toArray(new String[dishType.size()]);
     }
 }
