@@ -189,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
         MyExpandableListAdapter adapter = new MyExpandableListAdapter(item);
         expandableListView.setAdapter(adapter);
+        expandableListView.expandGroup(0);
     }
 
 

@@ -74,6 +74,7 @@ public class ResultsActivity extends AppCompatActivity {
 
         MyExpandableListAdapter adapter = new MyExpandableListAdapter(item);
         expandableListView.setAdapter(adapter);
+        expandableListView.expandGroup(0);
     }
 
     /**
@@ -143,6 +144,7 @@ public class ResultsActivity extends AppCompatActivity {
 
         MyExpandableListAdapter adapter = new MyExpandableListAdapter(item);
         expandableListView.setAdapter(adapter);
+        expandableListView.expandGroup(0);
     }
 
     /**
