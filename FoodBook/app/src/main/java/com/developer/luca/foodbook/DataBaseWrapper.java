@@ -123,6 +123,7 @@ public class DataBaseWrapper {
             }
             return sb.toString();
         }
+    }
 
     // Cerco ricetta che contenga name, sia di uno tra i tipi di dishType, sia di uno tra i tipi di timeType e che contenga gli ingredients
     public Cursor fetchSearchedRecipes(String name, String[] dishType, String[] timeType, String[] ingredients){

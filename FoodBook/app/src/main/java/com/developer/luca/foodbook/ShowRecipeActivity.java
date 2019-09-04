@@ -46,11 +46,6 @@ public class ShowRecipeActivity extends AppCompatActivity {
             }
         });
 
-        // Assegno il titolo alla toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(R.string.recipe_name);
-
         // Configuro la ListView
         ExpandableListView expandableListView2 = findViewById(R.id.expandableListView2);
         HashMap<String, List<String>> item_info = new HashMap<>();
@@ -59,6 +54,13 @@ public class ShowRecipeActivity extends AppCompatActivity {
         // Estraggo dal db i dettagli della ricetta
         ArrayList<String> recipeInfos = getRecipeDetails(dishId);
         String name = recipeInfos.get(0);
+
+        // Assegno il titolo alla toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(name);
+
         String dishType = recipeInfos.get(1);
         String preparation = recipeInfos.get(2);
         String prepTime = recipeInfos.get(3);
