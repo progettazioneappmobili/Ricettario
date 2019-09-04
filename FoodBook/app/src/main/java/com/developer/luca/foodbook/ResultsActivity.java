@@ -49,27 +49,27 @@ public class ResultsActivity extends AppCompatActivity {
      */
     public void configGallery() {
         // Configuro la ListView
-        ExpandableListView expandableListView = findViewById(R.id.expandableListView5);
+        ExpandableListView expandableListView = findViewById(R.id.expandableListView);
         HashMap<String, ArrayList<String>> item = new HashMap<>(); // conterra titolo e contenuti della list view
 
         // Antipasti
         ArrayList<String> antipastiGroup = new ArrayList<>();
-        antipastiGroup = getRecipesByType("Antipasto", antipastiGroup);
+        antipastiGroup = getPrefRecipesByType("Antipasto", antipastiGroup);
         item.put(getString(R.string.antipasti), antipastiGroup);
 
         // Primi
         ArrayList<String> primiGroup = new ArrayList<>();
-        primiGroup = getRecipesByType("Primo", primiGroup);
+        primiGroup = getPrefRecipesByType("Primo", primiGroup);
         item.put(getString(R.string.primi), primiGroup);
 
         // Secondi
         ArrayList<String> secondiGroup = new ArrayList<>();
-        secondiGroup = getRecipesByType("Secondo", secondiGroup);
+        secondiGroup = getPrefRecipesByType("Secondo", secondiGroup);
         item.put(getString(R.string.secondi), secondiGroup);
 
         // Dolci
         ArrayList<String> dolciGroup = new ArrayList<>();
-        dolciGroup = getRecipesByType("Dessert", dolciGroup);
+        dolciGroup = getPrefRecipesByType("Dessert", dolciGroup);
         item.put(getString(R.string.dessert), dolciGroup);
 
         MyExpandableListAdapter adapter = new MyExpandableListAdapter(item);
@@ -83,7 +83,7 @@ public class ResultsActivity extends AppCompatActivity {
      * @param result ArrayList su cui andro a scrivere il risultato
      * @return lista di stringhe contenenti coppie di piatti e i loro id
      */
-    public ArrayList<String> getRecipesByType(String tipo, ArrayList<String> result){
+    public ArrayList<String> getPrefRecipesByType(String tipo, ArrayList<String> result){
         dbWrapper.open();
         cursor = dbWrapper.fetchPrefRecipeByType(tipo); // prendo tutte le ricette con il flag preferita e del tipo che cerco
         int count = 0;
