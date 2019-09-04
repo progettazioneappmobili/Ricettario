@@ -17,7 +17,6 @@
 
 ### Show Recipe Activity
 
-* Usare titolo ricetta come titolo della schermata
 * Aprire di default il tab "Informazioni"
 * Aggiungere scroll 
 * Centrare l'immagine
