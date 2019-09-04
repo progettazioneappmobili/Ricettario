@@ -97,6 +97,7 @@ public class DataBaseWrapper {
         return database.query(true, DATABASE_TABLE, new String[]{KEY_RECIPEID, KEY_NAME, KEY_DISHTYPE, KEY_FILENAME, KEY_PREPARATION, KEY_PREPARATIONTIME, KEY_INGREDIENTS, KEY_ISPREFERRED }, KEY_DISHTYPE + " like '%" + portata + "%'" + " AND " + KEY_ISPREFERRED + " = 1",null, null, null, null,null);
     }
 
+
     // Ricette con id nella lista di id e tipo di portata specificato
     public Cursor fetchRecipesByIdAndType(String [] ids, String portata){
         if(ids.length > 0){
@@ -122,6 +123,41 @@ public class DataBaseWrapper {
             }
             return sb.toString();
         }
+
+    // Cerco ricetta che contenga name, sia di uno tra i tipi di dishType, sia di uno tra i tipi di timeType e che contenga gli ingredients
+    public Cursor fetchSearchedRecipes(String name, String[] dishType, String[] timeType, String[] ingredients){
+        return database.query(true, DATABASE_TABLE, new String[]{KEY_RECIPEID, KEY_NAME, KEY_DISHTYPE, KEY_FILENAME, KEY_PREPARATION, KEY_PREPARATIONTIME, KEY_INGREDIENTS, KEY_ISPREFERRED },
+                KEY_NAME + " like '%" + name + "%'" + " AND " +
+                        KEY_DISHTYPE + " in " + stringArrayToInList(dishType) + // " AND " +
+                        //KEY_TIMETYPE + " in " + stringArrayToInList(timeType) +
+                        queryForIngredients(ingredients),
+                null, null, null, null, null);
+    }
+
+    private String queryForIngredients(String[] ingredients) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (String i: ingredients) {
+            stringBuilder.append(" AND ").append(KEY_INGREDIENTS).append(" like '%").append(i).append("%'");
+        }
+
+        return stringBuilder.toString();
+    }
+
+    private String stringArrayToInList(String[] strings) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("(");
+
+        String prefix = "";
+        for (String s: strings) {
+            stringBuilder.append(prefix).append("'").append(s).append("'");
+            prefix = ",";
+        }
+
+        stringBuilder.append(")");
+        return stringBuilder.toString();
+
     }
 
     private static class DatabaseHelper extends SQLiteOpenHelper {

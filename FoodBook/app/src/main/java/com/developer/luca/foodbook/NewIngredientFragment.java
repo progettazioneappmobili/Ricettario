@@ -1,5 +1,7 @@
 package com.developer.luca.foodbook;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -14,6 +17,7 @@ import android.widget.EditText;
 public class NewIngredientFragment extends Fragment {
 
     private View view;
+    private Activity mainActivity;
 
     private EditText ingredientName_editText;
     private EditText ingredientQuantity_editText;
@@ -38,6 +42,8 @@ public class NewIngredientFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        mainActivity = getActivity();
+
         ingredient = new Ingredient();
 
         ingredientName_editText = view.findViewById(R.id.ingredientName_editText);
@@ -61,6 +67,8 @@ public class NewIngredientFragment extends Fragment {
                         unit_button.setText("UNIT");
                         ingredient.setUnit(Ingredient.Unit.UNIT);
                 }
+
+                hideSoftKeyboard(mainActivity, v);
             }
         });
     }
@@ -76,5 +84,11 @@ public class NewIngredientFragment extends Fragment {
         }
 
         return ingredient;
+    }
+
+    // Per avere un flow di inserimento più fluido nascondo la tastiera quando viene selezionato un pulsante
+    public static void hideSoftKeyboard (Activity activity, View view){
+        InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 }

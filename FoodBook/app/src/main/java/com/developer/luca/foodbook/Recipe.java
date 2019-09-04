@@ -13,7 +13,7 @@ public class Recipe {
         FIRST("Primo"),
         SECOND("Secondo"),
         APPETIZER("Antipasto"),
-        DESSERT("Dolce");
+        DESSERT("Dessert");
 
         private String dishTypeString;
 

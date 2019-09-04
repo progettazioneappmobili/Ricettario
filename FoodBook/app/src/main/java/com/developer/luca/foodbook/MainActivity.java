@@ -201,29 +201,44 @@ public class MainActivity extends AppCompatActivity {
             case INSERT_RECIPE_REQUEST:
                 if (data != null) {
                     // TODO: inserire la ricetta nel database
-                    // dbWrapper.createRecipe(
-                    Log.d("RECIPE", "name: " +         data.getStringExtra( "name")         );
-                    Log.d("RECIPE", "phases: " +       data.getStringExtra( "phases")       );
-                    Log.d("RECIPE", "dishType: " +     data.getStringExtra( "dishType")        );
-                    Log.d("RECIPE", "imageUri: " +     data.getStringExtra( "imageUri")           );
-                    Log.d("RECIPE", "timeType: " +     data.getStringExtra( "timeType")               ); // Manca nel db
-                    Log.d("RECIPE", "minutes: " +      data.getIntExtra( "minutes", 0)     );
-                    Log.d("RECIPE", "ingredients: " +  data.getStringExtra( "ingredients")              );
-                    Log.d("RECIPE", "isPreferred: " +  data.getIntExtra( "isPreferred", 0)    );
-                    // );
+                    dbWrapper.open();
+                    dbWrapper.createRecipe(
+                    data.getStringExtra( "name"),
+                    data.getStringExtra( "phases"),
+                    data.getStringExtra( "dishType"),
+                    data.getStringExtra( "imageUri"),
+                    //data.getStringExtra( "timeType"), // Manca nel db
+                    data.getIntExtra( "minutes", 0),
+                    data.getStringExtra( "ingredients"),
+                    data.getIntExtra( "isPreferred", 0)
+                    );
+                    dbWrapper.close();
                 }
                 break;
 
             case SEARCH_RECIPE_REQUEST:
                 if (data != null) {
                     // TODO: cercare la ricetta
-                    Log.d("SEARCH", "name: "+      data.getStringExtra( "name")         );
-                    Log.d("SEARCH", "dishType: "+  data.getStringArrayListExtra("dishType").toString()         );
-                    Log.d("SEARCH", "timeType: "+  data.getStringArrayListExtra("timeType").toString()         );
-                    Log.d("RECIPE", "ingredients: " +  data.getStringArrayListExtra( "ingredients").toString()              );
+                    dbWrapper.open();
+                    cursor = dbWrapper.fetchSearchedRecipes(
+                            data.getStringExtra( "name"),
+                            stringArrayListToArray(data.getStringArrayListExtra("dishType")),
+                            stringArrayListToArray(data.getStringArrayListExtra("timeType")),
+                            stringArrayListToArray(data.getStringArrayListExtra( "ingredients"))
+                    );
+
+                    while (cursor.moveToNext()){
+                        Log.d("SEARCH", "RICETTA TROVATA: " + cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_NAME)));
+                    }
+
+                    dbWrapper.close();
                 }
                 break;
         }
 
+    }
+
+    private String[] stringArrayListToArray(ArrayList<String> dishType) {
+        return dishType.toArray(new String[dishType.size()]);
     }
 }

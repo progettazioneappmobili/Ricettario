@@ -389,7 +389,6 @@ public class Insert1Fragment extends Fragment {
                     Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(mainActivity.getContentResolver(), contentURI);
                     imageView.setImageBitmap(imageBitmap);
                     recipe.setImageUri(contentURI);
-                    //saveImage(imageBitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(mainActivity, "Impossibile aprire file!", Toast.LENGTH_SHORT).show();
