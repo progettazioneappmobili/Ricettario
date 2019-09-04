@@ -7,6 +7,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 public class DataBaseWrapper {
 
     private Context context;
@@ -93,6 +95,33 @@ public class DataBaseWrapper {
     // Cerco ricetta per tipo e deve essere fra le preferite
     public Cursor fetchPrefRecipeByType(String portata){
         return database.query(true, DATABASE_TABLE, new String[]{KEY_RECIPEID, KEY_NAME, KEY_DISHTYPE, KEY_FILENAME, KEY_PREPARATION, KEY_PREPARATIONTIME, KEY_INGREDIENTS, KEY_ISPREFERRED }, KEY_DISHTYPE + " like '%" + portata + "%'" + " AND " + KEY_ISPREFERRED + " = 1",null, null, null, null,null);
+    }
+
+    // Ricette con id nella lista di id e tipo di portata specificato
+    public Cursor fetchRecipesByIdAndType(String [] ids, String portata){
+        if(ids.length > 0){
+            String query = "SELECT * FROM table"
+                    + " WHERE id IN (" + makePlaceholders(ids.length) + ")"
+                    + " AND dishtype LIKE '%" + portata + "%'";
+            return database.rawQuery(query, ids);
+        }else{
+            return null;
+        }
+    }
+
+    // Funzione aux per generare i "?" da mettere nella raw query
+    String makePlaceholders(int len) {
+        if (len < 1) {
+            // It will lead to an invalid query anyway ..
+            throw new RuntimeException("No placeholders");
+        } else {
+            StringBuilder sb = new StringBuilder(len * 2 - 1);
+            sb.append("?");
+            for (int i = 1; i < len; i++) {
+                sb.append(",?");
+            }
+            return sb.toString();
+        }
     }
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
