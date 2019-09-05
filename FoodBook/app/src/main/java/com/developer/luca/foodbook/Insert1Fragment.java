@@ -387,23 +387,22 @@ public class Insert1Fragment extends Fragment {
             if (data != null) {
                 Uri contentURI = data.getData();
                 try {
+                    // Recupera bitmap da URI immagine selezionata
                     Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(mainActivity.getContentResolver(), contentURI);
                     imageView.setImageBitmap(imageBitmap);
 
+                    // Crea file in cartella personale
                     String imageFileName = "" + Calendar.getInstance().getTimeInMillis();
-
                     File storageDir = mainActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
                     File image = File.createTempFile(imageFileName, ".jpg", storageDir);
 
-                    try {
-                        FileOutputStream out = new FileOutputStream(image);
-                        imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                    // Salva immagine in file
+                    FileOutputStream out = new FileOutputStream(image);
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
 
-                        recipe.setImageUri(Uri.fromFile(image));
-                        Log.d("RECIPE SET", "uri: "+Uri.fromFile(image).toString());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    recipe.setImageUri(Uri.fromFile(image));
+                    Log.d("RECIPE SET", "uri: "+Uri.fromFile(image).toString());
+
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(mainActivity, "Impossibile aprire file!", Toast.LENGTH_SHORT).show();
