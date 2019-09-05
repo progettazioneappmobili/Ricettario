@@ -128,13 +128,13 @@ public class MainActivity extends AppCompatActivity {
       */
     public void addRecords(){
         dbWrapper.open();
-        dbWrapper.createRecipe("Spaghetti", "Passo1\nButta l'acqua\nPasso2\nMetti il sale", "Primo","dish_icon",18,"100 gr\tSpaghetti\n2\tIngred2",1);
-        dbWrapper.createRecipe("Pasta", "Passo1\nButta un po d'acqua\nPasso2\nAggiungi il sale", "Primo","lasagne",21,"Pasta\nIngred2",1);
-        dbWrapper.createRecipe("Patatine", "Passo1\nApri il sacchetto\nPasso2\nBla bla bla", "Antipasto","lasagne",5,"Pringles\nIngred2",1);
-        dbWrapper.createRecipe("Antipasto di pesce", "Passo1\nTira fuori il pesce\nPasso2\nBla bla bla", "Antipasto","lasagne",20,"Calamari\nSeppie\nGamberi",1);
-        dbWrapper.createRecipe("Formaggi misti", "Passo1\nTira fuori il formaggio\nPasso2\nBla bla bla", "Antipasto","lasagne",10,"Gorgonzola\nMontasio\nEmmenthal",0);
-        dbWrapper.createRecipe("Cheescake","Passo1\nCompra il formaggio\nPasso2\nBla bla","Dessert","dish_icon",35,"Formaggio\nZucchero\nBurro",0);
-        dbWrapper.createRecipe("Filetto di trota","Passo1\nCompra il pesce\nPasso2\n....","Secondo","dish_icon",20,"Trota\nSale",1);
+        dbWrapper.createRecipe("Spaghetti", "Passo1\nButta l'acqua\nPasso2\nMetti il sale", "Primo","dish_icon",18, "Veloce", "100 gr\tSpaghetti\n2\tIngred2",1);
+        dbWrapper.createRecipe("Pasta", "Passo1\nButta un po d'acqua\nPasso2\nAggiungi il sale", "Primo","lasagne",21,"Media", "Pasta\nIngred2",1);
+        dbWrapper.createRecipe("Patatine", "Passo1\nApri il sacchetto\nPasso2\nBla bla bla", "Antipasto","lasagne",5,"Veloce", "Pringles\nIngred2",1);
+        dbWrapper.createRecipe("Antipasto di pesce", "Passo1\nTira fuori il pesce\nPasso2\nBla bla bla", "Antipasto","lasagne",20,"Media", "Calamari\nSeppie\nGamberi",1);
+        dbWrapper.createRecipe("Formaggi misti", "Passo1\nTira fuori il formaggio\nPasso2\nBla bla bla", "Antipasto","lasagne",10,"Veloce", "Gorgonzola\nMontasio\nEmmenthal",0);
+        dbWrapper.createRecipe("Cheescake","Passo1\nCompra il formaggio\nPasso2\nBla bla","Dessert","dish_icon",35,"Media", "Formaggio\nZucchero\nBurro",0);
+        dbWrapper.createRecipe("Filetto di trota","Passo1\nCompra il pesce\nPasso2\n....","Secondo","dish_icon",20,"Media", "Trota\nSale",1);
         dbWrapper.close();
     }
 
@@ -208,8 +208,8 @@ public class MainActivity extends AppCompatActivity {
                     data.getStringExtra( "phases"),
                     data.getStringExtra( "dishType"),
                     data.getStringExtra( "imageUri"),
-                    //data.getStringExtra( "timeType"), // Manca nel db
                     data.getIntExtra( "minutes", 0),
+                    data.getStringExtra( "timeType"), // Manca nel db
                     data.getStringExtra( "ingredients"),
                     data.getIntExtra( "isPreferred", 0)
                     );

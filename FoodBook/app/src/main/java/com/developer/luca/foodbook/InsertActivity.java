@@ -191,7 +191,11 @@ public class InsertActivity extends AppCompatActivity {
                 returnIntent.putExtra("name",recipe.getName());
                 returnIntent.putExtra("phases", recipe.getPhasesString());
                 returnIntent.putExtra("dishType", recipe.getDishType().getDishTypeString());
-                returnIntent.putExtra("imageUri", recipe.getImageUri().toString());
+                if(recipe.getImageUri() != null){
+                    returnIntent.putExtra("imageUri", recipe.getImageUri().toString());
+                } else {
+                    returnIntent.putExtra("imageUri", "lasagne");
+                }
                 returnIntent.putExtra("timeType", recipe.getTimeType().getTimeTypeString());
                 returnIntent.putExtra("minutes", recipe.getMinutes());
                 returnIntent.putExtra("ingredients", recipe.getIngredientsString());

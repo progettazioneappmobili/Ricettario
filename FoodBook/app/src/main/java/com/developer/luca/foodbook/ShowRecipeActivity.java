@@ -140,10 +140,11 @@ public class ShowRecipeActivity extends AppCompatActivity {
             String name = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_NAME));
             String preparation = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_PREPARATION));
             int prepTime = cursor.getInt(cursor.getColumnIndex(DataBaseWrapper.KEY_PREPARATIONTIME));
+            String timeType = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_TIMETYPE));
             String dishType = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_DISHTYPE));
             String ingred = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_INGREDIENTS));
             String filename = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_FILENAME));
-            dbWrapper.updateRecipe(id, name, preparation, dishType, filename, prepTime, ingred, 1);
+            dbWrapper.updateRecipe(id, name, preparation, dishType, filename, prepTime, timeType, ingred, 1);
         }
         cursor.close();
         dbWrapper.close();
