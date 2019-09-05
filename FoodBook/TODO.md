@@ -3,7 +3,6 @@
 * Riavviare l'app dopo aggiunta di una ricetta
 * TextView diversi per i dettagli della ricetta (?)
 * Mostrare risultati ricerca
-* Immagini aggiunte non vengono visualizzate
 
 ### Main Activity
 

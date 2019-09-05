@@ -194,7 +194,7 @@ public class InsertActivity extends AppCompatActivity {
                 if(recipe.getImageUri() != null){
                     returnIntent.putExtra("imageUri", recipe.getImageUri().toString());
                 } else {
-                    returnIntent.putExtra("imageUri", "lasagne");
+                    returnIntent.putExtra("imageUri", "dish_icon");
                 }
                 returnIntent.putExtra("timeType", recipe.getTimeType().getTimeTypeString());
                 returnIntent.putExtra("minutes", recipe.getMinutes());

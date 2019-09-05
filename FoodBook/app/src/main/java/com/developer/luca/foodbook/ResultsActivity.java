@@ -72,7 +72,7 @@ public class ResultsActivity extends AppCompatActivity {
         dolciGroup = getPrefRecipesByType("Dessert", dolciGroup);
         item.put(getString(R.string.dessert), dolciGroup);
 
-        MyExpandableListAdapter adapter = new MyExpandableListAdapter(item);
+        MyExpandableListAdapter adapter = new MyExpandableListAdapter(item, this);
         expandableListView.setAdapter(adapter);
         expandableListView.expandGroup(0);
     }
@@ -142,7 +142,7 @@ public class ResultsActivity extends AppCompatActivity {
         dolciGroup = getRecipesByTypeAndId("Dessert", dolciGroup, ids);
         item.put(getString(R.string.dessert), dolciGroup);
 
-        MyExpandableListAdapter adapter = new MyExpandableListAdapter(item);
+        MyExpandableListAdapter adapter = new MyExpandableListAdapter(item, this);
         expandableListView.setAdapter(adapter);
         expandableListView.expandGroup(0);
     }

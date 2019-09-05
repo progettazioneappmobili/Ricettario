@@ -1,8 +1,13 @@
 package com.developer.luca.foodbook;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +15,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -28,9 +34,12 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     private DataBaseWrapper dbWrapper; // comunicazione db
     private Cursor cursor; // ausiliario per scorrere i record trovati con la query
 
-    public MyExpandableListAdapter(HashMap<String, ArrayList<String>> stringListHashMap) {
+    Activity mainActivity;
+
+    public MyExpandableListAdapter(HashMap<String, ArrayList<String>> stringListHashMap, Activity activity) {
         mStringListHashMap = stringListHashMap;
         mListHeaderGroup = mStringListHashMap.keySet().toArray(new String[0]);
+        mainActivity = activity;
     }
 
     @Override
@@ -231,6 +240,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         // Chiudo la connessione al db
         cursor.close();
         dbWrapper.close();
+        Log.d("LOG", "getFilename: "+ filename);
         return filename;
     }
 
@@ -266,11 +276,25 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
      */
     private ImageView setImage(long id, ImageView img, View convertView){
         String filename = getFilename(id);
-        if (filename.equals("dish_icon")){ // icona di default => foto non presente
+        if (filename.equals("dish_icon") || filename.equals("lasagne")){ // icona di default => foto non presente
             img.setImageResource(R.drawable.dish_icon);
         }else{ // icona presente, cerco l'id del file
-            int resID = convertView.getResources().getIdentifier(filename , "drawable", "com.developer.luca.foodbook");
-            img.setImageResource(resID);
+            //int resID = convertView.getResources().getIdentifier(filename , "drawable", "com.developer.luca.foodbook");
+            //img.setImageResource(resID);
+
+            try {
+                Uri contentURI = Uri.parse(filename);
+                Bitmap thumbnailBitmap = MediaStore.Images.Media.getBitmap(mainActivity.getContentResolver(), contentURI);
+
+                if (thumbnailBitmap != null){
+                    img.setImageBitmap(thumbnailBitmap);
+                } else {
+                    img.setImageResource(R.drawable.dish_icon);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                img.setImageResource(R.drawable.dish_icon);
+            }
         }
         return img;
     }

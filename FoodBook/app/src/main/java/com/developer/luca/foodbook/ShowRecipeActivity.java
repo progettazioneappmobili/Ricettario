@@ -90,14 +90,14 @@ public class ShowRecipeActivity extends AppCompatActivity {
         item_preparaz.put(getString(R.string.preparation), preparazioneGroup);
 
         // Passo l'activityName all'Adapter in modo che sappia quale layout mostrare
-        ShowExpandableListAdapter adapter2 = new ShowExpandableListAdapter(item_info, "ShowRecipe1");
+        ShowExpandableListAdapter adapter2 = new ShowExpandableListAdapter(item_info, "ShowRecipe1", this);
         expandableListView2.setAdapter(adapter2);
         expandableListView2.expandGroup(0);
 
-        ShowExpandableListAdapter adapter3 = new ShowExpandableListAdapter(item_ingred, "ShowRecipe2");
+        ShowExpandableListAdapter adapter3 = new ShowExpandableListAdapter(item_ingred, "ShowRecipe2", this);
         expandableListView3.setAdapter(adapter3);
 
-        ShowExpandableListAdapter adapter4 = new ShowExpandableListAdapter(item_preparaz, "ShowRecipe3");
+        ShowExpandableListAdapter adapter4 = new ShowExpandableListAdapter(item_preparaz, "ShowRecipe3", this);
         expandableListView4.setAdapter(adapter4);
     }
 

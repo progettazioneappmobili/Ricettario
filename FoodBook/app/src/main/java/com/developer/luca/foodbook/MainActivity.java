@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         dolciGroup = getRecipesByType("Dessert", dolciGroup);
         item.put(getString(R.string.dessert), dolciGroup);
 
-        MyExpandableListAdapter adapter = new MyExpandableListAdapter(item);
+        MyExpandableListAdapter adapter = new MyExpandableListAdapter(item, this);
         expandableListView.setAdapter(adapter);
         expandableListView.expandGroup(0);
     }

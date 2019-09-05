@@ -1,6 +1,11 @@
 package com.developer.luca.foodbook;
 
+import android.app.Activity;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +13,11 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,11 +35,13 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
     private DataBaseWrapper dbWrapper; // comunicazione db
     private Cursor cursor; // ausiliario per scorrere i record trovati con la query
 
+    private Activity mainActivity;
 
-    public ShowExpandableListAdapter(HashMap<String, List<String>> stringListHashMap, String activityName) {
+    public ShowExpandableListAdapter(HashMap<String, List<String>> stringListHashMap, String activityName, Activity activity) {
         mStringListHashMap = stringListHashMap;
         mListHeaderGroup = mStringListHashMap.keySet().toArray(new String[0]);
         forActivity = activityName;
+        mainActivity = activity;
     }
 
     @Override
@@ -157,8 +169,31 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
         if (filename.equals("dish_icon")){ // icona di default => foto non presente
             img.setImageResource(R.drawable.dish_icon);
         }else{ // icona presente, cerco l'id del file
-            int resID = convertView.getResources().getIdentifier(filename , "drawable", "com.developer.luca.foodbook");
-            img.setImageResource(resID);
+            //int resID = convertView.getResources().getIdentifier(filename , "drawable", "com.developer.luca.foodbook");
+            //img.setImageResource(resID);
+
+            try {
+                Uri contentURI = Uri.parse(filename);
+                /*
+
+                Bitmap thumbnailBitmap = MediaStore.Images.Media.getBitmap(mainActivity.getContentResolver(), contentURI);
+
+                if (thumbnailBitmap != null){
+                    img.setImageBitmap(thumbnailBitmap);
+                } else {
+                    img.setImageResource(R.drawable.dish_icon);
+                }
+                */
+                //img.setImageBitmap(BitmapFactory.decodeFile(Uri.parse(filename).getPath()));
+
+                InputStream is = mainActivity.getContentResolver().openInputStream(contentURI);
+                img.setImageBitmap(BitmapFactory.decodeStream(is));
+                is.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                img.setImageResource(R.drawable.dish_icon);
+            }
         }
         return img;
     }

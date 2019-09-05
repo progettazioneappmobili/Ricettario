@@ -33,6 +33,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -358,7 +359,7 @@ public class Insert1Fragment extends Fragment {
     private File createImageFile() throws IOException {
         String imageFileName = "" + Calendar.getInstance().getTimeInMillis();
 
-        File storageDir = mainActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);;
+        File storageDir = mainActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
 
         // Save a file: path for use with ACTION_VIEW intents
@@ -388,7 +389,21 @@ public class Insert1Fragment extends Fragment {
                 try {
                     Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(mainActivity.getContentResolver(), contentURI);
                     imageView.setImageBitmap(imageBitmap);
-                    recipe.setImageUri(contentURI);
+
+                    String imageFileName = "" + Calendar.getInstance().getTimeInMillis();
+
+                    File storageDir = mainActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                    File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+
+                    try {
+                        FileOutputStream out = new FileOutputStream(image);
+                        imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+
+                        recipe.setImageUri(Uri.fromFile(image));
+                        Log.d("RECIPE SET", "uri: "+Uri.fromFile(image).toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(mainActivity, "Impossibile aprire file!", Toast.LENGTH_SHORT).show();
