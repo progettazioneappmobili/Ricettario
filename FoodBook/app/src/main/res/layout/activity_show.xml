@@ -3,40 +3,39 @@
 il secondo conterra la lista degli ingredienti della ricetta, il terzo conterra la lista dei passi della preparazione.
 Ognuno di questi tre elementi risiede in un file xml (expandable_list_item) e i contenuti vengono popolati dalla
 classe ShowExpandableListAdapter. -->
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar"
-            android:layout_height="60dp"
-            android:layout_width="match_parent"/>
-
-        <ExpandableListView
-            android:id="@+id/expandableListView2"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <ExpandableListView
-            android:id="@+id/expandableListView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar"
+                android:layout_height="60dp"
+                android:layout_width="match_parent"/>
 
-        <ExpandableListView
-            android:id="@+id/expandableListView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <ExpandableListView
+                android:id="@+id/expandableListView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    </LinearLayout>
+            <ExpandableListView
+                android:id="@+id/expandableListView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ExpandableListView
+                android:id="@+id/expandableListView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingPrefButton"
@@ -48,6 +47,7 @@ classe ShowExpandableListAdapter. -->
         android:clickable="true"
         android:focusable="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         app:srcCompat="@drawable/ic_icon_star" />
 
