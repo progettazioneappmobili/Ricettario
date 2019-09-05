@@ -12,5 +12,5 @@
 ### Show Recipe Activity
 
 * Aggiungere scroll 
-* Centrare l'immagine
+* Dare la possibilità di rimuovere dalle preferite
 * Usare stella piena se ricetta fra le preferite (?)
