@@ -3,6 +3,7 @@ package com.developer.luca.foodbook;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +26,8 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
+    private DataBaseWrapper dbWrapper;
+
     private Toolbar toolbar;
     private Activity mainActivity;
 
@@ -43,6 +46,9 @@ public class SearchActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.search_toolbar);
+
+        dbWrapper = new DataBaseWrapper(this); // per la query di ricerca ricette
+
     }
 
     private boolean firstTime = true;
@@ -72,13 +78,22 @@ public class SearchActivity extends AppCompatActivity {
         search_floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("name", getRecipeName());
-                returnIntent.putExtra("dishType", getDishTypeList());
-                returnIntent.putExtra("timeType", getTimeTypeList());
-                returnIntent.putExtra("ingredients", getIngredientsList());
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
+                Intent resultsIntent = new Intent(v.getContext(), ResultsActivity.class);
+                // Get recipe info from search form
+                ArrayList<String> dishtypes = getDishTypeList();
+                String [] dishTypes =  dishtypes.toArray(new String[dishtypes.size()]);
+                ArrayList<String> timetypes = getTimeTypeList();
+                String [] timeTypes =  timetypes.toArray(new String[timetypes.size()]);
+                ArrayList<String> ingred = getIngredientsList();
+                String [] ingredients =  ingred.toArray(new String[ingred.size()]);
+                ArrayList<String> ids = getSearchResults(getRecipeName(), dishTypes, timeTypes, ingredients);
+                resultsIntent.putStringArrayListExtra("ids", ids);
+//                resultsIntent.putExtra("name", getRecipeName());
+//                resultsIntent.putExtra("dishType", getDishTypeList());
+//                resultsIntent.putExtra("timeType", getTimeTypeList());
+//                resultsIntent.putExtra("ingredients", getIngredientsList());
+//                setResult(Activity.RESULT_OK, resultsIntent);
+                startActivity(resultsIntent);
             }
         });
 
@@ -198,4 +213,30 @@ public class SearchActivity extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
+
+    /**
+     * Funzione che dati i parametri della ricerca inseriti dall'utente tramite form effettua la query al
+     * db per ottenere i risultati e inserisce gli id delle ricette trovate in un ArrayList<String>
+     * @param name: nome della ricetta
+     * @param dishTypes: possibili tipi di portata
+     * @param timeTypes: possibili tempi di preperazione
+     * @param ingredients: ingredienti della ricetta
+     * @return recipeIds: lista di id delle ricette compatibili con i parametri della ricerca
+     */
+    public ArrayList<String> getSearchResults(String name, String [] dishTypes, String [] timeTypes, String [] ingredients){
+        dbWrapper.open();
+        Cursor cursor = dbWrapper.fetchSearchedRecipes(name, dishTypes, timeTypes, ingredients); // prendo tutte le ricette con il flag preferita e del tipo che cerco
+        ArrayList<String> recipeIds = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            String recipeId = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_RECIPEID));
+            recipeIds.add(recipeId);
+        }
+
+        // Chiudo la connessione al db
+        cursor.close();
+        dbWrapper.close();
+
+        return recipeIds;
+    }
+
 }

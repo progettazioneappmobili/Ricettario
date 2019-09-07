@@ -36,11 +36,12 @@ public class ResultsActivity extends AppCompatActivity {
         dbWrapper = new DataBaseWrapper(this);
 
         Bundle b = getIntent().getExtras();
-        if(b != null) { // ricevo id dei piatti dalla search, mostro i risultati
-            configGallery2(b.getStringArrayList("ids"));
-        }else { // non ricevo niente, mostro le ricette preferite
-            configGallery();
-        }
+//        if(b != null) { // ricevo id dei piatti dalla search, mostro i risultati
+//            configGallery2(b.getStringArrayList("ids"));
+//        }else { // non ricevo niente, mostro le ricette preferite
+//            configGallery();
+//        }
+        configGallery();
 
     }
 

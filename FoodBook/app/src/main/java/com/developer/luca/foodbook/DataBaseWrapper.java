@@ -113,7 +113,7 @@ public class DataBaseWrapper {
     }
 
     // Funzione aux per generare i "?" da mettere nella raw query
-    String makePlaceholders(int len) {
+    private String makePlaceholders(int len) {
         if (len < 1) {
             // It will lead to an invalid query anyway ..
             throw new RuntimeException("No placeholders");

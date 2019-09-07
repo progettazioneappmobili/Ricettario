@@ -288,6 +288,12 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         }
     }
 
+    /**
+     * Funzione che data una image view e un parametro che poi devo passare ad un'altra activity
+     * mi genera l'on click listener per limage view.
+     * @param id_piatto: da passare al listener per fare in modo che venga passato all'activity show
+     * @param imgview: image view di cui devo settare il listener
+     */
     private void setListener(final Long id_piatto, ImageView imgview){
         imgview.setOnClickListener(new View.OnClickListener() {
             @Override
