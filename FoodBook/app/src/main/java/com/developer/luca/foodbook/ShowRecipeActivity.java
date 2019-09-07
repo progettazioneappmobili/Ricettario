@@ -1,6 +1,5 @@
 package com.developer.luca.foodbook;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -129,8 +128,8 @@ public class ShowRecipeActivity extends AppCompatActivity {
     }
 
     /**
-     * Dato l'id di una ricetta faccio una query di update per quella ricetta e setto a 1 il
-     * campo KEY_ISPREFERRED.
+     * Dato l'id di una ricetta faccio una query di update per quella ricetta e modifico il
+     * campo KEY_ISPREFERRED, se era fra le preferite la rimuovo, se nonera la aggiungo.
      * @param id: id della ricetta di cui voglio fare l'update
      */
     public void setPreferred(long id){
@@ -144,7 +143,12 @@ public class ShowRecipeActivity extends AppCompatActivity {
             String dishType = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_DISHTYPE));
             String ingred = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_INGREDIENTS));
             String filename = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_FILENAME));
-            dbWrapper.updateRecipe(id, name, preparation, dishType, filename, prepTime, timeType, ingred, 1);
+            int pref = cursor.getInt(cursor.getColumnIndex(DataBaseWrapper.KEY_ISPREFERRED));
+            if (pref == 0){ // non fra le preferite => la aggiungo
+                dbWrapper.updateRecipe(id, name, preparation, dishType, filename, prepTime, timeType, ingred, 1);
+            }else{ // fra le preferite => la rimuovo
+                dbWrapper.updateRecipe(id, name, preparation, dishType, filename, prepTime, timeType, ingred, 0);
+            }
         }
         cursor.close();
         dbWrapper.close();
