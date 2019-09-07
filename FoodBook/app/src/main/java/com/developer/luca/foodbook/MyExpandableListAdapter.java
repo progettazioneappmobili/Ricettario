@@ -118,25 +118,10 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         // activity quando clicco su un'immagine. In particolare da qui passo ai dettagli di una ricetta.
         ImageView imgview = convertView.findViewById(R.id.dishOne); // immagine a sx nella schermata
         imgview = setImage(id_piatto_1, imgview, convertView); // scelgo l'immagine in base al nome del file (db)
-        imgview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent show_recipe_intent = new Intent(v.getContext(), ShowRecipeActivity.class);
-                Bundle b = new Bundle();
-                b.putInt("key", id_piatto_1.intValue()); // id del piatto di cui mostro i dettagli
-                show_recipe_intent.putExtras(b); // passo l'id al nuovo intent
-                v.getContext().startActivity(show_recipe_intent);
-            }
-        });
+        setListener(id_piatto_1, imgview);
 
-        // Icona ricetta preferita
-        if(isPreferred(id_piatto_1)){
-            ImageView icon = convertView.findViewById(R.id.starOne);
-            icon.setVisibility(View.VISIBLE);
-        }else{
-            ImageView icon = convertView.findViewById(R.id.starOne);
-            icon.setVisibility(View.INVISIBLE);
-        }
+        // Icona ricetta preferita (da nascondere o mostrare)
+        showIcon(id_piatto_1, 1, convertView);
 
         if(piatti2.get(1).equals("")){ // non c'e il secondo piatto => non serve estrarre id ricetta e settare il listener
             // Hide textView
@@ -160,24 +145,9 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
             ImageView imgview2 = convertView.findViewById(R.id.dishTwo); // immagine a dx nella schermata
             imgview2 = setImage(id_piatto_2, imgview2, convertView); // scelgo l'immagine in base al nome del file (db)
             imgview2.setVisibility(View.VISIBLE);
-            imgview2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent show_recipe_intent = new Intent(v.getContext(), ShowRecipeActivity.class);
-                    Bundle b = new Bundle();
-                    b.putInt("key", id_piatto_2.intValue()); // id del piatto di cui mostro i dettagli
-                    show_recipe_intent.putExtras(b); // passo l'id al nuovo intent
-                    v.getContext().startActivity(show_recipe_intent);
-                }
-            });
-            // Icona ricetta preferita
-            if(isPreferred(id_piatto_2)){
-                ImageView icon = convertView.findViewById(R.id.starTwo);
-                icon.setVisibility(View.VISIBLE);
-            }else{
-                ImageView icon = convertView.findViewById(R.id.starTwo);
-                icon.setVisibility(View.INVISIBLE);
-            }
+            setListener(id_piatto_2, imgview2);
+            // Icona ricetta preferita (da nascondere o mostrare)
+            showIcon(id_piatto_2, 2, convertView);
         }
 
         return convertView;
@@ -260,11 +230,8 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         // Chiudo la connessione al db
         cursor.close();
         dbWrapper.close();
-        if (is_preferred == 0) {
-            return false;
-        }else{
-            return true;
-        }
+
+        return (is_preferred != 0);
     }
 
     /**
@@ -297,6 +264,41 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
             }
         }
         return img;
+    }
+
+    /**
+     * Nascondo o mostro l'icona a stella dei preferiti sulla foto del piatto
+     * @param id: id della ricetta
+     * @param num_piatto: per sapere l'id dell'icona
+     * @param convertView: per cercare l'icona nella schermata
+     */
+    private void showIcon(Long id, int num_piatto, View convertView){
+        int viewId;
+        if(num_piatto == 1){
+            viewId = R.id.starOne;
+        }else{
+            viewId = R.id.starTwo;
+        }
+        if(isPreferred(id)){
+            ImageView icon = convertView.findViewById(viewId);
+            icon.setVisibility(View.VISIBLE);
+        }else{
+            ImageView icon = convertView.findViewById(viewId);
+            icon.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void setListener(final Long id_piatto, ImageView imgview){
+        imgview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent show_recipe_intent = new Intent(v.getContext(), ShowRecipeActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("key", id_piatto.intValue()); // id del piatto di cui mostro i dettagli
+                show_recipe_intent.putExtras(b); // passo l'id al nuovo intent
+                v.getContext().startActivity(show_recipe_intent);
+            }
+        });
     }
 
 }
