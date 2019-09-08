@@ -103,9 +103,9 @@ public class DataBaseWrapper {
     // Ricette con id nella lista di id e tipo di portata specificato
     public Cursor fetchRecipesByIdAndType(String [] ids, String portata){
         if(ids.length > 0){
-            String query = "SELECT * FROM table"
-                    + " WHERE id IN (" + makePlaceholders(ids.length) + ")"
-                    + " AND dishtype LIKE '%" + portata + "%'";
+            String query = "SELECT * FROM " + DATABASE_TABLE
+                    + " WHERE " + KEY_RECIPEID + " IN (" + makePlaceholders(ids.length) + ")"
+                    + " AND " + KEY_DISHTYPE + " LIKE '%" + portata + "%'";
             return database.rawQuery(query, ids);
         }else{
             return null;

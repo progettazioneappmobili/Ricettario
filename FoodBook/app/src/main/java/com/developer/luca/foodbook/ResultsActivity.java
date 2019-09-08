@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,12 +37,11 @@ public class ResultsActivity extends AppCompatActivity {
         dbWrapper = new DataBaseWrapper(this);
 
         Bundle b = getIntent().getExtras();
-//        if(b != null) { // ricevo id dei piatti dalla search, mostro i risultati
-//            configGallery2(b.getStringArrayList("ids"));
-//        }else { // non ricevo niente, mostro le ricette preferite
-//            configGallery();
-//        }
-        configGallery();
+        if(b != null) { // ricevo id dei piatti dalla search, mostro i risultati
+            configGallery2(b.getStringArrayList("ids"));
+        }else { // non ricevo niente, mostro le ricette preferite
+            configGallery();
+        }
 
     }
 
@@ -118,9 +118,12 @@ public class ResultsActivity extends AppCompatActivity {
     /**
      * Inizializzo la Gallery passando le varie ricette raggruppate per tipo alla ListView
      */
-    public void configGallery2(ArrayList<String> ids) {
+    public void configGallery2(ArrayList<String> idList) {
+
+        String[] ids = idList.toArray(new String[idList.size()]);
+
         // Configuro la ListView
-        ExpandableListView expandableListView = findViewById(R.id.expandableListView5);
+        ExpandableListView expandableListView = findViewById(R.id.expandableListView);
         HashMap<String, ArrayList<String>> item = new HashMap<>(); // conterra titolo e contenuti della list view
 
         // Antipasti
@@ -153,11 +156,11 @@ public class ResultsActivity extends AppCompatActivity {
      * tutti i piatti di quel tipo
      * @param tipo String ad esempio "Antipasto", "Primo",...
      * @param result ArrayList su cui andro a scrivere il risultato
+     * @param ids array di stringhe con gli id delle ricette
      * @return lista di stringhe contenenti coppie di piatti e i loro id
      */
-    public ArrayList<String> getRecipesByTypeAndId(String tipo, ArrayList<String> result, ArrayList<String> idList){
+    public ArrayList<String> getRecipesByTypeAndId(String tipo, ArrayList<String> result, String [] ids){
         dbWrapper.open();
-        String[] ids = idList.toArray(new String[idList.size()]);
         cursor = dbWrapper.fetchRecipesByIdAndType(ids, tipo); // prendo tutte le ricette con il flag preferita e del tipo che cerco
         int count = 0;
         String nome1 = "";
