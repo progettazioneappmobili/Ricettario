@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +38,7 @@ public class ResultsActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         if(b != null) { // ricevo id dei piatti dalla search, mostro i risultati
             configGallery2(b.getStringArrayList("ids"));
-        }else { // non ricevo niente, mostro le ricette preferite
+        }else { // non ricevo niente, mostro tutte le ricette preferite
             configGallery();
         }
 
