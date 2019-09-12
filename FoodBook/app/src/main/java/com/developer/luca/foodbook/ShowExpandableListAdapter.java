@@ -122,12 +122,12 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
         String contenuti = String.valueOf(getChild(groupPosition, childPosition));
         ArrayList<String> cont = split(contenuti); // divido info del piatto dall'id
 
-        TextView textView = convertView.findViewById(R.id.textView);
+        TextView textView = convertView.findViewById(R.id.textViewRecipeInfos);
         textView.setText(cont.get(0)); // info del piatto
 
         final Long id_piatto = Long.parseLong(cont.get(1)); // id
 
-        ImageView imgview = convertView.findViewById(R.id.imageView2); // immagine a sx nella schermata
+        ImageView imgview = convertView.findViewById(R.id.imageViewShowRecipe); // immagine a sx nella schermata
         imgview = setImage(id_piatto, imgview, convertView); // scelgo l'immagine in base al nome del file (db)
 
         return convertView;
@@ -138,7 +138,7 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null)
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_list_item3, parent, false);
 
-        TextView textView = convertView.findViewById(R.id.textView3);
+        TextView textView = convertView.findViewById(R.id.textViewIngredients);
         textView.setText( String.valueOf(getChild(groupPosition, childPosition)) ); // mi faccio passare la stringa con gli ingredienti e
         // le loro quantita, separati da \n
 
@@ -150,7 +150,7 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null)
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_list_item4, parent, false);
 
-        TextView textView = convertView.findViewById(R.id.textView4);
+        TextView textView = convertView.findViewById(R.id.textViewPreparation);
         textView.setText( String.valueOf(getChild(groupPosition, childPosition)) ); // mi faccio passare la stringa con i passi della
         // preparazione, separati da \n
 
