@@ -14,4 +14,5 @@
     <string name="group">Group</string>
     <string name="foto_del_piatto">Foto del piatto</string>
     <string name="default_text">SomeText</string>
+    <string name="icona_ricetta_preferita">icona ricetta preferita</string>
 </resources>

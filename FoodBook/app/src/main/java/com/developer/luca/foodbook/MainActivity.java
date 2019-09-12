@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void configGallery() {
         // Configuro la ListView
-        ExpandableListView expandableListView = findViewById(R.id.expandableListView5);
+        ExpandableListView expandableListView = findViewById(R.id.expandableListViewHome);
         HashMap<String, ArrayList<String>> item = new HashMap<>(); // conterra titolo e contenuti della list view
 
         // Antipasti

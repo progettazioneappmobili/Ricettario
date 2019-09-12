@@ -49,7 +49,7 @@ public class ResultsActivity extends AppCompatActivity {
      */
     public void configGallery() {
         // Configuro la ListView
-        ExpandableListView expandableListView = findViewById(R.id.expandableListView);
+        ExpandableListView expandableListView = findViewById(R.id.expandableListViewPreferred);
         HashMap<String, ArrayList<String>> item = new HashMap<>(); // conterra titolo e contenuti della list view
 
         // Antipasti
@@ -122,7 +122,7 @@ public class ResultsActivity extends AppCompatActivity {
         String[] ids = idList.toArray(new String[idList.size()]);
 
         // Configuro la ListView
-        ExpandableListView expandableListView = findViewById(R.id.expandableListView);
+        ExpandableListView expandableListView = findViewById(R.id.expandableListViewPreferred);
         HashMap<String, ArrayList<String>> item = new HashMap<>(); // conterra titolo e contenuti della list view
 
         // Antipasti

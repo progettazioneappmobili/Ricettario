@@ -24,6 +24,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/dish_icon"
                 android:visibility="visible"
+                android:contentDescription="@string/foto_del_piatto"
                 app:layout_constraintDimensionRatio="1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -37,6 +38,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:visibility="visible"
+                android:contentDescription="@string/icona_ricetta_preferita"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_icon_star" />
@@ -70,6 +72,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/dish_icon"
                 android:visibility="visible"
+                android:contentDescription="@string/foto_del_piatto"
                 app:layout_constraintDimensionRatio="1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -82,6 +85,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:visibility="visible"
+                android:contentDescription="@string/icona_ricetta_preferita"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_icon_star" />
