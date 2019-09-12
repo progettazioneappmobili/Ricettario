@@ -2,10 +2,8 @@ package com.developer.luca.foodbook;
 
 import android.app.Activity;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +11,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,7 +108,7 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
     // i vari campi sono separati da "\n", verranno inseriti in un unico TextView.
     private View getChildView1(int groupPosition, int childPosition, View convertView, ViewGroup parent) {
         if (convertView == null)
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_list_item2, parent, false);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_list_item_recipe_infos, parent, false);
 
         // Inizializzo questa classe per la comunicazione con il db
         dbWrapper = new DataBaseWrapper(convertView.getContext());
@@ -136,7 +130,7 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
     // Funzione per ShowRecipeActivity 2: lista ingredienti e loro quantita
     private View getChildView2(int groupPosition, int childPosition, View convertView, ViewGroup parent) {
         if (convertView == null)
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_list_item3, parent, false);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_list_item_recipe_ingredients, parent, false);
 
         TextView textView = convertView.findViewById(R.id.textViewIngredients);
         textView.setText( String.valueOf(getChild(groupPosition, childPosition)) ); // mi faccio passare la stringa con gli ingredienti e
@@ -148,7 +142,7 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
     // Funzione per ShowRecipeActivity 3: textview con i passi della preparazione
     private View getChildView3(int groupPosition, int childPosition, View convertView, ViewGroup parent) {
         if (convertView == null)
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_list_item4, parent, false);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_list_item_recipe_preparation, parent, false);
 
         TextView textView = convertView.findViewById(R.id.textViewPreparation);
         textView.setText( String.valueOf(getChild(groupPosition, childPosition)) ); // mi faccio passare la stringa con i passi della
