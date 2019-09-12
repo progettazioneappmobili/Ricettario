@@ -108,7 +108,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         // Es: <"spaghetti","12">
 
         // Nome del piatto nella textview sopra l'immagine
-        TextView textView = convertView.findViewById(R.id.textView);
+        TextView textView = convertView.findViewById(R.id.textViewLeft);
         textView.setText(piatto1.get(0)); // nome del piatto 1
 
         // Id del piatto, per passarlo alla ShowRecipeActivity
@@ -125,7 +125,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
         if(piatti2.get(1).equals("")){ // non c'e il secondo piatto => non serve estrarre id ricetta e settare il listener
             // Hide textView
-            TextView textView2 = convertView.findViewById(R.id.textView2);
+            TextView textView2 = convertView.findViewById(R.id.textViewRight);
             textView2.setVisibility(View.INVISIBLE);
             // Hide imageView
             ImageView imgview2 = convertView.findViewById(R.id.dishTwo); // immagine a dx nella schermata
@@ -136,7 +136,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         }else{ // c'e anche il secondo piatto
             ArrayList<String> piatto2 = splitStrings(separator2, piatti2.get(1)); // Es: <"pasta","38">
             // Nome del piatto nella textview sopra l'immagine
-            TextView textView2 = convertView.findViewById(R.id.textView2);
+            TextView textView2 = convertView.findViewById(R.id.textViewRight);
             textView2.setVisibility(View.VISIBLE);
             textView2.setText(piatto2.get(0)); // nome del piatto 2
             // Id del piatto, per passarlo alla ShowRecipeActivity
