@@ -83,7 +83,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null)
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_list_group, parent, false);
 
-        TextView textView = convertView.findViewById(R.id.textView);
+        TextView textView = convertView.findViewById(R.id.textViewGroup);
         textView.setText(String.valueOf(getGroup(groupPosition)));
 
         return convertView;

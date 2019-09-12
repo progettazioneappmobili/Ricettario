@@ -30,9 +30,11 @@ public class ShowRecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show);
 
+        // Per ottenere i dettagli della ricetta a partire dall'id
         dbWrapper = new DataBaseWrapper(this);
 
-        Bundle b = getIntent().getExtras(); // ricevo l'id del piatto da un'altra activity
+        // Ricevo l'id del piatto da un'altra activity
+        Bundle b = getIntent().getExtras();
         if(b != null)
             dishId = b.getInt("key");
 
@@ -45,11 +47,6 @@ public class ShowRecipeActivity extends AppCompatActivity {
             }
         });
 
-        // Configuro la ListView
-        ExpandableListView expandableListView2 = findViewById(R.id.expandableListView2);
-        HashMap<String, List<String>> item_info = new HashMap<>();
-        ArrayList<String> informazioniGroup = new ArrayList<>();
-
         // Estraggo dal db i dettagli della ricetta
         ArrayList<String> recipeInfos = getRecipeDetails(dishId);
         String name = recipeInfos.get(0);
@@ -60,6 +57,7 @@ public class ShowRecipeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(name);
 
+        // Dettagli estratti precedentemente, da passare alla list view
         String dishType = recipeInfos.get(1);
         String preparation = recipeInfos.get(2);
         String prepTime = recipeInfos.get(3);
@@ -68,36 +66,10 @@ public class ShowRecipeActivity extends AppCompatActivity {
         int time = Integer.parseInt(prepTime);
         if (time < 2)
                 minutes = "minuto";
+        String infos = name + "\n" + dishType + "\n" + prepTime + " " + minutes + "\n" + dishId;
 
-        informazioniGroup.add(name + "\n" + dishType + "\n" + prepTime + " " + minutes + "\n" + dishId);
-        item_info.put(getString(R.string.recipe_info), informazioniGroup);
+        configShowListView(infos, ingred, preparation);
 
-        // Configuro la ListView
-        ExpandableListView expandableListView3 = findViewById(R.id.expandableListView3);
-        HashMap<String, List<String>> item_ingred = new HashMap<>();
-        ArrayList<String> ingredientiGroup = new ArrayList<>();
-
-        ingredientiGroup.add(ingred);
-        item_ingred.put(getString(R.string.ingredients), ingredientiGroup);
-
-        // Configuro la ListView
-        ExpandableListView expandableListView4 = findViewById(R.id.expandableListView4);
-        HashMap<String, List<String>> item_preparaz = new HashMap<>();
-        ArrayList<String> preparazioneGroup = new ArrayList<>();
-
-        preparazioneGroup.add(preparation);
-        item_preparaz.put(getString(R.string.preparation), preparazioneGroup);
-
-        // Passo l'activityName all'Adapter in modo che sappia quale layout mostrare
-        ShowExpandableListAdapter adapter2 = new ShowExpandableListAdapter(item_info, "ShowRecipe1", this);
-        expandableListView2.setAdapter(adapter2);
-        expandableListView2.expandGroup(0);
-
-        ShowExpandableListAdapter adapter3 = new ShowExpandableListAdapter(item_ingred, "ShowRecipe2", this);
-        expandableListView3.setAdapter(adapter3);
-
-        ShowExpandableListAdapter adapter4 = new ShowExpandableListAdapter(item_preparaz, "ShowRecipe3", this);
-        expandableListView4.setAdapter(adapter4);
     }
 
     /**
@@ -152,6 +124,47 @@ public class ShowRecipeActivity extends AppCompatActivity {
         }
         cursor.close();
         dbWrapper.close();
+    }
+
+    /**
+     * Dati i dettagli da mostrare nell show di una ricetta configuro la list view che mostrera
+     * le tre sezioni: Informazioni, Ingredienti e Preparazione
+     * @param infos: nome ricetta, tipo di portata, tempo di preparazione e id
+     * @param ingred: lista di ingredienti e quantita
+     * @param preparation: passi della preparazione
+     */
+    private void configShowListView(String infos, String ingred, String preparation){
+        // Informazioni
+        ExpandableListView expandableListView2 = findViewById(R.id.expandableListView2);
+        HashMap<String, List<String>> item_info = new HashMap<>();
+        ArrayList<String> informazioniGroup = new ArrayList<>();
+        informazioniGroup.add(infos);
+        item_info.put(getString(R.string.recipe_info), informazioniGroup);
+
+        // Ingredienti
+        ExpandableListView expandableListView3 = findViewById(R.id.expandableListView3);
+        HashMap<String, List<String>> item_ingred = new HashMap<>();
+        ArrayList<String> ingredientiGroup = new ArrayList<>();
+        ingredientiGroup.add(ingred);
+        item_ingred.put(getString(R.string.ingredients), ingredientiGroup);
+
+        // Preparazione
+        ExpandableListView expandableListView4 = findViewById(R.id.expandableListView4);
+        HashMap<String, List<String>> item_preparaz = new HashMap<>();
+        ArrayList<String> preparazioneGroup = new ArrayList<>();
+        preparazioneGroup.add(preparation);
+        item_preparaz.put(getString(R.string.preparation), preparazioneGroup);
+
+        // Configuro gli adapter
+        ShowExpandableListAdapter adapter2 = new ShowExpandableListAdapter(item_info, "ShowRecipe1", this);
+        expandableListView2.setAdapter(adapter2);
+        expandableListView2.expandGroup(0);
+
+        ShowExpandableListAdapter adapter3 = new ShowExpandableListAdapter(item_ingred, "ShowRecipe2", this);
+        expandableListView3.setAdapter(adapter3);
+
+        ShowExpandableListAdapter adapter4 = new ShowExpandableListAdapter(item_preparaz, "ShowRecipe3", this);
+        expandableListView4.setAdapter(adapter4);
     }
 }
 
