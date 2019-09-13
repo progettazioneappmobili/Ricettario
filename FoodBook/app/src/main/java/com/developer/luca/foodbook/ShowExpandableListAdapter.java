@@ -25,16 +25,19 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
 
     private HashMap<String, List<String>> mStringListHashMap; // es: <"Antipasto",<"Patatine",...>>, <"Primo",<"Spaghetti","Pasta",..>>
     private String[] mListHeaderGroup;
-    private String forActivity; // in questo modo so che elementi visualizzare all'interno dei group item
     private DataBaseWrapper dbWrapper; // comunicazione db
     private Cursor cursor; // ausiliario per scorrere i record trovati con la query
 
     private Activity mainActivity;
 
-    public ShowExpandableListAdapter(HashMap<String, List<String>> stringListHashMap, String activityName, Activity activity) {
+    // Per gestire i tre possibili tipi di layout che possono avere gli elementi della ExpandableListView
+    private static final int CHILD_TYPE_INFOS = 0;
+    private static final int CHILD_TYPE_INGRED = 1;
+    private static final int CHILD_TYPE_PREPARAZ = 2;
+
+    public ShowExpandableListAdapter(HashMap<String, List<String>> stringListHashMap, Activity activity) {
         mStringListHashMap = stringListHashMap;
         mListHeaderGroup = mStringListHashMap.keySet().toArray(new String[0]);
-        forActivity = activityName;
         mainActivity = activity;
     }
 
@@ -87,16 +90,65 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        switch(forActivity){
-            case ("ShowRecipe1"):
-                return getChildView1(groupPosition, childPosition, convertView, parent);
-            case("ShowRecipe2"):
-                return getChildView2(groupPosition, childPosition, convertView, parent);
-            case("ShowRecipe3"):
-                return getChildView3(groupPosition, childPosition, convertView, parent);
-            default:
-                return null;
+        LayoutInflater inflater = mainActivity.getLayoutInflater();
+
+        int childType = getChildType(groupPosition, childPosition);
+
+        // We need to create a new "cell container"
+        if (convertView == null || (!convertView.getTag().equals(childType))) {
+            switch (childType) {
+                case CHILD_TYPE_INFOS:
+                    convertView = inflater.inflate(R.layout.expandable_list_item_recipe_infos, null);
+                    convertView.setTag(childType);
+                    break;
+                case CHILD_TYPE_INGRED:
+                    convertView = inflater.inflate(R.layout.expandable_list_item_recipe_ingredients, null);
+                    convertView.setTag(childType);
+                    break;
+                case CHILD_TYPE_PREPARAZ:
+                    convertView = inflater.inflate(R.layout.expandable_list_item_recipe_preparation, null);
+                    convertView.setTag(childType);
+                    break;
+                default:
+                    // Maybe we should implement a default behaviour but it should be ok we know there are 4 child types right?
+                    break;
+            }
         }
+        // We'll reuse the existing one
+        else {
+            // There is nothing to do here really we just need to set the content of view which we do in both cases
+        }
+
+        switch (childType) {
+            case CHILD_TYPE_INFOS:
+                // Inizializzo questa classe per la comunicazione con il db
+                dbWrapper = new DataBaseWrapper(convertView.getContext());
+
+                String contenuti = String.valueOf(getChild(groupPosition, childPosition));
+                ArrayList<String> cont = split(contenuti); // divido info del piatto dall'id
+
+                TextView textView = convertView.findViewById(R.id.textViewRecipeInfos);
+                textView.setText(cont.get(0)); // info del piatto
+
+                final Long id_piatto = Long.parseLong(cont.get(1)); // id
+
+                ImageView imgview = convertView.findViewById(R.id.imageViewShowRecipe); // immagine a sx nella schermata
+                imgview = setImage(id_piatto, imgview, convertView); // scelgo l'immagine in base al nome del file (db)
+
+                break;
+            case CHILD_TYPE_INGRED:
+                TextView textView2 = convertView.findViewById(R.id.textViewIngredients);
+                textView2.setText( String.valueOf(getChild(groupPosition, childPosition)) ); // mi faccio passare la stringa con gli ingredienti e
+                // le loro quantita, separati da \n
+                break;
+            case CHILD_TYPE_PREPARAZ:
+                TextView textView3 = convertView.findViewById(R.id.textViewPreparation);
+                textView3.setText( String.valueOf(getChild(groupPosition, childPosition)) ); // mi faccio passare la stringa con i passi della
+                // preparazione, separati da \n
+                break;
+        }
+
+        return convertView;
     }
 
     @Override
@@ -104,51 +156,23 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    // Funzione per ShowRecipeActivity 1: Foto del piatto, nome del piatto, tipo di portata e tempo di preparazione;
-    // i vari campi sono separati da "\n", verranno inseriti in un unico TextView.
-    private View getChildView1(int groupPosition, int childPosition, View convertView, ViewGroup parent) {
-        if (convertView == null)
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_list_item_recipe_infos, parent, false);
-
-        // Inizializzo questa classe per la comunicazione con il db
-        dbWrapper = new DataBaseWrapper(convertView.getContext());
-
-        String contenuti = String.valueOf(getChild(groupPosition, childPosition));
-        ArrayList<String> cont = split(contenuti); // divido info del piatto dall'id
-
-        TextView textView = convertView.findViewById(R.id.textViewRecipeInfos);
-        textView.setText(cont.get(0)); // info del piatto
-
-        final Long id_piatto = Long.parseLong(cont.get(1)); // id
-
-        ImageView imgview = convertView.findViewById(R.id.imageViewShowRecipe); // immagine a sx nella schermata
-        imgview = setImage(id_piatto, imgview, convertView); // scelgo l'immagine in base al nome del file (db)
-
-        return convertView;
+    @Override
+    public int getChildTypeCount() {
+        return 3;
     }
 
-    // Funzione per ShowRecipeActivity 2: lista ingredienti e loro quantita
-    private View getChildView2(int groupPosition, int childPosition, View convertView, ViewGroup parent) {
-        if (convertView == null)
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_list_item_recipe_ingredients, parent, false);
-
-        TextView textView = convertView.findViewById(R.id.textViewIngredients);
-        textView.setText( String.valueOf(getChild(groupPosition, childPosition)) ); // mi faccio passare la stringa con gli ingredienti e
-        // le loro quantita, separati da \n
-
-        return convertView;
-    }
-
-    // Funzione per ShowRecipeActivity 3: textview con i passi della preparazione
-    private View getChildView3(int groupPosition, int childPosition, View convertView, ViewGroup parent) {
-        if (convertView == null)
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_list_item_recipe_preparation, parent, false);
-
-        TextView textView = convertView.findViewById(R.id.textViewPreparation);
-        textView.setText( String.valueOf(getChild(groupPosition, childPosition)) ); // mi faccio passare la stringa con i passi della
-        // preparazione, separati da \n
-
-        return convertView;
+    @Override
+    public int getChildType(int groupPosition, int childPosition) {
+        switch (groupPosition) {
+            case 0:
+                return CHILD_TYPE_PREPARAZ;
+            case 1:
+                return CHILD_TYPE_INGRED;
+            case 2:
+                return CHILD_TYPE_INFOS;
+            default:
+                return CHILD_TYPE_PREPARAZ; // primo gruppo in ordine
+        }
     }
 
     /**

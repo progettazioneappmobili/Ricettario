@@ -152,38 +152,30 @@ public class ShowRecipeActivity extends AppCompatActivity {
      * @param preparation: passi della preparazione
      */
     private void configShowListView(String infos, String ingred, String preparation){
+        // Configuro ListView
+        ExpandableListView expandableListView = findViewById(R.id.expandableListViewShowRecipe);
+        HashMap<String, List<String>> item = new HashMap<>();
+
         // Informazioni
-        ExpandableListView expandableListView2 = findViewById(R.id.expandableListView2);
-        HashMap<String, List<String>> item_info = new HashMap<>();
         ArrayList<String> informazioniGroup = new ArrayList<>();
         informazioniGroup.add(infos);
-        item_info.put(getString(R.string.recipe_info), informazioniGroup);
+        item.put(getString(R.string.recipe_info), informazioniGroup);
 
         // Ingredienti
-        ExpandableListView expandableListView3 = findViewById(R.id.expandableListView3);
-        HashMap<String, List<String>> item_ingred = new HashMap<>();
         ArrayList<String> ingredientiGroup = new ArrayList<>();
         ingredientiGroup.add(ingred);
-        item_ingred.put(getString(R.string.ingredients), ingredientiGroup);
+        item.put(getString(R.string.ingredients), ingredientiGroup);
 
         // Preparazione
-        ExpandableListView expandableListView4 = findViewById(R.id.expandableListView4);
-        HashMap<String, List<String>> item_preparaz = new HashMap<>();
         ArrayList<String> preparazioneGroup = new ArrayList<>();
         preparazioneGroup.add(preparation);
-        item_preparaz.put(getString(R.string.preparation), preparazioneGroup);
+        item.put(getString(R.string.preparation), preparazioneGroup);
 
         // Configuro gli adapter
-        ShowExpandableListAdapter adapter2 = new ShowExpandableListAdapter(item_info, "ShowRecipe1", this);
-        expandableListView2.setDividerHeight(0);
-        expandableListView2.setAdapter(adapter2);
-        expandableListView2.expandGroup(0);
-
-        ShowExpandableListAdapter adapter3 = new ShowExpandableListAdapter(item_ingred, "ShowRecipe2", this);
-        expandableListView3.setAdapter(adapter3);
-
-        ShowExpandableListAdapter adapter4 = new ShowExpandableListAdapter(item_preparaz, "ShowRecipe3", this);
-        expandableListView4.setAdapter(adapter4);
+        ShowExpandableListAdapter adapter = new ShowExpandableListAdapter(item,this);
+        expandableListView.setDividerHeight(0);
+        expandableListView.setAdapter(adapter);
+        expandableListView.expandGroup(0);
     }
 }
 
