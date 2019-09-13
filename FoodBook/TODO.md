@@ -5,7 +5,3 @@
 ### Main Activity
 
 * Riordinare lista Primi, Secondi,...
-
-### Show Recipe Activity
-
-* Aggiungere scroll 
