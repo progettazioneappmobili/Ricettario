@@ -52,7 +52,7 @@
                 app:srcCompat="@drawable/ic_icon_add" />
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/nameSearch_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -78,10 +78,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+                app:layout_constraintTop_toBottomOf="@+id/nameSearch_textView" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/dishTypeSearch_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -93,7 +93,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/recipeNameSearch_editText" />
 
             <ToggleButton
-                android:id="@+id/toggleButton1Search"
+                android:id="@+id/dishType1Search_toggleButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -103,12 +103,12 @@
                 android:layout_marginRight="8dp"
                 android:textOff="Primo"
                 android:textOn="Primo"
-                app:layout_constraintEnd_toStartOf="@+id/toggleButton2Search"
+                app:layout_constraintEnd_toStartOf="@+id/dishType2Search_toggleButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintTop_toBottomOf="@+id/dishTypeSearch_textView" />
 
             <ToggleButton
-                android:id="@+id/toggleButton2Search"
+                android:id="@+id/dishType2Search_toggleButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -119,11 +119,11 @@
                 android:textOff="Secondo"
                 android:textOn="Secondo"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/toggleButton1Search"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintStart_toEndOf="@+id/dishType1Search_toggleButton"
+                app:layout_constraintTop_toBottomOf="@+id/dishTypeSearch_textView" />
 
             <ToggleButton
-                android:id="@+id/toggleButton3Search"
+                android:id="@+id/dishType3Search_toggleButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -133,12 +133,12 @@
                 android:layout_marginRight="8dp"
                 android:textOff="Antipasto"
                 android:textOn="Aintipasto"
-                app:layout_constraintEnd_toStartOf="@+id/toggleButton4Search"
+                app:layout_constraintEnd_toStartOf="@+id/dishType4Search_toggleButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toggleButton1Search" />
+                app:layout_constraintTop_toBottomOf="@+id/dishType1Search_toggleButton" />
 
             <ToggleButton
-                android:id="@+id/toggleButton4Search"
+                android:id="@+id/dishType4Search_toggleButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -149,11 +149,11 @@
                 android:textOff="Dolce"
                 android:textOn="Dolce"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/toggleButton3Search"
-                app:layout_constraintTop_toBottomOf="@+id/toggleButton2Search" />
+                app:layout_constraintStart_toEndOf="@+id/dishType3Search_toggleButton"
+                app:layout_constraintTop_toBottomOf="@+id/dishType2Search_toggleButton" />
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/timeSearch_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -162,7 +162,7 @@
                 android:text="Tempo di Preparazione"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toggleButton3Search" />
+                app:layout_constraintTop_toBottomOf="@+id/dishType3Search_toggleButton" />
 
             <ToggleButton
                 android:id="@+id/fastSearch_toggleButton"
@@ -177,7 +177,7 @@
                 android:textOn="Veloce"
                 app:layout_constraintEnd_toStartOf="@+id/mediumSearch_toggleButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+                app:layout_constraintTop_toBottomOf="@+id/timeSearch_textView" />
 
             <ToggleButton
                 android:id="@+id/mediumSearch_toggleButton"
@@ -192,7 +192,7 @@
                 android:textOn="Medio"
                 app:layout_constraintEnd_toStartOf="@+id/longSearch_toggleButton"
                 app:layout_constraintStart_toEndOf="@+id/fastSearch_toggleButton"
-                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+                app:layout_constraintTop_toBottomOf="@+id/timeSearch_textView" />
 
             <ToggleButton
                 android:id="@+id/longSearch_toggleButton"
@@ -207,10 +207,10 @@
                 android:textOn="Lungo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/mediumSearch_toggleButton"
-                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+                app:layout_constraintTop_toBottomOf="@+id/timeSearch_textView" />
 
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/ingredientsListSearch_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -229,7 +229,7 @@
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView15"></LinearLayout>
+                app:layout_constraintTop_toBottomOf="@+id/ingredientsListSearch_textView"></LinearLayout>
 
             <Space
                 android:layout_width="wrap_content"

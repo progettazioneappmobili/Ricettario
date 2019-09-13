@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/phase_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -26,7 +26,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@+id/textView7"
+        app:layout_constraintStart_toEndOf="@+id/phase_textView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
@@ -43,6 +43,6 @@
         android:minLines="3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@+id/phase_textView" />
 
 </android.support.constraint.ConstraintLayout>

@@ -20,7 +20,7 @@
 
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/recipeName_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -45,10 +45,10 @@
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                app:layout_constraintTop_toBottomOf="@+id/recipeName_textView" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/dishType_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -60,7 +60,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/recipeName_editText" />
 
             <ToggleButton
-                android:id="@+id/toggleButton1"
+                android:id="@+id/dishType1_toggleButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -70,13 +70,13 @@
                 android:layout_marginRight="8dp"
                 android:textOff="Primo"
                 android:textOn="Primo"
-                app:layout_constraintEnd_toStartOf="@+id/toggleButton2"
+                app:layout_constraintEnd_toStartOf="@+id/dishType2_toggleButton"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                app:layout_constraintTop_toBottomOf="@+id/dishType_textView" />
 
             <ToggleButton
-                android:id="@+id/toggleButton2"
+                android:id="@+id/dishType2_toggleButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -87,11 +87,11 @@
                 android:textOff="Secondo"
                 android:textOn="Secondo"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/toggleButton1"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                app:layout_constraintStart_toEndOf="@+id/dishType1_toggleButton"
+                app:layout_constraintTop_toBottomOf="@+id/dishType_textView" />
 
             <ToggleButton
-                android:id="@+id/toggleButton3"
+                android:id="@+id/dishType3_toggleButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -101,12 +101,12 @@
                 android:layout_marginRight="8dp"
                 android:textOff="Antipasto"
                 android:textOn="Antipasto"
-                app:layout_constraintEnd_toStartOf="@+id/toggleButton4"
+                app:layout_constraintEnd_toStartOf="@+id/dishType4_toggleButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toggleButton1" />
+                app:layout_constraintTop_toBottomOf="@+id/dishType1_toggleButton" />
 
             <ToggleButton
-                android:id="@+id/toggleButton4"
+                android:id="@+id/dishType4_toggleButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -117,11 +117,11 @@
                 android:textOff="Dolce"
                 android:textOn="Dolce"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/toggleButton3"
-                app:layout_constraintTop_toBottomOf="@+id/toggleButton2" />
+                app:layout_constraintStart_toEndOf="@+id/dishType3_toggleButton"
+                app:layout_constraintTop_toBottomOf="@+id/dishType2_toggleButton" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/time_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -130,7 +130,7 @@
                 android:text="Tempo di Preparazione"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toggleButton3" />
+                app:layout_constraintTop_toBottomOf="@+id/dishType3_toggleButton" />
 
             <ToggleButton
                 android:id="@+id/fast_toggleButton"
@@ -145,7 +145,7 @@
                 android:textOn="Veloce"
                 app:layout_constraintEnd_toStartOf="@+id/medium_toggleButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                app:layout_constraintTop_toBottomOf="@+id/time_textView" />
 
             <ToggleButton
                 android:id="@+id/medium_toggleButton"
@@ -160,7 +160,7 @@
                 android:textOn="Medio"
                 app:layout_constraintEnd_toStartOf="@+id/long_toggleButton"
                 app:layout_constraintStart_toEndOf="@+id/fast_toggleButton"
-                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                app:layout_constraintTop_toBottomOf="@+id/time_textView" />
 
             <ToggleButton
                 android:id="@+id/long_toggleButton"
@@ -175,10 +175,10 @@
                 android:textOn="Lungo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/medium_toggleButton"
-                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                app:layout_constraintTop_toBottomOf="@+id/time_textView" />
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/minutes_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -203,11 +203,11 @@
                 android:inputType="number"
                 android:maxLength="5"
                 android:singleLine="true"
-                app:layout_constraintStart_toEndOf="@+id/textView8"
+                app:layout_constraintStart_toEndOf="@+id/minutes_textView"
                 app:layout_constraintTop_toBottomOf="@+id/medium_toggleButton" />
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/photo_imageView"
                 android:layout_width="0dp"
                 android:layout_height="150dp"
                 android:layout_marginStart="8dp"

@@ -8,7 +8,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -17,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Classe che permette di cercare una ricetta tramite un form che consente di inserire
@@ -114,10 +112,10 @@ public class SearchActivity extends AppCompatActivity {
             }
         };
 
-        findViewById(R.id.toggleButton1Search).setOnClickListener(hideKeyBoardOnClick);
-        findViewById(R.id.toggleButton2Search).setOnClickListener(hideKeyBoardOnClick);
-        findViewById(R.id.toggleButton3Search).setOnClickListener(hideKeyBoardOnClick);
-        findViewById(R.id.toggleButton4Search).setOnClickListener(hideKeyBoardOnClick);
+        findViewById(R.id.dishType1Search_toggleButton).setOnClickListener(hideKeyBoardOnClick);
+        findViewById(R.id.dishType2Search_toggleButton).setOnClickListener(hideKeyBoardOnClick);
+        findViewById(R.id.dishType3Search_toggleButton).setOnClickListener(hideKeyBoardOnClick);
+        findViewById(R.id.dishType4Search_toggleButton).setOnClickListener(hideKeyBoardOnClick);
         findViewById(R.id.fastSearch_toggleButton).setOnClickListener(hideKeyBoardOnClick);
         findViewById(R.id.mediumSearch_toggleButton).setOnClickListener(hideKeyBoardOnClick);
         findViewById(R.id.longSearch_toggleButton).setOnClickListener(hideKeyBoardOnClick);
@@ -136,10 +134,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private ArrayList<String> getDishTypeList(){
-        ToggleButton toggleButton1Search = findViewById(R.id.toggleButton1Search);
-        ToggleButton toggleButton2Search = findViewById(R.id.toggleButton2Search);
-        ToggleButton toggleButton3Search = findViewById(R.id.toggleButton3Search);
-        ToggleButton toggleButton4Search = findViewById(R.id.toggleButton4Search);
+        ToggleButton toggleButton1Search = findViewById(R.id.dishType1Search_toggleButton);
+        ToggleButton toggleButton2Search = findViewById(R.id.dishType2Search_toggleButton);
+        ToggleButton toggleButton3Search = findViewById(R.id.dishType3Search_toggleButton);
+        ToggleButton toggleButton4Search = findViewById(R.id.dishType4Search_toggleButton);
 
         ArrayList<String> returnList = new ArrayList<>();
 

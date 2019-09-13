@@ -14,7 +14,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -93,7 +92,7 @@ public class Insert1Fragment extends Fragment {
 
         minutes_editText = view.findViewById(R.id.minutes_editText);
 
-        imageView = view.findViewById(R.id.imageView);
+        imageView = view.findViewById(R.id.photo_imageView);
 
         // Aggiorna il nome della ricetta quando questo viene mdificato
         recipeName_editText.addTextChangedListener(new TextWatcher() {
@@ -150,16 +149,16 @@ public class Insert1Fragment extends Fragment {
                     toggleButtonGroupRadioBehaviour(dishToggleButtonGroup, (CompoundButton) v);
 
                     switch (v.getId()) {
-                        case R.id.toggleButton1:
+                        case R.id.dishType1_toggleButton:
                             recipe.setDishType(Recipe.DishType.FIRST);
                             break;
-                        case R.id.toggleButton2:
+                        case R.id.dishType2_toggleButton:
                             recipe.setDishType(Recipe.DishType.SECOND);
                             break;
-                        case R.id.toggleButton3:
+                        case R.id.dishType3_toggleButton:
                             recipe.setDishType(Recipe.DishType.APPETIZER);
                             break;
-                        case R.id.toggleButton4:
+                        case R.id.dishType4_toggleButton:
                             recipe.setDishType(Recipe.DishType.DESSERT);
                             break;
                     }
@@ -247,10 +246,10 @@ public class Insert1Fragment extends Fragment {
 
     private void setDishToggleButtonGroup() {
         dishToggleButtonGroup = new ArrayList<>();
-        dishToggleButtonGroup.add((ToggleButton) view.findViewById(R.id.toggleButton1));
-        dishToggleButtonGroup.add((ToggleButton) view.findViewById(R.id.toggleButton2));
-        dishToggleButtonGroup.add((ToggleButton) view.findViewById(R.id.toggleButton3));
-        dishToggleButtonGroup.add((ToggleButton) view.findViewById(R.id.toggleButton4));
+        dishToggleButtonGroup.add((ToggleButton) view.findViewById(R.id.dishType1_toggleButton));
+        dishToggleButtonGroup.add((ToggleButton) view.findViewById(R.id.dishType2_toggleButton));
+        dishToggleButtonGroup.add((ToggleButton) view.findViewById(R.id.dishType3_toggleButton));
+        dishToggleButtonGroup.add((ToggleButton) view.findViewById(R.id.dishType4_toggleButton));
     }
 
     // Radio group behaviour for ToggleButtons
