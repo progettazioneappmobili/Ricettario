@@ -6,9 +6,7 @@
 ### Main Activity
 
 * Riordinare lista Primi, Secondi,...
-* Usare stella piena per i preferiti (?)
 
 ### Show Recipe Activity
 
 * Aggiungere scroll 
-* Usare stella piena se ricetta fra le preferite (?)

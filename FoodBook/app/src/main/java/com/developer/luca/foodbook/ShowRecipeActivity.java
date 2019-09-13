@@ -43,7 +43,7 @@ public class ShowRecipeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setPreferred(dishId);
+                setFabIcon(setPreferred(dishId));
             }
         });
 
@@ -70,6 +70,15 @@ public class ShowRecipeActivity extends AppCompatActivity {
 
         configShowListView(infos, ingred, preparation);
 
+        setFabIcon(recipeInfos.get(5).equals("1"));
+    }
+
+    private void setFabIcon(boolean isPref) {
+        if(isPref){
+            fab.setImageResource(R.drawable.ic_icon_fullstar);
+        }else {
+            fab.setImageResource(R.drawable.ic_icon_emptystar);
+        }
     }
 
     /**
@@ -88,11 +97,13 @@ public class ShowRecipeActivity extends AppCompatActivity {
             String prepTime = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_PREPARATIONTIME));
             String dishType = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_DISHTYPE));
             String ingred = cursor.getString(cursor.getColumnIndex(DataBaseWrapper.KEY_INGREDIENTS));
+            int preferred = cursor.getInt(cursor.getColumnIndex(DataBaseWrapper.KEY_ISPREFERRED));
             result.add(name);
             result.add(dishType);
             result.add(preparation);
             result.add(prepTime);
             result.add(ingred);
+            result.add(String.valueOf(preferred));
         }
         cursor.close();
         dbWrapper.close();
@@ -103,8 +114,11 @@ public class ShowRecipeActivity extends AppCompatActivity {
      * Dato l'id di una ricetta faccio una query di update per quella ricetta e modifico il
      * campo KEY_ISPREFERRED, se era fra le preferite la rimuovo, se nonera la aggiungo.
      * @param id: id della ricetta di cui voglio fare l'update
+     * @return isPref: true se la ricetta è ora tra i preferiti, false altrimenti
      */
-    public void setPreferred(long id){
+    public Boolean setPreferred(long id){
+        Boolean isPref = false;
+
         dbWrapper.open();
         cursor = dbWrapper.fetchRecipe(id);
         while(cursor.moveToNext()){
@@ -118,12 +132,16 @@ public class ShowRecipeActivity extends AppCompatActivity {
             int pref = cursor.getInt(cursor.getColumnIndex(DataBaseWrapper.KEY_ISPREFERRED));
             if (pref == 0){ // non fra le preferite => la aggiungo
                 dbWrapper.updateRecipe(id, name, preparation, dishType, filename, prepTime, timeType, ingred, 1);
+                isPref = true;
             }else{ // fra le preferite => la rimuovo
                 dbWrapper.updateRecipe(id, name, preparation, dishType, filename, prepTime, timeType, ingred, 0);
+                isPref = false;
             }
         }
         cursor.close();
         dbWrapper.close();
+
+        return isPref;
     }
 
     /**
