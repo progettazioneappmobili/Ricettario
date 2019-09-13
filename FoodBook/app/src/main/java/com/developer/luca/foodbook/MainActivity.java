@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
         MyExpandableListAdapter adapter = new MyExpandableListAdapter(item, this);
         expandableListView.setAdapter(adapter);
-        expandableListView.setDividerHeight(0);
+        expandableListView.setDividerHeight(0); // Rimuove linee tra le immagini
         expandableListView.expandGroup(0);
     }
 

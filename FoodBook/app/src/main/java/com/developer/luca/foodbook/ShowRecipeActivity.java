@@ -175,6 +175,7 @@ public class ShowRecipeActivity extends AppCompatActivity {
 
         // Configuro gli adapter
         ShowExpandableListAdapter adapter2 = new ShowExpandableListAdapter(item_info, "ShowRecipe1", this);
+        expandableListView2.setDividerHeight(0);
         expandableListView2.setAdapter(adapter2);
         expandableListView2.expandGroup(0);
 
