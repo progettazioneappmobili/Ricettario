@@ -189,9 +189,21 @@ public class MainActivity extends AppCompatActivity {
 
         MyExpandableListAdapter adapter = new MyExpandableListAdapter(item, this);
         expandableListView.setAdapter(adapter);
+        expandableListView.setDividerHeight(0);
         expandableListView.expandGroup(0);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        configGallery();
+    }
+
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
+        configGallery();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

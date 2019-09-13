@@ -44,6 +44,18 @@ public class ResultsActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        Bundle b = getIntent().getExtras();
+        if(b != null) { // ricevo id dei piatti dalla search, mostro i risultati
+            configGallery2(b.getStringArrayList("ids"));
+        }else { // non ricevo niente, mostro tutte le ricette preferite
+            configGallery();
+        }
+    }
+
     /**
      * Inizializzo la Gallery passando le varie ricette raggruppate per tipo alla ListView
      */
