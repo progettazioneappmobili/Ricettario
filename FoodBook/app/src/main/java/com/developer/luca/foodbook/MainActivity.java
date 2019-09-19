@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 /**
@@ -129,13 +128,13 @@ public class MainActivity extends AppCompatActivity {
       */
     public void addRecords(){
         dbWrapper.open();
-        dbWrapper.createRecipe("Spaghetti", "Passo1\nButta l'acqua\n\nPasso2\nMetti il sale", "Primo","dish_icon",18, "Veloce", "100 gr,  Spaghetti\n2 ,  Ingred2",1);
-        dbWrapper.createRecipe("Pasta", "Passo1\nButta un po d'acqua\n\nPasso2\nAggiungi il sale", "Primo","dish_icon",21,"Media", "200 gr,  Pasta\nqb,  Sale",1);
-        dbWrapper.createRecipe("Patatine", "Passo1\nApri il sacchetto\n\nPasso2\nBla bla bla", "Antipasto","dish_icon",5,"Veloce", "100 gr,  Pringles\nqb,  Salsa",1);
-        dbWrapper.createRecipe("Antipasto di pesce", "Passo1\nTira fuori il pesce\n\nPasso2\nBla bla bla", "Antipasto","dish_icon",20,"Media", "50 gr,  Calamari\n50 gr,  Seppie\n50 gr,  Gamberi",1);
-        dbWrapper.createRecipe("Formaggi misti", "Passo1\nTira fuori il formaggio\n\nPasso2\nBla bla bla", "Antipasto","dish_icon",10,"Veloce", "50 gr,  Gorgonzola\n50 gr,  Montasio\n50 gr,  Emmenthal",0);
-        dbWrapper.createRecipe("Cheescake","Passo1\nCompra il formaggio\n\nPasso2\nBla bla","Dessert","dish_icon",35,"Media", "50 gr,  Formaggio\n3 ,  Zucchero\n50 gr,  Burro",0);
-        dbWrapper.createRecipe("Filetto di trota","Passo1\nCompra il pesce\n\nPasso2\n....","Secondo","dish_icon",20,"Media", "200 gr,  Trota\nqb,  Sale",1);
+        dbWrapper.createRecipe("Spaghetti alla carbonara", "Passo1\nMettere sul fuoco una pentola con l'acqua salata per cuocere la pasta. Nel frattempo eliminate la cotenna dal guanciale e tagliatelo prima a fette e poi a striscioline spesse circa 1 cm.\n\nPasso2\nVersate i pezzetti in una padella antiaderente e rosolate per circa 15 minuti a fiamma media, fate attenzione a non bruciarlo altrimenti rilascerà un aroma troppo forte.", "Primo","spaghetti_carbonara",18, "Veloce", "100 gr,  Spaghetti\n150 gr,  Guanciale\n6 , Tuorli di uova medie",1);
+        dbWrapper.createRecipe("Bavette al pesto", "Passo1\nPulire le foglie di basilico con un panno morbido oppure sciacquarle delicatamente in una ciotola d'acqua fredda.\n\nPasso2\nPonete l'aglio sbucciato nel mortaio insieme a qualche grano di sale grosso. Cominciate a pestare e, quando l'aglio sarà ridotto in crema aggiungete le foglie di basilico contro le pareti del mortaio.", "Primo","bavette_pesto",21,"Media", "200 gr,  Pasta\nqb,  Sale\n15 gr, Pinoli\n50 gr, Basilico",1);
+        dbWrapper.createRecipe("Focaccia alla genovese", "Passo1\nVersate la farina nella ciotola di una planetaria e sbriciolate dentro il lievito fresco.\n\nPasso2\nAggiungete metà dell'acqua e azionate la planetaria.\n\nPasso 3\nNon appena sarà assorbita, ci vorranno circa 3 minuti, aggiungete a poco a poco la restante acqua mentre la planetaria è in movimento.\n\nPasso 4\nQuando sarà completamente assorbita aggiungete il malto e il sale.", "Antipasto","focaccia",15,"Veloce", "500 gr,  Farina Manitoba\nqb,  Sale fino\n15 gr, Olio\n50 gr, Acqua\nqb , Malto",1);
+        dbWrapper.createRecipe("Crocchette di patate", "Passo1\nLavate le patate sotto l'acqua corrente per togliere residui di terra, ponetele a lessare in un tegame capiente versando acqua fino a coprirle e senza sbuciarle.\n\nPasso2\nUtilizzate patate il più possibile della stessa dimensione così da uniformare la cottura. Ci vorranno circa 40 minuti se le bollite oppure la metà del tempo circa con una pentola a pressione.", "Antipasto","crocchette",20,"Lunga", "1000 gr,  Patate rosse\n30 gr,  Tuorli\nqb ,  Pepe nero",1);
+        dbWrapper.createRecipe("Polpette", "Passo1\nTagliate la mollica in pezzi e versatela in un mixer dotato di lame e tritate il tutto fin quando la mollica non sarà ridotta in briciole.\n\nPasso2\nTenete da parte la mollica e eliminate lo spago dalle salisccie, incidetele delicatamente nel senso della lunghezza e infine privatele del budello.\n\nPasso 3\nCon la lama di un coltello o con una forchetta schiacciate la carne.", "Secondo","polpette",30,"Media", "220 gr,  Manzo\n165 gr,  Salsiccia\n25 gr,  Parmigiano\n30 gr, Mollica di pane",0);
+        dbWrapper.createRecipe("Cheescake","Passo1\nFondete il burro e lasciatelo intiepidire; nel frattempo ponete i biscotti  in un mixer e frullateli fino a ridurli in polvere.\n\nPasso2\nTrasferite i biscotti in una ciotola e versate il burro. Mescolate con un cucchiaio fino ad uniformare il composto; successivamente prendete uno stampo a cerniera e foderate la base con la carta da forno.\n\nPasso 3\nPonete metà dei biscotti all'interno e schiacciateli con il dorso del cucchiaio per compattarli.","Dessert","cheesecake",35,"Media", "50 gr,  Formaggio\n3 ,  Zucchero\n50 gr,  Burro\n240 gr, Biscotti Digestive",0);
+        dbWrapper.createRecipe("Trota al cartoccio","Passo1\nTagliate le verdure che serviranno per farcire la trota; lavate e pelate le carote, poi tagliatele a metà e dividete ogni metà per il lungo.\n\nPasso2\nOra lavate il cipollotto, eliminate la base con le radici e dividetelo a metà, poi tagliate ogni metà a bastoncini sottili.\n\nPasso 3\nLavate e pelate le patate, e tagliate anch'esse prima a fettine e poi a bastoncini dello stesso spessore delle carote.","Secondo","trota",20,"Media", "900 gr,  Trota\nqb,  Sale\n50 gr, Carote\n80 gr, Patate\n20 gr, Cipollotto fresco",1);
         dbWrapper.close();
     }
 
