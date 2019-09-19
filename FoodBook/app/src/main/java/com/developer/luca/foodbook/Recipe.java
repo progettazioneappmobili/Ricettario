@@ -167,10 +167,16 @@ public class Recipe {
         StringBuilder ingredientsString = new StringBuilder();
 
         for (Ingredient ingredient: ingredients) {
-            ingredientsString.append(ingredient.getQuantity())
-                    .append(" ").append(ingredient.getUnit().getUnitString())
-                    .append(", ").append(ingredient.getIngredient())
-                    .append("\n");
+            if (ingredient.getQuantity() == 0){
+                ingredientsString.append("qb")
+                        .append(",  ").append(ingredient.getIngredient())
+                        .append("\n");
+            } else {
+                ingredientsString.append(ingredient.getQuantity())
+                        .append(" ").append(ingredient.getUnit().getUnitString())
+                        .append(",  ").append(ingredient.getIngredient())
+                        .append("\n");
+            }
         }
 
         return ingredientsString.toString();
@@ -197,7 +203,7 @@ public class Recipe {
         for (Phase phase: phases) {
             phasesString.append("Passo ").append(phase.getPhaseNumber())
                     .append("\n").append(phase.getPhaseDescription())
-                    .append("\n");
+                    .append("\n\n");
         }
 
         return phasesString.toString();

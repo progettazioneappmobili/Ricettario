@@ -129,13 +129,13 @@ public class MainActivity extends AppCompatActivity {
       */
     public void addRecords(){
         dbWrapper.open();
-        dbWrapper.createRecipe("Spaghetti", "Passo1\nButta l'acqua\nPasso2\nMetti il sale", "Primo","dish_icon",18, "Veloce", "100 gr\tSpaghetti\n2\tIngred2",1);
-        dbWrapper.createRecipe("Pasta", "Passo1\nButta un po d'acqua\nPasso2\nAggiungi il sale", "Primo","lasagne",21,"Media", "Pasta\nIngred2",1);
-        dbWrapper.createRecipe("Patatine", "Passo1\nApri il sacchetto\nPasso2\nBla bla bla", "Antipasto","lasagne",5,"Veloce", "Pringles\nIngred2",1);
-        dbWrapper.createRecipe("Antipasto di pesce", "Passo1\nTira fuori il pesce\nPasso2\nBla bla bla", "Antipasto","lasagne",20,"Media", "Calamari\nSeppie\nGamberi",1);
-        dbWrapper.createRecipe("Formaggi misti", "Passo1\nTira fuori il formaggio\nPasso2\nBla bla bla", "Antipasto","lasagne",10,"Veloce", "Gorgonzola\nMontasio\nEmmenthal",0);
-        dbWrapper.createRecipe("Cheescake","Passo1\nCompra il formaggio\nPasso2\nBla bla","Dessert","dish_icon",35,"Media", "Formaggio\nZucchero\nBurro",0);
-        dbWrapper.createRecipe("Filetto di trota","Passo1\nCompra il pesce\nPasso2\n....","Secondo","dish_icon",20,"Media", "Trota\nSale",1);
+        dbWrapper.createRecipe("Spaghetti", "Passo1\nButta l'acqua\n\nPasso2\nMetti il sale", "Primo","dish_icon",18, "Veloce", "100 gr,  Spaghetti\n2 ,  Ingred2",1);
+        dbWrapper.createRecipe("Pasta", "Passo1\nButta un po d'acqua\n\nPasso2\nAggiungi il sale", "Primo","dish_icon",21,"Media", "200 gr,  Pasta\nqb,  Sale",1);
+        dbWrapper.createRecipe("Patatine", "Passo1\nApri il sacchetto\n\nPasso2\nBla bla bla", "Antipasto","dish_icon",5,"Veloce", "100 gr,  Pringles\nqb,  Salsa",1);
+        dbWrapper.createRecipe("Antipasto di pesce", "Passo1\nTira fuori il pesce\n\nPasso2\nBla bla bla", "Antipasto","dish_icon",20,"Media", "50 gr,  Calamari\n50 gr,  Seppie\n50 gr,  Gamberi",1);
+        dbWrapper.createRecipe("Formaggi misti", "Passo1\nTira fuori il formaggio\n\nPasso2\nBla bla bla", "Antipasto","dish_icon",10,"Veloce", "50 gr,  Gorgonzola\n50 gr,  Montasio\n50 gr,  Emmenthal",0);
+        dbWrapper.createRecipe("Cheescake","Passo1\nCompra il formaggio\n\nPasso2\nBla bla","Dessert","dish_icon",35,"Media", "50 gr,  Formaggio\n3 ,  Zucchero\n50 gr,  Burro",0);
+        dbWrapper.createRecipe("Filetto di trota","Passo1\nCompra il pesce\n\nPasso2\n....","Secondo","dish_icon",20,"Media", "200 gr,  Trota\nqb,  Sale",1);
         dbWrapper.close();
     }
 
