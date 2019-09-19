@@ -10,6 +10,7 @@ import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -154,7 +155,7 @@ public class ShowRecipeActivity extends AppCompatActivity {
     private void configShowListView(String infos, String ingred, String preparation){
         // Configuro ListView
         ExpandableListView expandableListView = findViewById(R.id.expandableListViewShowRecipe);
-        HashMap<String, List<String>> item = new HashMap<>();
+        LinkedHashMap<String, List<String>> item = new LinkedHashMap<>();
 
         // Informazioni
         ArrayList<String> informazioniGroup = new ArrayList<>();

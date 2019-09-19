@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ import java.util.List;
 
 public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private HashMap<String, List<String>> mStringListHashMap; // es: <"Antipasto",<"Patatine",...>>, <"Primo",<"Spaghetti","Pasta",..>>
+    private LinkedHashMap<String, List<String>> mStringListHashMap; // es: <"Antipasto",<"Patatine",...>>, <"Primo",<"Spaghetti","Pasta",..>>
     private String[] mListHeaderGroup;
     private DataBaseWrapper dbWrapper; // comunicazione db
     private Cursor cursor; // ausiliario per scorrere i record trovati con la query
@@ -35,7 +36,7 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
     private static final int CHILD_TYPE_INGRED = 1;
     private static final int CHILD_TYPE_PREPARAZ = 2;
 
-    public ShowExpandableListAdapter(HashMap<String, List<String>> stringListHashMap, Activity activity) {
+    public ShowExpandableListAdapter(LinkedHashMap<String, List<String>> stringListHashMap, Activity activity) {
         mStringListHashMap = stringListHashMap;
         mListHeaderGroup = mStringListHashMap.keySet().toArray(new String[0]);
         mainActivity = activity;
@@ -165,13 +166,13 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
     public int getChildType(int groupPosition, int childPosition) {
         switch (groupPosition) {
             case 0:
-                return CHILD_TYPE_PREPARAZ;
+                return CHILD_TYPE_INFOS;
             case 1:
                 return CHILD_TYPE_INGRED;
             case 2:
-                return CHILD_TYPE_INFOS;
+                return CHILD_TYPE_PREPARAZ;
             default:
-                return CHILD_TYPE_PREPARAZ; // primo gruppo in ordine
+                return CHILD_TYPE_INFOS; // primo gruppo in ordine
         }
     }
 
@@ -187,22 +188,8 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
         if (filename.equals("dish_icon")){ // icona di default => foto non presente
             img.setImageResource(R.drawable.dish_icon);
         }else{ // icona presente, cerco l'id del file
-            //int resID = convertView.getResources().getIdentifier(filename , "drawable", "com.developer.luca.foodbook");
-            //img.setImageResource(resID);
-
             try {
                 Uri contentURI = Uri.parse(filename);
-                /*
-
-                Bitmap thumbnailBitmap = MediaStore.Images.Media.getBitmap(mainActivity.getContentResolver(), contentURI);
-
-                if (thumbnailBitmap != null){
-                    img.setImageBitmap(thumbnailBitmap);
-                } else {
-                    img.setImageResource(R.drawable.dish_icon);
-                }
-                */
-                //img.setImageBitmap(BitmapFactory.decodeFile(Uri.parse(filename).getPath()));
 
                 InputStream is = mainActivity.getContentResolver().openInputStream(contentURI);
                 img.setImageBitmap(BitmapFactory.decodeStream(is));

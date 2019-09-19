@@ -15,6 +15,7 @@ import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Home page dell'applicazione: in alto abbiamo due bottoni (icona di ricerca e stella dei preferiti),
@@ -165,12 +166,7 @@ public class MainActivity extends AppCompatActivity {
     public void configGallery() {
         // Configuro la ListView
         ExpandableListView expandableListView = findViewById(R.id.expandableListViewHome);
-        HashMap<String, ArrayList<String>> item = new HashMap<>(); // conterra titolo e contenuti della list view
-
-        // Antipasti
-        ArrayList<String> antipastiGroup = new ArrayList<>();
-        antipastiGroup = getRecipesByType("Antipasto", antipastiGroup);
-        item.put(getString(R.string.antipasti), antipastiGroup);
+        LinkedHashMap<String, ArrayList<String>> item = new LinkedHashMap<>(); // conterra titolo e contenuti della list view
 
         // Primi
         ArrayList<String> primiGroup = new ArrayList<>();
@@ -181,6 +177,11 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> secondiGroup = new ArrayList<>();
         secondiGroup = getRecipesByType("Secondo", secondiGroup);
         item.put(getString(R.string.secondi), secondiGroup);
+
+        // Antipasti
+        ArrayList<String> antipastiGroup = new ArrayList<>();
+        antipastiGroup = getRecipesByType("Antipasto", antipastiGroup);
+        item.put(getString(R.string.antipasti), antipastiGroup);
 
         // Dolci
         ArrayList<String> dolciGroup = new ArrayList<>();

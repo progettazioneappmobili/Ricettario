@@ -18,6 +18,7 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Classe ausiliaria che mi consente di gestire i contenuti degli elementi di tipo ExpandableListView.
@@ -27,7 +28,7 @@ import java.util.HashMap;
 
 public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private HashMap<String, ArrayList<String>> mStringListHashMap; // es: <"Antipasto",<"Patatine",...>>, <"Primo",<"Spaghetti","Pasta",..>>
+    private LinkedHashMap<String, ArrayList<String>> mStringListHashMap; // es: <"Antipasto",<"Patatine",...>>, <"Primo",<"Spaghetti","Pasta",..>>
     private String[] mListHeaderGroup;
     private Character separator = '§'; // separatore fra coppie di piatti
     private Character separator2 = '£'; // separatore fra piatto e suo id
@@ -36,7 +37,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
     Activity mainActivity;
 
-    public MyExpandableListAdapter(HashMap<String, ArrayList<String>> stringListHashMap, Activity activity) {
+    public MyExpandableListAdapter(LinkedHashMap<String, ArrayList<String>> stringListHashMap, Activity activity) {
         mStringListHashMap = stringListHashMap;
         mListHeaderGroup = mStringListHashMap.keySet().toArray(new String[0]);
         mainActivity = activity;

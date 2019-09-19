@@ -8,6 +8,7 @@ import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Classe che utilizzo per mostrare una gallery con l'elenco delle ricette, ogni ricetta
@@ -62,12 +63,7 @@ public class ResultsActivity extends AppCompatActivity {
     public void configGallery() {
         // Configuro la ListView
         ExpandableListView expandableListView = findViewById(R.id.expandableListViewPreferred);
-        HashMap<String, ArrayList<String>> item = new HashMap<>(); // conterra titolo e contenuti della list view
-
-        // Antipasti
-        ArrayList<String> antipastiGroup = new ArrayList<>();
-        antipastiGroup = getPrefRecipesByType("Antipasto", antipastiGroup);
-        item.put(getString(R.string.antipasti), antipastiGroup);
+        LinkedHashMap<String, ArrayList<String>> item = new LinkedHashMap<>(); // conterra titolo e contenuti della list view
 
         // Primi
         ArrayList<String> primiGroup = new ArrayList<>();
@@ -79,6 +75,11 @@ public class ResultsActivity extends AppCompatActivity {
         secondiGroup = getPrefRecipesByType("Secondo", secondiGroup);
         item.put(getString(R.string.secondi), secondiGroup);
 
+        // Antipasti
+        ArrayList<String> antipastiGroup = new ArrayList<>();
+        antipastiGroup = getPrefRecipesByType("Antipasto", antipastiGroup);
+        item.put(getString(R.string.antipasti), antipastiGroup);
+
         // Dolci
         ArrayList<String> dolciGroup = new ArrayList<>();
         dolciGroup = getPrefRecipesByType("Dessert", dolciGroup);
@@ -86,6 +87,7 @@ public class ResultsActivity extends AppCompatActivity {
 
         MyExpandableListAdapter adapter = new MyExpandableListAdapter(item, this);
         expandableListView.setAdapter(adapter);
+        expandableListView.setDividerHeight(0);
         expandableListView.expandGroup(0);
     }
 
@@ -135,12 +137,7 @@ public class ResultsActivity extends AppCompatActivity {
 
         // Configuro la ListView
         ExpandableListView expandableListView = findViewById(R.id.expandableListViewPreferred);
-        HashMap<String, ArrayList<String>> item = new HashMap<>(); // conterra titolo e contenuti della list view
-
-        // Antipasti
-        ArrayList<String> antipastiGroup = new ArrayList<>();
-        antipastiGroup = getRecipesByTypeAndId("Antipasto", antipastiGroup, ids);
-        item.put(getString(R.string.antipasti), antipastiGroup);
+        LinkedHashMap<String, ArrayList<String>> item = new LinkedHashMap<>(); // conterra titolo e contenuti della list view
 
         // Primi
         ArrayList<String> primiGroup = new ArrayList<>();
@@ -152,6 +149,11 @@ public class ResultsActivity extends AppCompatActivity {
         secondiGroup = getRecipesByTypeAndId("Secondo", secondiGroup, ids);
         item.put(getString(R.string.secondi), secondiGroup);
 
+        // Antipasti
+        ArrayList<String> antipastiGroup = new ArrayList<>();
+        antipastiGroup = getRecipesByTypeAndId("Antipasto", antipastiGroup, ids);
+        item.put(getString(R.string.antipasti), antipastiGroup);
+
         // Dolci
         ArrayList<String> dolciGroup = new ArrayList<>();
         dolciGroup = getRecipesByTypeAndId("Dessert", dolciGroup, ids);
@@ -159,6 +161,7 @@ public class ResultsActivity extends AppCompatActivity {
 
         MyExpandableListAdapter adapter = new MyExpandableListAdapter(item, this);
         expandableListView.setAdapter(adapter);
+        expandableListView.setDividerHeight(0);
         expandableListView.expandGroup(0);
     }
 
