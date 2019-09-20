@@ -16,7 +16,8 @@
     <ExpandableListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/expandableListViewPreferred"/>
+        android:id="@+id/expandableListViewPreferred"
+        android:groupIndicator="@drawable/expandablelist_icon"/>
 
 </LinearLayout>
 

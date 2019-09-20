@@ -388,6 +388,7 @@ public class Insert1Fragment extends Fragment {
                 try {
                     // Recupera bitmap da URI immagine selezionata
                     Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(mainActivity.getContentResolver(), contentURI);
+                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     imageView.setImageBitmap(imageBitmap);
 
                     // Crea file in cartella personale
@@ -419,6 +420,7 @@ public class Insert1Fragment extends Fragment {
                     Log.d("RECIPE SET", "uri: "+contentURI.toString());
 
                     if (thumbnailBitmap != null){
+                        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                         imageView.setImageBitmap(thumbnailBitmap);
                     }
                 } catch (IOException e) {

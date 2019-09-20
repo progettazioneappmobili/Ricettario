@@ -244,11 +244,12 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
      */
     private ImageView setImage(long id, ImageView img, View convertView){
         String filename = getFilename(id);
-        if (filename.equals("dish_icon") || filename.equals("lasagne")){ // icona di default => foto non presente
-            img.setImageResource(R.drawable.dish_icon);
+        int resID = convertView.getResources().getIdentifier(filename , "drawable", "com.developer.luca.foodbook");
+
+        if (resID != 0){ // icona di default => foto non presente
+            //img.setImageResource(R.drawable.dish_icon);
+            img.setImageResource(resID);
         }else{ // icona presente, cerco l'id del file
-            //int resID = convertView.getResources().getIdentifier(filename , "drawable", "com.developer.luca.foodbook");
-            //img.setImageResource(resID);
 
             try {
                 Uri contentURI = Uri.parse(filename);
