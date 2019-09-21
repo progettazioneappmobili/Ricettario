@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import android.widget.TextView;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -139,7 +139,7 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
                 break;
             case CHILD_TYPE_INGRED:
                 TextView textView2 = convertView.findViewById(R.id.textViewIngredients);
-                textView2.setText( String.valueOf(getChild(groupPosition, childPosition)) ); // mi faccio passare la stringa con gli ingredienti e
+                textView2.setText(Html.fromHtml(String.valueOf(getChild(groupPosition, childPosition))) ); // mi faccio passare la stringa con gli ingredienti e
                 // le loro quantita, separati da \n
                 break;
             case CHILD_TYPE_PREPARAZ:
@@ -227,9 +227,9 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     /**
-     * Data una stringa contenente valori separati da \n separo i primi tre valori dall'ultimo
+     * Data una stringa contenente valori separati da \n separo i valori della stringa
      * @param contenuti stringa da analizzare
-     * @return ArrayList che nella prima posizione contiene: "nome ricetta\ntipo portata\ntempo preparazione",
+     * @return ArrayList che nella prima posizione contiene: "tipo portata veloce/media/lunga: tempo preparazione",
      * mentre nella seconda posizione contiene l'id del piatto
      */
     private ArrayList<String> split(String contenuti) {
@@ -239,9 +239,8 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
         StringBuilder id_piatto = new StringBuilder();
         while(contenuti.length() > 0){
             if(contenuti.charAt(0) == '\n'){
-                contenuto.append(contenuti.charAt(0));
                 count = count + 1;
-            }else if(count > 2){ // ho trovato 3 '\n'
+            }else if(count > 0){ // ho trovato 1 '\n'
                 id_piatto.append(contenuti.charAt(0));
             }else{ // carattere != da \n
                 contenuto.append(contenuti.charAt(0));

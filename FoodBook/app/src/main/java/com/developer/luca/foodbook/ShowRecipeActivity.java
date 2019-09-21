@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -64,20 +63,32 @@ public class ShowRecipeActivity extends AppCompatActivity {
         String prepTime = recipeInfos.get(3);
         String ingred = recipeInfos.get(4);
         String minutes = "minuti";
+        String timeType;
         int time = Integer.parseInt(prepTime);
+        // Vedo se scrivere "minuto" o "minuti" dopo il valore numerico
         if (time < 2)
                 minutes = "minuto";
-        String infos = name + "\n" + dishType + "\n" + prepTime + " " + minutes + "\n" + dishId;
+        // Vedo la stringa da scrivere in base al tempo di preparazione
+        if (time <= 30){
+            timeType = "veloce";
+        }else if (time <= 60){
+            timeType = "media";
+        }else{
+            timeType = "lunga";
+        }
+
+        String infos = dishType + " " + timeType + ": " + prepTime + " " + minutes + "\n" + dishId;
 
         configShowListView(infos, ingred, preparation);
 
         setFabIcon(recipeInfos.get(5).equals("1"));
     }
 
+    // Se la ricetta corrente e' fra le preferite mostro l'icona piena, altrimenti vuota
     private void setFabIcon(boolean isPref) {
         if(isPref){
             fab.setImageResource(R.drawable.ic_icon_fullstar);
-        }else {
+        }else{
             fab.setImageResource(R.drawable.ic_icon_emptystar);
         }
     }
