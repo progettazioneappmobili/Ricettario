@@ -139,7 +139,7 @@ public class ShowExpandableListAdapter extends BaseExpandableListAdapter {
                 break;
             case CHILD_TYPE_INGRED:
                 TextView textView2 = convertView.findViewById(R.id.textViewIngredients);
-                textView2.setText(Html.fromHtml(String.valueOf(getChild(groupPosition, childPosition))) ); // mi faccio passare la stringa con gli ingredienti e
+                textView2.setText(String.valueOf(getChild(groupPosition, childPosition)) ); // mi faccio passare la stringa con gli ingredienti e
                 // le loro quantita, separati da \n
                 break;
             case CHILD_TYPE_PREPARAZ:

@@ -166,17 +166,19 @@ public class Recipe {
     public String getIngredientsString(){
         StringBuilder ingredientsString = new StringBuilder();
 
+        String prefix = "";
         for (Ingredient ingredient: ingredients) {
+            ingredientsString.append(prefix).append("\u2022 ");
+
             if (ingredient.getQuantity() == 0){
-                ingredientsString.append("qb")
-                        .append(",  ").append(ingredient.getIngredient())
-                        .append("\n");
+                ingredientsString.append("qb");
             } else {
                 ingredientsString.append(ingredient.getQuantity())
-                        .append(" ").append(ingredient.getUnit().getUnitString())
-                        .append(",  ").append(ingredient.getIngredient())
-                        .append("\n");
+                        .append(" ").append(ingredient.getUnit().getUnitString());
             }
+
+            ingredientsString.append(",  ").append(ingredient.getIngredient());
+            prefix = "\n";
         }
 
         return ingredientsString.toString();
