@@ -202,10 +202,12 @@ public class Recipe {
     public String getPhasesString(){
         StringBuilder phasesString = new StringBuilder();
 
+        String prefix = "";
         for (Phase phase: phases) {
-            phasesString.append("Passo ").append(phase.getPhaseNumber())
-                    .append("\n").append(phase.getPhaseDescription())
-                    .append("\n\n");
+            phasesString.append(prefix)
+                    .append("Passo ").append(phase.getPhaseNumber())
+                    .append("\n").append(phase.getPhaseDescription());
+            prefix = "\n\n";
         }
 
         return phasesString.toString();
