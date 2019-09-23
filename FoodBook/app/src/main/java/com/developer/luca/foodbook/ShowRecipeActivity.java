@@ -69,12 +69,12 @@ public class ShowRecipeActivity extends AppCompatActivity {
         if (time < 2)
                 minutes = "minuto";
         // Vedo la stringa da scrivere in base al tempo di preparazione
-        if (time <= 30){
-            timeType = "veloce";
-        }else if (time <= 60){
-            timeType = "media";
+        if (time <= Recipe.TimeType.FAST.getMinutes()){
+            timeType = Recipe.TimeType.FAST.getTimeTypeString();
+        }else if (time <= Recipe.TimeType.MEDIUM.getMinutes()){
+            timeType = Recipe.TimeType.MEDIUM.getTimeTypeString();
         }else{
-            timeType = "lunga";
+            timeType = Recipe.TimeType.LONG.getTimeTypeString();
         }
 
         String infos = dishType + " " + timeType + ": " + prepTime + " " + minutes + "\n" + dishId;
