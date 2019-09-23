@@ -12,6 +12,7 @@ public class Ingredient {
 
         Unit(String unitString){ this.unitString = unitString; }
 
+        // Ritorna il valore in stringa associato al enumerazione
         public String getUnitString() { return unitString; }
     }
 

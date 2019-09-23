@@ -108,7 +108,7 @@ public class InsertActivity extends AppCompatActivity {
                 // Aggiorna il progress tracker per la schermata corrente
                 switch (i){
                     case 0:
-                        progressBar.setProgress(1); // second argument "animate = true" not supported by all API
+                        progressBar.setProgress(1);
                         currentProgress_textView.setText("1");
                         title_textView.setText(sectionsPagerAdapter.getPageTitle(i));
                         next_fab.setImageResource(R.drawable.ic_icon_arrow);

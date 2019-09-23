@@ -52,7 +52,7 @@ public class Insert1Fragment extends Fragment {
     private View view;
     private Recipe recipe;
 
-    // Fragment widgets
+
     private FloatingActionButton camera_fab;
 
     private EditText recipeName_editText;
@@ -110,7 +110,10 @@ public class Insert1Fragment extends Fragment {
             }
         });
 
-        // Observer pattern
+        // Utilizzo un observer pattern per aggiornare il campo di testo dei minuti o i bottoni di TimeType
+        // quando l'altro viene modificato. In questo modo quando scrivo il numero dei minuti viene selezionato
+        // automaticamente il bottone corretto e quando seleziono un bottone pulisco il campo di testo e lascio
+        // la durata approssimativa della ricetta come hint.
         Recipe.addRecipeTimeChangedListener(new Recipe.RecipeTimeChangedListener() {
 
             // Quando cambiano i toggle button cambio i minuti
@@ -230,6 +233,7 @@ public class Insert1Fragment extends Fragment {
         camera_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Controlla i permessi prima di utilizzare camera e/o memoria
                 if (checkAndRequestPermissions())
                     showPictureDialog();
             }
@@ -254,7 +258,7 @@ public class Insert1Fragment extends Fragment {
 
     // Radio group behaviour for ToggleButtons
     // rimane selezionato solo un pulsante tra quelli presenti nel array
-    // Si potrebbe anche utilizzare direttamente dei radio buttons ma dovremmo modificarne l'aspetto
+    // Si potrebbero anche utilizzare direttamente dei radio buttons ma dovremmo modificarne l'aspetto
     private void toggleButtonGroupRadioBehaviour(ArrayList<ToggleButton> toggleButtonGroup, CompoundButton toggledButton){
         for(ToggleButton tB : toggleButtonGroup){
             if (toggledButton.getId() != tB.getId() && tB.isChecked()) tB.setChecked(false);
@@ -271,7 +275,7 @@ public class Insert1Fragment extends Fragment {
     }
 
 
-    // Controlla se sono stati dati i permassi per accedere alla camera e alla memoria, in caso contrario li chiede.
+    // Controlla se sono stati dati i permessi per accedere alla camera e alla memoria, in caso contrario li chiede.
     private  boolean checkAndRequestPermissions() {
         int cameraPermission = ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.CAMERA);
         int galleryWritePermission = ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -302,13 +306,11 @@ public class Insert1Fragment extends Fragment {
                     return;
             }
 
-            // Apri la scelta del'immagine
+            // Apri la finestra di dialogo
             showPictureDialog();
         }
     }
 
-    // Modificato a partire da:
-    // https://demonuts.com/pick-image-gallery-camera-android/
     // Mostra una finestra di dialogo in cui scegliere se prendere un immagine dalla galleria o scattare una nuova foto
     private void showPictureDialog(){
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(mainActivity);
@@ -333,6 +335,8 @@ public class Insert1Fragment extends Fragment {
         pictureDialog.show();
     }
 
+    // È stata scelta l'opzione di utilizare la camera.
+    // Crea l'intent adeguato e prepara un file in cui salvare la foto, poi crea una nuova attività.
     private void invokeCamera() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -354,6 +358,7 @@ public class Insert1Fragment extends Fragment {
         }
     }
 
+    // Crea il file immagine in cui verrà salfata la foto
     String mCurrentPhotoPath;
     private File createImageFile() throws IOException {
         String imageFileName = "" + Calendar.getInstance().getTimeInMillis();
@@ -361,11 +366,12 @@ public class Insert1Fragment extends Fragment {
         File storageDir = mainActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
 
-        // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
+    // È stata scelta l'opzione di scegliere una immagine presente nella galleria.
+    // Crea l'intent adeguato e chiama una nuova attività.
     private void invokeGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
@@ -384,9 +390,10 @@ public class Insert1Fragment extends Fragment {
 
         if (requestCode == REQUEST_IMAGE_GALLERY) {
             if (data != null) {
+                // È ternimata l'attività della galleria, ho ottenuto l'uri dell'immagine selezionata
                 Uri contentURI = data.getData();
                 try {
-                    // Recupera bitmap da URI immagine selezionata
+                    // Recupera bitmap da URI immagine selezionata e imposta l'imageview
                     Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(mainActivity.getContentResolver(), contentURI);
                     imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     imageView.setImageBitmap(imageBitmap);
@@ -400,6 +407,7 @@ public class Insert1Fragment extends Fragment {
                     FileOutputStream out = new FileOutputStream(image);
                     imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
 
+                    // Aggiorna la ricetta
                     recipe.setImageUri(Uri.fromFile(image));
                     Log.d("RECIPE SET", "uri: "+Uri.fromFile(image).toString());
 
@@ -409,24 +417,22 @@ public class Insert1Fragment extends Fragment {
                 }
             }
         } else if (requestCode == REQUEST_IMAGE_CAMERA) {
+            File file = new File(mCurrentPhotoPath);
+            // È terminata l'attività della camera, l'immagine è gia salvata.
+            try {
+                Uri contentURI = Uri.fromFile(file);
+                Bitmap thumbnailBitmap = MediaStore.Images.Media.getBitmap(mainActivity.getContentResolver(), contentURI);
+                recipe.setImageUri(contentURI);
+                Log.d("RECIPE SET", "uri: "+contentURI.toString());
 
-            if (data != null) {
-                File file = new File(mCurrentPhotoPath);
-
-                try {
-                    Uri contentURI = Uri.fromFile(file);
-                    Bitmap thumbnailBitmap = MediaStore.Images.Media.getBitmap(mainActivity.getContentResolver(), contentURI);
-                    recipe.setImageUri(contentURI);
-                    Log.d("RECIPE SET", "uri: "+contentURI.toString());
-
-                    if (thumbnailBitmap != null){
-                        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                        imageView.setImageBitmap(thumbnailBitmap);
-                    }
-                } catch (IOException e) {
-                    Toast.makeText(mainActivity, "Errore nel salvataggio della foto!", Toast.LENGTH_SHORT).show();
+                if (thumbnailBitmap != null){
+                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    imageView.setImageBitmap(thumbnailBitmap);
                 }
+            } catch (IOException e) {
+                Toast.makeText(mainActivity, "Errore nel ottenere la foto!", Toast.LENGTH_SHORT).show();
             }
         }
+
     }
 }
