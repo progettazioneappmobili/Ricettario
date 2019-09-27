@@ -1,5 +1,6 @@
 package com.developer.luca.foodbook;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -52,19 +53,20 @@ public class NewIngredientFragment extends Fragment {
 
         // Ogni volta che viene premuto il bottone cicla al unità di misura successiva
         unit_button.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
                 switch (unit_button.getText().toString()){
                     case "UNIT":
-                        unit_button.setText("GR");
+                        unit_button.setText(getString(R.string.gr));
                         ingredient.setUnit(Ingredient.Unit.GR);
                         break;
                     case "GR":
-                        unit_button.setText("ML");
+                        unit_button.setText(getString(R.string.ml));
                         ingredient.setUnit(Ingredient.Unit.ML);
                         break;
                     case "ML":
-                        unit_button.setText("UNIT");
+                        unit_button.setText(R.string.unit);
                         ingredient.setUnit(Ingredient.Unit.UNIT);
                 }
 

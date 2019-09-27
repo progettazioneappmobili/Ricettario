@@ -314,10 +314,10 @@ public class Insert1Fragment extends Fragment {
     // Mostra una finestra di dialogo in cui scegliere se prendere un immagine dalla galleria o scattare una nuova foto
     private void showPictureDialog(){
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(mainActivity);
-        pictureDialog.setTitle("Aggiungi immagine");
+        pictureDialog.setTitle(R.string.pictureDialog_title);
         String[] pictureDialogItems = {
-                "Scegli immagine dalla Galleria",
-                "Cattura foto dalla Fotocamera" };
+                getString(R.string.pictureDialog_galleryOption),
+                getString(R.string.pictureDialog_cameraOption) };
         pictureDialog.setItems(pictureDialogItems,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -346,7 +346,7 @@ public class Insert1Fragment extends Fragment {
             try {
                 photoFile = createImageFile();
             } catch (IOException e) {
-                Toast.makeText(mainActivity, "Impossibile creare file!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, getString(R.string.fileCreationError), Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -413,7 +413,7 @@ public class Insert1Fragment extends Fragment {
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Toast.makeText(mainActivity, "Impossibile aprire file!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mainActivity, getString(R.string.openFileError), Toast.LENGTH_SHORT).show();
                 }
             }
         } else if (requestCode == REQUEST_IMAGE_CAMERA) {
@@ -430,7 +430,7 @@ public class Insert1Fragment extends Fragment {
                     imageView.setImageBitmap(thumbnailBitmap);
                 }
             } catch (IOException e) {
-                Toast.makeText(mainActivity, "Errore nel ottenere la foto!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, getString(R.string.openFileError), Toast.LENGTH_SHORT).show();
             }
         }
 

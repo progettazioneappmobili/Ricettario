@@ -81,9 +81,9 @@ public class InsertActivity extends AppCompatActivity {
         sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Aggiunge le pagine al viewpager
-        sectionsPagerAdapter.addFragment(new Insert1Fragment(), "Informazioni");
-        sectionsPagerAdapter.addFragment(new Insert2Fragment(), "Ingredienti");
-        sectionsPagerAdapter.addFragment(new Insert3Fragment(), "Preparazione");
+        sectionsPagerAdapter.addFragment(new Insert1Fragment(), getString(R.string.recipe_info));
+        sectionsPagerAdapter.addFragment(new Insert2Fragment(), getString(R.string.ingredients));
+        sectionsPagerAdapter.addFragment(new Insert3Fragment(), getString(R.string.preparation));
 
         vP.setAdapter(sectionsPagerAdapter);
 
@@ -143,7 +143,7 @@ public class InsertActivity extends AppCompatActivity {
                 // il numero esatto di minuti e l'immmagine sono opzionali
                 if (recipe.getName() == null || recipe.getName().equals("") ||
                         recipe.getDishType() == null || recipe.getTimeType() == null){
-                    Toast.makeText(mainActivity, "Compila tutti i campi!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mainActivity, getString(R.string.fillAllFieldsError), Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 break;
@@ -155,7 +155,7 @@ public class InsertActivity extends AppCompatActivity {
 
                 // Controlla se è stato inserito almeno un ingrediente.
                 if (recipe.getIngredients().isEmpty()){
-                    Toast.makeText(mainActivity, "Inserisci almeno un ingrediente!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mainActivity, getString(R.string.atLeastOneIngredientError), Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 break;
@@ -166,7 +166,7 @@ public class InsertActivity extends AppCompatActivity {
 
                 // Controlla se è stato inserito almeno un passo
                 if (recipe.getPhases().isEmpty()){
-                    Toast.makeText(mainActivity, "Inserisci almeno un passo!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mainActivity, getString(R.string.atLeastOnePhaseError), Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 break;
@@ -229,9 +229,9 @@ public class InsertActivity extends AppCompatActivity {
 
     private void showCancelAlertDialog(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("Anullare l'inserimento?");
-        alertDialog.setPositiveButton("Sì", dialogClickListener);
-        alertDialog.setNegativeButton("No", dialogClickListener);
+        alertDialog.setTitle(R.string.cancelInsertRecipe);
+        alertDialog.setPositiveButton(R.string.yes, dialogClickListener);
+        alertDialog.setNegativeButton(R.string.no, dialogClickListener);
         alertDialog.show();
     }
 
