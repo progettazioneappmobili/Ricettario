@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -159,6 +160,10 @@ public class ResultsActivity extends AppCompatActivity {
         dolciGroup = getRecipesByTypeAndId("Dessert", dolciGroup, ids);
         item.put(getString(R.string.dessert), dolciGroup);
 
+        // Se non ho trovato nessuna ricetta mando un messaggio all'utente
+        if (primiGroup.size() == 0 && secondiGroup.size() == 0 && antipastiGroup.size() == 0 && dolciGroup.size() == 0)
+            Toast.makeText(this, "Nessuna Ricetta Trovata.\nPremi il tasto indietro per tornare alla schermata di ricerca.", Toast.LENGTH_LONG).show();
+
         MyExpandableListAdapter adapter = new MyExpandableListAdapter(item, this);
         expandableListView.setAdapter(adapter);
         expandableListView.setDividerHeight(0);
@@ -176,6 +181,8 @@ public class ResultsActivity extends AppCompatActivity {
     public ArrayList<String> getRecipesByTypeAndId(String tipo, ArrayList<String> result, String [] ids){
         dbWrapper.open();
         cursor = dbWrapper.fetchRecipesByIdAndType(ids, tipo); // prendo tutte le ricette con il flag preferita e del tipo che cerco
+        if (cursor == null) // se non ho trovato nessuna ricetta mi fermo
+                return result; // array vuoto
         int count = 0;
         String nome1 = "";
         String id1 = "";

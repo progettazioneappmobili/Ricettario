@@ -86,11 +86,6 @@ public class SearchActivity extends AppCompatActivity {
                 String [] ingredients =  ingred.toArray(new String[ingred.size()]);
                 ArrayList<String> ids = getSearchResults(getRecipeName(), dishTypes, timeTypes, ingredients);
                 resultsIntent.putStringArrayListExtra("ids", ids);
-//                resultsIntent.putExtra("name", getRecipeName());
-//                resultsIntent.putExtra("dishType", getDishTypeList());
-//                resultsIntent.putExtra("timeType", getTimeTypeList());
-//                resultsIntent.putExtra("ingredients", getIngredientsList());
-//                setResult(Activity.RESULT_OK, resultsIntent);
                 startActivity(resultsIntent);
             }
         });
