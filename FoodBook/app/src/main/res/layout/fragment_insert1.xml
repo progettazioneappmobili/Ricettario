@@ -114,8 +114,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:textOff="@string/dolce"
-                android:textOn="@string/dolce"
+                android:textOff="@string/dessert"
+                android:textOn="@string/dessert"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/dishType3_toggleButton"
                 app:layout_constraintTop_toBottomOf="@+id/dishType2_toggleButton" />
