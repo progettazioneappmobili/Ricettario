@@ -68,22 +68,22 @@ public class ResultsActivity extends AppCompatActivity {
 
         // Primi
         ArrayList<String> primiGroup = new ArrayList<>();
-        primiGroup = getPrefRecipesByType("Primo", primiGroup);
+        primiGroup = getPrefRecipesByType(getString(R.string.primo), primiGroup);
         item.put(getString(R.string.primi), primiGroup);
 
         // Secondi
         ArrayList<String> secondiGroup = new ArrayList<>();
-        secondiGroup = getPrefRecipesByType("Secondo", secondiGroup);
+        secondiGroup = getPrefRecipesByType(getString(R.string.secondo), secondiGroup);
         item.put(getString(R.string.secondi), secondiGroup);
 
         // Antipasti
         ArrayList<String> antipastiGroup = new ArrayList<>();
-        antipastiGroup = getPrefRecipesByType("Antipasto", antipastiGroup);
+        antipastiGroup = getPrefRecipesByType(getString(R.string.antipasto), antipastiGroup);
         item.put(getString(R.string.antipasti), antipastiGroup);
 
         // Dolci
         ArrayList<String> dolciGroup = new ArrayList<>();
-        dolciGroup = getPrefRecipesByType("Dessert", dolciGroup);
+        dolciGroup = getPrefRecipesByType(getString(R.string.dessert), dolciGroup);
         item.put(getString(R.string.dessert), dolciGroup);
 
         MyExpandableListAdapter adapter = new MyExpandableListAdapter(item, this);
@@ -142,27 +142,27 @@ public class ResultsActivity extends AppCompatActivity {
 
         // Primi
         ArrayList<String> primiGroup = new ArrayList<>();
-        primiGroup = getRecipesByTypeAndId("Primo", primiGroup, ids);
+        primiGroup = getRecipesByTypeAndId(getString(R.string.primo), primiGroup, ids);
         item.put(getString(R.string.primi), primiGroup);
 
         // Secondi
         ArrayList<String> secondiGroup = new ArrayList<>();
-        secondiGroup = getRecipesByTypeAndId("Secondo", secondiGroup, ids);
+        secondiGroup = getRecipesByTypeAndId(getString(R.string.secondo), secondiGroup, ids);
         item.put(getString(R.string.secondi), secondiGroup);
 
         // Antipasti
         ArrayList<String> antipastiGroup = new ArrayList<>();
-        antipastiGroup = getRecipesByTypeAndId("Antipasto", antipastiGroup, ids);
+        antipastiGroup = getRecipesByTypeAndId(getString(R.string.antipasto), antipastiGroup, ids);
         item.put(getString(R.string.antipasti), antipastiGroup);
 
         // Dolci
         ArrayList<String> dolciGroup = new ArrayList<>();
-        dolciGroup = getRecipesByTypeAndId("Dessert", dolciGroup, ids);
+        dolciGroup = getRecipesByTypeAndId(getString(R.string.dessert), dolciGroup, ids);
         item.put(getString(R.string.dessert), dolciGroup);
 
         // Se non ho trovato nessuna ricetta mando un messaggio all'utente
         if (primiGroup.size() == 0 && secondiGroup.size() == 0 && antipastiGroup.size() == 0 && dolciGroup.size() == 0)
-            Toast.makeText(this, "Nessuna Ricetta Trovata.\nPremi il tasto indietro per tornare alla schermata di ricerca.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.message_no_recipe_found), Toast.LENGTH_LONG).show();
 
         MyExpandableListAdapter adapter = new MyExpandableListAdapter(item, this);
         expandableListView.setAdapter(adapter);

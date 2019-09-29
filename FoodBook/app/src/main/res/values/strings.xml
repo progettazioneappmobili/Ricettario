@@ -41,4 +41,5 @@
     <string name="unit">UNIT</string>
     <string name="gr">GR</string>
     <string name="ml">ML</string>
+    <string name="message_no_recipe_found">Nessuna Ricetta Trovata. Premi il tasto indietro per tornare alla schermata di ricerca.</string>
 </resources>
