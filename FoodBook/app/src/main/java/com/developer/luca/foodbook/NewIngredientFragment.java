@@ -57,7 +57,7 @@ public class NewIngredientFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 switch (unit_button.getText().toString()){
-                    case "UNIT":
+                    case "UNITÀ":
                         unit_button.setText(getString(R.string.gr));
                         ingredient.setUnit(Ingredient.Unit.GR);
                         break;
