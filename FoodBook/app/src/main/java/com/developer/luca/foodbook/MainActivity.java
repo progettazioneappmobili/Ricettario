@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Funzione usata come seed iniziale per il database: creo un certo numero di ricette con diverso tipo di portata
      * e con i loro dettagli, alcune le metto come preferite, altre no.
-      */
+     */
     public void addRecords(){
         dbWrapper.open();
         dbWrapper.createRecipe("Spaghetti alla carbonara", "Passo 1\nMettere sul fuoco una pentola con l'acqua salata per cuocere la pasta. Nel frattempo eliminate la cotenna dal guanciale e tagliatelo prima a fette e poi a striscioline spesse circa 1 cm.\n\nPasso 2\nVersate i pezzetti in una padella antiaderente e rosolate per circa 15 minuti a fiamma media, fate attenzione a non bruciarlo altrimenti rilascerà un aroma troppo forte.", "Primo","spaghetti_carbonara",18, "Veloce", "\u2022 100 gr,  Spaghetti\n\u2022 150 gr,  Guanciale\n\u2022 6 , Tuorli di uova medie",1);

@@ -38,14 +38,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-/* Classe relativa al frammento che gestisce la prima pagina del viewpager del attività InsertActivity
-   Raccoeglie informazioni generali sulla ricetta:
-   - Nome
-   - Tipo di piatto (primo, secondo...)
-   - Tempo di preparazione indicativo (veloce, medio, lungo)
-   - Tempo di preparazione in minuti
-   - Foto del piatto
-*/
+/** Classe relativa al frammento che gestisce la prima pagina del viewpager del attività InsertActivity
+ *  Raccoglie informazioni generali sulla ricetta:
+ *  - Nome
+ *  - Tipo di piatto (primo, secondo...)
+ *  - Tempo di preparazione indicativo (veloce, medio, lungo)
+ *  - Tempo di preparazione in minuti
+ *  - Foto del piatto
+ */
 public class Insert1Fragment extends Fragment {
 
     private Activity mainActivity;

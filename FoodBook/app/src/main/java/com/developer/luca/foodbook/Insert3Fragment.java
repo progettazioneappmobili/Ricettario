@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-/* Classe relativa al frammento che gestisce la terza pagina del viewpager del attività InsertActivity
-   Raccoglie la lista delle fasi necessarie per la preparazione della ricetta.
-   Le fasi vengono visualizzate a schermo con dei frammenti.
+/** Classe relativa al frammento che gestisce la terza pagina del viewpager del attività InsertActivity
+ *  Raccoglie la lista delle fasi necessarie per la preparazione della ricetta.
+ *  Le fasi vengono visualizzate a schermo con dei frammenti.
  */
 public class Insert3Fragment extends Fragment {
 

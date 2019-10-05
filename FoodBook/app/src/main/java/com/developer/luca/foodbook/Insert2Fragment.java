@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-/* Classe relativa al frammento che gestisce la seconda pagina del viewpager del attività InsertActivity
-   Raccoglie la lista degli ingredienti necessari per la preparazione della ricetta.
-   Gli ingredienti vengono visualizzati a schermo con dei frammenti.
+/** Classe relativa al frammento che gestisce la seconda pagina del viewpager del attività InsertActivity
+ *  Raccoglie la lista degli ingredienti necessari per la preparazione della ricetta.
+ *  Gli ingredienti vengono visualizzati a schermo con dei frammenti.
  */
 public class Insert2Fragment extends Fragment {
 
