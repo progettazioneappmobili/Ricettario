@@ -6,9 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-// Classe che rappresenta la ricetta
+/**
+ * Classe che rappresenta la ricetta
+ */
 public class Recipe {
 
+    /**
+     * Enumerazione che rappresenta il tipo di portata della ricetta.
+     * Assegno dei valori agli enum e li rendo recuperarli con il metodo getDishTypeString
+     */
     public enum DishType {
         FIRST("Primo"),
         SECOND("Secondo"),
@@ -22,7 +28,10 @@ public class Recipe {
         public String getDishTypeString() { return dishTypeString; }
     }
 
-    // Assegno dei valori agli enum e li rendo recuperarli con il metodo getMinutes
+    /**
+     * Enumerazione che rappresenta la velocità indicativa con cui viene preparata una ricetta.
+     * Assegno dei valori agli enum e li rendo recuperarli con i metodi getMinutes e getTimeTypeString.
+     */
     public  enum  TimeType {
         FAST(30, "Veloce"),
         MEDIUM(60, "Media"),
@@ -50,8 +59,10 @@ public class Recipe {
     private ArrayList<Ingredient> ingredients;
     private ArrayList<Phase> phases;
 
-    // Utilizzo un observer pattern per controllare quando il valore di minutes o timeType viene modificato
-    // e im questo modo mantentere la coerenza tra varie parti del UI e i dati salvati.
+    /**
+     * Utilizzo un observer pattern per controllare quando il valore di minutes o timeType viene modificato
+     * e im questo modo mantentere la coerenza tra varie parti del UI e i dati salvati.
+     */
     interface RecipeTimeChangedListener {
         void OnTimeTypeChanged();
         void OnMinutesChanged();
@@ -97,7 +108,10 @@ public class Recipe {
         return timeType;
     }
 
-    // Impostare il timeType richiede l'aggiornamento del valore di minuti inserito precedentemente
+    /**
+     * Imposta il timeType passato a parametro e aggiorna il valore di minuti corrispondente
+     * @param timeType il TimeType da impostare
+     */
     public void setTimeType(TimeType timeType) {
         this.timeType = timeType;
 
@@ -119,7 +133,10 @@ public class Recipe {
         return minutes;
     }
 
-    // Impostare il valore dei minuti richiede l'aggiornamento del timeType inserito precedentemente
+    /**
+     * Imposta il valore dei minuti passato a parametro e aggiorna il timeType corrispondente
+     * @param minutes valore in minuti da impostare
+     */
     public void setMinutes(int minutes) {
         this.minutes = minutes;
 
@@ -162,7 +179,9 @@ public class Recipe {
         ingredients.add(ingredient);
     }
 
-    // Trasforma la lista degli ingredienti in una stringa
+    /**
+     * @return lista degli ingredienti in un'unica stringa
+     */
     public String getIngredientsString(){
         StringBuilder ingredientsString = new StringBuilder();
 
@@ -198,7 +217,9 @@ public class Recipe {
         phases.add(phase);
     }
 
-    // Trasforma la lista dei passi in una stringa
+    /**
+     * @return lista dei passi in un'unica stringa
+     */
     public String getPhasesString(){
         StringBuilder phasesString = new StringBuilder();
 

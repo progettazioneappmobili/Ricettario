@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+/**
+ * Classe che gestisce il frammento di un singolo ingrediente nell'attività di ricerca.
+ */
 public class SearchIngredientFragment extends Fragment {
 
     private View view;

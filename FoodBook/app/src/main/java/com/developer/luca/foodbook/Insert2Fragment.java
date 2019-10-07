@@ -63,13 +63,17 @@ public class Insert2Fragment extends Fragment {
         }
     }
 
-    // Aggiunge un frammento relativo ad un ingrediente alla lista
+    /**
+     * Aggiunge un frammento relativo ad un ingrediente alla lista
+     */
     public void addIngredientFragment(){
         getFragmentManager().beginTransaction().add(ingredients_linearLayout.getId(), NewIngredientFragment.newInstance(), "INGREDIENT_FRAGMENT_" + ingredients_linearLayout.getChildCount()).commit();
     }
 
-    // Questa funzione viene chiamata per evitare di dover aggiornare la ricetta
-    // ogni volta che viene agiunto o modificato un ingrediente
+    /**
+     * Questa funzione viene chiamata per evitare di dover aggiornare la ricetta
+     * ogni volta che viene agiunto o modificato un ingrediente
+     */
     public void setIngredients(){
         recipe.clearIngredients();
         int t = ingredients_linearLayout.getChildCount();

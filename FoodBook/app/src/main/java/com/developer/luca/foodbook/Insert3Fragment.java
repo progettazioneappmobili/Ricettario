@@ -62,13 +62,17 @@ public class Insert3Fragment extends Fragment {
         }
     }
 
-    // Aggiunge un frammento relativo ad una fase alla lista
+    /**
+     * Aggiunge un frammento relativo ad una fase alla lista
+     */
     public void addPhaseFragment(){
         getFragmentManager().beginTransaction().add(phases_linearLayout.getId(), NewPhaseFragment.newInstance(), "PHASE_FRAGMENT_" + phases_linearLayout.getChildCount()).commit();
     }
 
-    // Questa funzione viene chiamata per evitare di dover aggiornare la ricetta
-    // ogni volta che viene agiunta o modificata una fase
+    /**
+     * Questa funzione viene chiamata per evitare di dover aggiornare la ricetta
+     * ogni volta che viene agiunta o modificata una fase
+     */
     public void setPhases(){
         recipe.clearPhases();
         int t = phases_linearLayout.getChildCount();

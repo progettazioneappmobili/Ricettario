@@ -8,6 +8,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe di utility per i fragment delle pagine del viewpager usato nell'attività insert.
+ */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     private final List<Fragment> fragmentList = new ArrayList<>();
@@ -17,6 +20,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         super(fm);
     }
 
+    /**
+     * Aggiunge una pagina al adattatore
+     * @param fragment frammento da aggiungere
+     * @param title titolo della pagina da visualizzare
+     */
     public void  addFragment(Fragment fragment, String title){
         fragmentList.add(fragment);
         fragmentTitleList.add(title);
@@ -37,6 +45,5 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return fragmentList.size();
     }
-
 
 }

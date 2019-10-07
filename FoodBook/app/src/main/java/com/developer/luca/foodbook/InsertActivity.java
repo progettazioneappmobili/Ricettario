@@ -13,17 +13,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/* Attività che gestisce l'inserimento delle informazioni necessarie alla creazione di una nuova ricetta.
-
-   La schermata ha un view pager contenente frammenti di interfacia grafica per l'inserimento di:
-   - informazioni generali
-   - ingredienti
-   - fasi di preparazione
-   inoltre c'è un progression tracker che mostra il titolo della schermata corrente.
-
-   Per spostarisi tra le varie pagine si possono utilizzare il floating action button e il pulsante indietro
-   oppure si può utilizzare lo swipe a sinistra/destra per passare alla schermata successiva/precedente.
-   Non si può passare alla schermata sucessiva se la schermata attuale non è competata correttamente.
+/** Attività che gestisce l'inserimento delle informazioni necessarie alla creazione di una nuova ricetta.
+ *
+ *  La schermata ha un view pager contenente frammenti di interfacia grafica per l'inserimento di:
+ *  - informazioni generali
+ *  - ingredienti
+ *  - fasi di preparazione
+ *  inoltre c'è un progression tracker che mostra il titolo della schermata corrente.
+ *
+ *  Per spostarisi tra le varie pagine si possono utilizzare il floating action button e il pulsante indietro
+ *  oppure si può utilizzare lo swipe a sinistra/destra per passare alla schermata successiva/precedente.
+ *  Non si può passare alla schermata sucessiva se la schermata attuale non è competata correttamente.
  */
 public class InsertActivity extends AppCompatActivity {
 
@@ -77,6 +77,13 @@ public class InsertActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Esegue il setup del viewpager vP:
+     * - Aggiunge i frammenti come pagine per l'adattatore
+     * - Controlla che non si possa passare alla pagina sucessiva senza aver compilato quella attuale
+     * - Aggiorna il progress tracker per la schermata corrente
+     * @param vP
+     */
     private void setupViewPager(ViewPager vP){
         sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -135,7 +142,11 @@ public class InsertActivity extends AppCompatActivity {
 
     }
 
-    // Se la pagina i è compilata in modo corretto ritorna true, false altrimenti.
+    /**
+     * Controlla che la pagina i sia compilata correttamente.
+     * @param i numero di pagina da controllare.
+     * @return true se la pagina è compilata correttamente, false altrimenti.
+     */
     private boolean isInsertCompiled(int i) {
         switch (i){
             case 0:
@@ -177,8 +188,12 @@ public class InsertActivity extends AppCompatActivity {
     }
 
 
-    // Se pos è una posizione valida passa alla pagina successiva
-    // se sono state inserite tutte le informazioni per la preparazione passa alla attività successiva
+    /**
+     * Passa alla fase sucessiva della compilazione rispetto a pos:
+     * se pos è una posizione valida passa alla pagina successiva
+     * se sono state inserite tutte le informazioni per la preparazione passa alla attività successiva
+     * @param pos pagina attuale
+     */
     public void nextPage(int pos){
         if(pos < 0)
             return;
@@ -207,15 +222,20 @@ public class InsertActivity extends AppCompatActivity {
     }
 
 
-    // Se pos è una posizione valida passa alla pagina precendente
+    /**
+     * Se pos è una posizione valida passa alla pagina precendente
+     * @param pos posizione attuale
+     */
     public void prevPage(int pos){
         if(pos > 0)
             viewPager.setCurrentItem(pos - 1);
     }
 
-    // Imposta il comportamento per il pulsante indietro
-    // se siamo alla prima pagina chiedi la conferma per l'annullamento del inserimento
-    // altrimenti passa alla pagina precedente
+    /**
+     * Imposta il comportamento per il pulsante indietro
+     * se siamo alla prima pagina chiedi la conferma per l'annullamento del inserimento
+     * altrimenti passa alla pagina precedente
+     */
     @Override
     public void onBackPressed() {
         int count = viewPager.getCurrentItem();
@@ -227,6 +247,9 @@ public class InsertActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Crea un allert per chiedere la conferma per uscire dal processo di inserimento
+     */
     private void showCancelAlertDialog(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle(R.string.cancelInsertRecipe);

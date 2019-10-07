@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-// Classe che gestisce il frammento di una singola fase.
+/**
+ * Classe che gestisce il frammento di una singola fase.
+ */
 public class NewPhaseFragment extends Fragment {
 
     private Activity mainActivity;
@@ -61,7 +63,9 @@ public class NewPhaseFragment extends Fragment {
 
     }
 
-    // Ritorna la fase rappresentata.
+    /**
+     * @return la fase rappresentata.
+     */
     public Phase getPhase(){
         phase.setPhaseDescription(phaseDescription_editText.getText().toString().trim());
         return phase;

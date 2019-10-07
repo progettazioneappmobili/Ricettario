@@ -21,7 +21,6 @@ import java.util.ArrayList;
  * Classe che permette di cercare una ricetta tramite un form che consente di inserire
  * dei filtri per i valori di alcuni parametri (es: tempo di preparazione, nome della ricetta,..).
  */
-
 public class SearchActivity extends AppCompatActivity {
 
     private DataBaseWrapper dbWrapper;
@@ -116,7 +115,9 @@ public class SearchActivity extends AppCompatActivity {
         findViewById(R.id.longSearch_toggleButton).setOnClickListener(hideKeyBoardOnClick);
     }
 
-    // Aggiunge un frammento relativo ad un ingrediente alla lista
+    /**
+     * Aggiunge un frammento relativo ad un ingrediente alla lista
+     */
     public void addIngredientFragment(){
         getSupportFragmentManager().beginTransaction().add(ingredients_linearLayout.getId(), SearchIngredientFragment.newInstance(), "INGREDIENT_FRAGMENT_" + ingredients_linearLayout.getChildCount()).commit();
     }
@@ -128,6 +129,10 @@ public class SearchActivity extends AppCompatActivity {
         return recipeNameSearch_editText.getText().toString().trim();
     }
 
+    /**
+     * Ottieni lista di tipi di piatto da cercare.
+     * @return lista dei pulsanti selezionati, se nessun pulsante è selezionato ritorna la lista completa
+     */
     private ArrayList<String> getDishTypeList(){
         ToggleButton toggleButton1Search = findViewById(R.id.dishType1Search_toggleButton);
         ToggleButton toggleButton2Search = findViewById(R.id.dishType2Search_toggleButton);
@@ -159,6 +164,10 @@ public class SearchActivity extends AppCompatActivity {
         return returnList;
     }
 
+    /**
+     * Ottieni lista di velocità di preparazione da cercare.
+     * @return lista dei pulsanti selezionati, se nessun pulsante è selezionato ritorna la lista completa
+     */
     private ArrayList<String> getTimeTypeList(){
         ToggleButton fastSearch_toggleButton = findViewById(R.id.fastSearch_toggleButton);
         ToggleButton mediumSearch_toggleButton = findViewById(R.id.mediumSearch_toggleButton);
@@ -185,6 +194,10 @@ public class SearchActivity extends AppCompatActivity {
         return returnList;
     }
 
+    /**
+     * Ottieni la lista degli ingredienti da cercare.
+     * @return lista degli ingredienti aggiunti, senza spazzi vuoti prima e dopo.
+     */
     private ArrayList<String> getIngredientsList(){
 
         ArrayList<String> list = new ArrayList<>();
@@ -195,13 +208,15 @@ public class SearchActivity extends AppCompatActivity {
             SearchIngredientFragment nif = (SearchIngredientFragment) getSupportFragmentManager().findFragmentByTag("INGREDIENT_FRAGMENT_"+i);
 
             if (nif != null && !nif.getText().trim().equals(""))
-                list.add(nif.getText());
+                list.add(nif.getText().trim());
         }
 
         return list;
     }
 
-    // Per avere un flow di inserimento più fluido nascondo la tastiera quando viene selezionato un pulsante
+    /**
+     * Per avere un flow di inserimento più fluido nascondo la tastiera quando viene selezionato un pulsante
+     */
     public static void hideSoftKeyboard (Activity activity, View view){
         InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);

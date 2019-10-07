@@ -14,7 +14,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-// Classe che gestisce il frammento di un singolo ingrediente.
+/**
+ * Classe che gestisce il frammento di un singolo ingrediente
+ * nel processo di inseriemento degli ingredienti di una nuova ricetta.
+ */
 public class NewIngredientFragment extends Fragment {
 
     private View view;
@@ -75,7 +78,9 @@ public class NewIngredientFragment extends Fragment {
         });
     }
 
-    // Ritorna l'ingrediente rappresentato.
+    /**
+     * @return l'ingrediente rappresentato dal frammento.
+     */
     public Ingredient getIngredient(){
         ingredient.setIngredient(ingredientName_editText.getText().toString().trim());
 
@@ -88,7 +93,10 @@ public class NewIngredientFragment extends Fragment {
         return ingredient;
     }
 
-    // Per avere un flow di inserimento più fluido nascondo la tastiera quando viene selezionato un pulsante
+
+    /**
+     * Per avere un flow di inserimento più fluido nascondo la tastiera quando viene selezionato un pulsante
+     */
     public static void hideSoftKeyboard (Activity activity, View view){
         InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);

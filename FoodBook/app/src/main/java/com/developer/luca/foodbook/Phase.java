@@ -1,6 +1,8 @@
 package com.developer.luca.foodbook;
 
-// Classe che rappresenta una fase di preparazione della ricetta
+/**
+ * Classe che rappresenta una fase di preparazione della ricetta
+ */
 public class Phase {
 
     private int phaseNumber;

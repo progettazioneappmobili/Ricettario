@@ -256,9 +256,12 @@ public class Insert1Fragment extends Fragment {
         dishToggleButtonGroup.add((ToggleButton) view.findViewById(R.id.dishType4_toggleButton));
     }
 
-    // Radio group behaviour for ToggleButtons
-    // rimane selezionato solo un pulsante tra quelli presenti nel array
-    // Si potrebbero anche utilizzare direttamente dei radio buttons ma dovremmo modificarne l'aspetto
+    /**
+     * Radio group behaviour for ToggleButtons.
+     * Rimane selezionato solo un pulsante tra quelli presenti nel array.
+     * @param toggleButtonGroup ArrayList di ToggleButton di cui il pulsante premuto fa parte
+     * @param toggledButton pulsante selezionato
+     */
     private void toggleButtonGroupRadioBehaviour(ArrayList<ToggleButton> toggleButtonGroup, CompoundButton toggledButton){
         for(ToggleButton tB : toggleButtonGroup){
             if (toggledButton.getId() != tB.getId() && tB.isChecked()) tB.setChecked(false);
@@ -268,14 +271,18 @@ public class Insert1Fragment extends Fragment {
     }
 
 
-    // Per avere un flow di inserimento più fluido nascondo la tastiera quando viene selezionato un pulsante
+    /**
+     * Per avere un flow di inserimento più fluido nascondo la tastiera quando viene selezionato un pulsante
+     */
     public static void hideSoftKeyboard (Activity activity, View view){
         InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 
-
-    // Controlla se sono stati dati i permessi per accedere alla camera e alla memoria, in caso contrario li chiede.
+    /**
+     * Controlla se sono stati dati i permessi per accedere alla camera e alla memoria, in caso contrario li chiede.
+     * @return true se i permessi sono già stati dati, false altrimenti.
+     */
     private  boolean checkAndRequestPermissions() {
         int cameraPermission = ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.CAMERA);
         int galleryWritePermission = ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -296,6 +303,7 @@ public class Insert1Fragment extends Fragment {
         return true;
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode == REQUEST_ID_MULTIPLE_PERMISSIONS){
@@ -311,7 +319,9 @@ public class Insert1Fragment extends Fragment {
         }
     }
 
-    // Mostra una finestra di dialogo in cui scegliere se prendere un immagine dalla galleria o scattare una nuova foto
+    /**
+     * Mostra una finestra di dialogo in cui scegliere se prendere un immagine dalla galleria o scattare una nuova foto
+     */
     private void showPictureDialog(){
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(mainActivity);
         pictureDialog.setTitle(R.string.pictureDialog_title);
@@ -335,8 +345,10 @@ public class Insert1Fragment extends Fragment {
         pictureDialog.show();
     }
 
-    // È stata scelta l'opzione di utilizare la camera.
-    // Crea l'intent adeguato e prepara un file in cui salvare la foto, poi crea una nuova attività.
+    /**
+     * È stata scelta l'opzione di utilizare la camera.
+     * Crea l'intent adeguato e prepara un file in cui salvare la foto, poi crea una nuova attività.
+     */
     private void invokeCamera() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -358,8 +370,13 @@ public class Insert1Fragment extends Fragment {
         }
     }
 
-    // Crea il file immagine in cui verrà salfata la foto
+
     String mCurrentPhotoPath;
+    /**
+     * Crea il file immagine in cui verrà salvata la foto
+     * @return file con nome unico creato nella cartella Environment.DIRECTORY_PICTURES
+     * @throws IOException nel caso in cui ci siano problemi con il file creato
+     */
     private File createImageFile() throws IOException {
         String imageFileName = "" + Calendar.getInstance().getTimeInMillis();
 
@@ -370,8 +387,10 @@ public class Insert1Fragment extends Fragment {
         return image;
     }
 
-    // È stata scelta l'opzione di scegliere una immagine presente nella galleria.
-    // Crea l'intent adeguato e chiama una nuova attività.
+    /**
+     * È stata scelta l'opzione di scegliere una immagine presente nella galleria.
+     * Crea l'intent adeguato e chiama una nuova attività.
+     */
     private void invokeGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
