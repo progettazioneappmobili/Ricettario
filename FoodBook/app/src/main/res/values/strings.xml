@@ -21,7 +21,7 @@
     <string name="fillAllFieldsError">Compila tutti i campi!</string>
     <string name="atLeastOneIngredientError">Inserisci almeno un ingrediente!</string>
     <string name="atLeastOnePhaseError">Inserisci almeno un passo!</string>
-    <string name="cancelInsertRecipe">Anullare l\'inserimento?</string>
+    <string name="cancelInsertRecipe">Annullare l\'inserimento?</string>
     <string name="yes">Sì</string>
     <string name="no">No</string>
     <string name="default_text">some text</string>
