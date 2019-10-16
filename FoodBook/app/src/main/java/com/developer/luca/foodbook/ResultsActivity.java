@@ -160,14 +160,40 @@ public class ResultsActivity extends AppCompatActivity {
         dolciGroup = getRecipesByTypeAndId(getString(R.string.dessert), dolciGroup, ids);
         item.put(getString(R.string.dessert), dolciGroup);
 
-        // Se non ho trovato nessuna ricetta mando un messaggio all'utente
-        if (primiGroup.size() == 0 && secondiGroup.size() == 0 && antipastiGroup.size() == 0 && dolciGroup.size() == 0)
+        int groupToExpand = 0; // scelgo quale gruppo del menu a fisarmonica (list view) espandere
+        int totalRecipesFound = primiGroup.size() + secondiGroup.size() + antipastiGroup.size() + dolciGroup.size(); // numero di ricette trovate
+
+        if (totalRecipesFound == 0){
+
+            // Dico all'utente che non ho trovato nessuna ricetta
             Toast.makeText(this, getString(R.string.message_no_recipe_found), Toast.LENGTH_LONG).show();
+
+        }else{
+
+            // Espando il primo gruppo con almeno una ricetta
+            if (primiGroup.size() > 0){
+                groupToExpand = 0;
+            }else if (secondiGroup.size() > 0){
+                groupToExpand = 1;
+            }else if (antipastiGroup.size() > 0){
+                groupToExpand = 2;
+            }else if (dolciGroup.size() > 0){
+                groupToExpand = 3;
+            }
+
+            // Mostro un messaggio con il numero di ricette trovate
+            if (totalRecipesFound > 1){ // + di 1 ricetta
+                Toast.makeText(this, "" + totalRecipesFound + " ricette trovate" , Toast.LENGTH_SHORT).show();
+            }else{ // solo una ricetta
+                Toast.makeText(this, "" + totalRecipesFound + " ricetta trovata" , Toast.LENGTH_SHORT).show();
+            }
+
+        }
 
         MyExpandableListAdapter adapter = new MyExpandableListAdapter(item, this);
         expandableListView.setAdapter(adapter);
         expandableListView.setDividerHeight(0);
-        expandableListView.expandGroup(0);
+        expandableListView.expandGroup(groupToExpand);
     }
 
     /**
